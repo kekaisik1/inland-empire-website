@@ -1,0 +1,23 @@
+{
+  "name": "LOWL Appliance Repair",
+  "short_name": "LOWL",
+  "description": "Same-day appliance repair in Southern California. Refrigerator, washer, dryer, dishwasher & oven repair with warranty included.",
+  "lang": "en-US",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#1A1B20",
+  "theme_color": "#1A1B20",
+  "categories": ["business", "utilities"],
+  "icons": [
+    {
+      "src": "/static/images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/images/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

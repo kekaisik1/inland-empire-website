@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags seo_tags i18n %}
+
+{% block body_class %}page-static{% endblock %}
+
+{% block title %}{{ page.seo_title|default:page.title }} | {{ biz.business_name|default:"LOWL Appliance Repair" }}{% endblock %}
+{% block title_suffix %}{% endblock %}
+
+{% block jsonld %}
+{{ block.super }}
+{% jsonld_webpage %}
+{% endblock %}
+
+{% block meta_description %}
+{% if page.search_description %}
+<meta name="description" content="{{ page.search_description }}" />
+{% elif page.hero_subtitle %}
+<meta name="description" content="{{ page.hero_subtitle }}{% if biz %} — {{ biz.business_name }}{% if biz.city %} in {{ biz.city }}, {{ biz.state }}{% endif %}.{% endif %}" />
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{# ── Hero ── #}
+<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="container-site relative z-10">
+        {% site_breadcrumbs %}
+        <h1 class="text-3xl md:text-4xl font-display uppercase font-extrabold mt-4 text-white">{{ page.hero_title|default:page.title }}</h1>
+        {% if page.hero_subtitle %}
+        <p class="text-text-muted mt-4 max-w-xl text-lg font-sans">{{ page.hero_subtitle }}</p>
+        {% endif %}
+    </div>
+</header>
+
+{# ── Body ── #}
+{% if page.body %}
+<section class="bg-background">
+    <div class="container-site py-16 md:py-24">
+        {% if page.slug == "about-us" %}
+        {# About page: 2-column layout with trust sidebar #}
+        <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+            <div class="lg:col-span-2 prose prose-lg max-w-none text-text-muted font-sans">
+                {{ page.body|richtext }}
+            </div>
+            <aside class="space-y-8">
+                {# Trust Signals #}
+                <div class="bg-surface p-6 rounded-card border border-primary/20">
+                    <h3 class="font-display uppercase font-extrabold text-primary text-lg mb-4">{% trans "Why Choose Us" %}</h3>
+                    <div class="space-y-4 text-sm text-text-muted font-sans">
+                        <div class="flex items-center gap-3">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#10003;</span>
+                            {% trans "Same-Day Service — 7 Days a Week" %}
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#10003;</span>
+                            {% trans "EPA 608 Certified Technicians" %}
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#10003;</span>
+                            {% trans "Warranty on All Parts & Labor" %}
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#10003;</span>
+                            {% trans "OEM Parts — Fully Stocked Trucks" %}
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#10003;</span>
+                            {% trans "Residential & Commercial Appliances" %}
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#10003;</span>
+                            {% trans "Flat-Rate Pricing — No Hidden Fees" %}
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#10003;</span>
+                            {% trans "No Overtime or Weekend Charges" %}
+                        </div>
+                        {% if biz and biz.google_rating %}
+                        <div class="flex items-center gap-3">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#9733;</span>
+                            {% blocktrans with rating=biz.google_rating count=biz.google_review_count %}{{ rating }}★ from {{ count }}+ Google reviews{% endblocktrans %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {# Booking CTA #}
+                <div class="bg-surface p-6 rounded-card border border-white/10">
+                    <h3 class="font-display uppercase font-extrabold text-lg mb-4 text-white">{% trans "Book a Repair" %}</h3>
+                    <p class="text-text-muted text-sm mb-4 font-sans">{% if biz %}{% blocktrans with fee=biz.service_call_fee %}Same-day service with EPA-certified technicians. ${{ fee }} diagnostic — waived when you approve the repair.{% endblocktrans %}{% else %}{% trans "Same-day service with certified technicians." %}{% endif %}</p>
+                    <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary w-full justify-center mb-3">
+                        {% trans "Book Online" %}
+                    </a>
+                    {% if biz and biz.phone %}
+                    <a href="tel:{{ biz.phone }}" class="btn btn-outline w-full justify-center">
+                        {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
+                    </a>
+                    {% endif %}
+                </div>
+            </aside>
+        </div>
+        {% else %}
+        <div class="prose prose-lg max-w-3xl mx-auto text-text-muted font-sans">
+            {{ page.body|richtext }}
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
+{# ── Contact Form (if this is the contact page) ── #}
+{% if page.slug == "contact" %}
+<section class="bg-surface py-16 md:py-24">
+    <div class="container-site">
+        <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+            {# Contact Form #}
+            <div class="lg:col-span-2">
+                <div class="section-header">
+                    <h2 class="text-2xl font-display uppercase font-extrabold text-primary">{% trans "Send Us a Message" %}</h2>
+                </div>
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="mb-8 p-4 rounded-card border
+                    {% if message.tags == 'success' %}bg-green-900/20 border-green-500/30 text-green-400
+                    {% elif message.tags == 'error' %}bg-red-900/20 border-red-500/30 text-red-400
+                    {% else %}bg-blue-900/20 border-blue-500/30 text-blue-400{% endif %}"
+                    role="alert">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                <form action="{% url 'contact_submit' %}" method="post" class="mt-8 space-y-6">
+                    {% csrf_token %}
+                    <div>
+                        <label for="id_name" class="block text-sm font-semibold text-text-muted mb-2">{% trans "Name" %} *</label>
+                        <input type="text" name="name" id="id_name" required
+                            class="input-dark"
+                            placeholder="{% trans 'Your name' %}" />
+                    </div>
+                    <div>
+                        <label for="id_email" class="block text-sm font-semibold text-text-muted mb-2">{% trans "Email" %} *</label>
+                        <input type="email" name="email" id="id_email" required
+                            class="input-dark"
+                            placeholder="{% trans 'your@email.com' %}" />
+                    </div>
+                    <div>
+                        <label for="id_phone" class="block text-sm font-semibold text-text-muted mb-2">{% trans "Phone" %}</label>
+                        <input type="tel" name="phone" id="id_phone"
+                            class="input-dark"
+                            placeholder="{% trans '(555) 000-0000' %}" />
+                    </div>
+                    <div>
+                        <label for="id_message" class="block text-sm font-semibold text-text-muted mb-2">{% trans "Message" %} *</label>
+                        <textarea name="message" id="id_message" rows="5" required
+                            class="input-dark resize-y"
+                            placeholder="{% trans 'How can we help?' %}"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary px-8 py-3">{% trans "Send Message" %}</button>
+                </form>
+            </div>
+
+            {# Contact Sidebar #}
+            <aside class="space-y-8">
+                {% if biz %}
+                <div class="bg-surface p-6 rounded-card border border-white/10">
+                    <h3 class="font-display uppercase font-extrabold text-lg mb-4 text-white">{% trans "Contact Info" %}</h3>
+                    <address class="not-italic text-text-muted space-y-4 text-sm font-sans">
+                        {% if biz.phone %}
+                        <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary flex-shrink-0 mt-0.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            <div>
+                                <p class="font-semibold text-white">{% trans "Phone" %}</p>
+                                <a href="tel:{{ biz.phone }}" class="text-primary hover:underline">{{ biz.phone_display }}</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if biz.email %}
+                        <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary flex-shrink-0 mt-0.5" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            <div>
+                                <p class="font-semibold text-white">{% trans "Email" %}</p>
+                                <a href="mailto:{{ biz.email }}" class="text-primary hover:underline">{{ biz.email }}</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if biz.address_line1 %}
+                        <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary flex-shrink-0 mt-0.5" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                            <div>
+                                <p class="font-semibold text-white">{% trans "Address" %}</p>
+                                <p>{{ biz.address_line1 }}{% if biz.address_line2 %}, {{ biz.address_line2 }}{% endif %}</p>
+                                <p>{{ biz.city }}, {{ biz.state }} {{ biz.zip_code }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if biz.business_hours %}
+                        <div class="flex items-start gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary flex-shrink-0 mt-0.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <div>
+                                <p class="font-semibold text-white">{% trans "Hours" %}</p>
+                                <p>{{ biz.business_hours }}</p>
+                                <p class="text-xs text-text-muted">{% trans "7 days a week" %}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </address>
+                </div>
+                {% endif %}
+
+                {# Quick Booking #}
+                <div class="bg-surface p-6 rounded-card border border-primary/20">
+                    <h3 class="font-display uppercase font-extrabold text-primary text-lg mb-4">{% trans "Prefer to Book Directly?" %}</h3>
+                    <p class="text-text-muted text-sm mb-4 font-sans">{% if biz %}{% blocktrans with fee=biz.service_call_fee %}Skip the form — book same-day service online. ${{ fee }} diagnostic, waived with repair. Available 7 days a week.{% endblocktrans %}{% else %}{% trans "Skip the form — book same-day service online. Available 7 days a week." %}{% endif %}</p>
+                    <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary w-full justify-center">
+                        {% trans "Book Online" %}
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+{# ── CTA ── #}
+{% if page.cta_title %}
+<section class="bg-surface text-white py-16 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="container-site text-center relative z-10">
+        <h2 class="text-2xl md:text-3xl font-display uppercase font-extrabold mb-4 text-white">{{ page.cta_title }}</h2>
+        {% if page.cta_text %}
+        <p class="text-text-muted mb-8 max-w-lg mx-auto font-sans">{{ page.cta_text }}</p>
+        {% endif %}
+        <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary px-8 py-3">
+            {% if page.cta_button_text %}{{ page.cta_button_text }}{% else %}{% trans "Book Now" %}{% endif %}
+        </a>
+    </div>
+</section>
+{% endif %}
+{% endblock %}

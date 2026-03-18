@@ -1,0 +1,18 @@
+wagtail==7.3
+wagtail-localize==1.13
+Django==5.2.11
+psycopg2-binary>=2.9
+gunicorn==25.1.0
+dj-database-url==3.1.2
+python-dotenv==1.2.1
+whitenoise==6.11.0
+django-ratelimit==4.1.0
+polib==1.2.0
+
+# Monitoring & Development
+sentry-sdk[django]==2.53.0
+django-debug-toolbar==6.2.0
+
+# Cloud media storage
+django-cloudinary-storage==0.3.0
+cloudinary==1.44.1

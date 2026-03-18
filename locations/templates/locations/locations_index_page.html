@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags seo_tags i18n %}
+
+{% block body_class %}page-locations{% endblock %}
+
+{% block title %}{% trans "Appliance Repair Service Areas" %} | {{ biz.business_name|default:"LOWL Appliance Repair" }}{% endblock %}
+{% block title_suffix %}{% endblock %}
+
+{% block meta_description %}
+{% if page.search_description %}
+<meta name="description" content="{{ page.search_description }}" />
+{% elif biz %}
+<meta name="description" content="{% blocktrans with name=biz.business_name city=biz.city|default:'Southern California' state=biz.state|default:'CA' phone=biz.phone_display %}Find appliance repair near you. {{ name }} serves {{ city }}, {{ state }} and surrounding cities. Same-day service, warranty included. Call {{ phone }}.{% endblocktrans %}" />
+{% endif %}
+{% endblock %}
+
+{% block jsonld %}
+{{ block.super }}
+{% jsonld_itemlist %}
+{% jsonld_faq %}
+{% endblock %}
+
+{% block content %}
+{% get_current_language as current_lang %}
+{# ── Hero ── #}
+<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="absolute -top-24 -left-24 w-72 h-72 rounded-full border-[40px] border-primary/10 pointer-events-none" aria-hidden="true"></div>
+    <div class="container-site relative z-10">
+        {% site_breadcrumbs %}
+        <h1 class="text-3xl md:text-4xl font-display uppercase font-extrabold mt-4 text-white">{{ page.title }}</h1>
+        {% if biz %}
+        <p class="text-text-muted mt-4 max-w-xl text-lg font-sans">{% blocktrans with name=biz.business_name city=biz.city|default:"Southern California" state=biz.state|default:"CA" %}{{ name }} provides same-day appliance repair across {{ city }}, {{ state }} and surrounding communities.{% endblocktrans %}</p>
+        {% endif %}
+    </div>
+</header>
+
+{# ── Cities Grid ── #}
+<section class="bg-background">
+    <div class="container-site py-16 md:py-24">
+        {% if page.intro %}
+        <div class="prose prose-lg max-w-3xl mb-12 text-text-muted">
+            {{ page.intro|richtext }}
+        </div>
+        {% endif %}
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {% for city in cities %}
+            <a href="{% pageurl city %}"
+                class="block bg-surface p-6 rounded-card border border-white/5 hover:border-primary hover:shadow-card transition-all group">
+                <div class="flex items-center gap-3 mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="text-primary flex-shrink-0">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <h2 class="font-bold text-white group-hover:text-primary transition-colors">{{ city.title }}, {{ city.state }}</h2>
+                </div>
+                <p class="text-text-muted text-sm">{{ city.intro|truncatewords:15 }}</p>
+            </a>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <p class="text-text-muted text-lg">{% trans "No service areas listed yet." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ── Why Choose Local Service (trust signals) ── #}
+<section class="bg-surface border-t border-white/5 py-16 md:py-24">
+    <div class="container-site">
+        <div class="section-header text-center flex flex-col items-center">
+            <h2 class="text-2xl md:text-3xl font-display uppercase font-extrabold text-primary">{% trans "Local Appliance Repair You Can Trust" %}</h2>
+            <p class="text-text-muted mt-4 max-w-2xl mx-auto font-sans">{% if biz %}{% blocktrans with name=biz.business_name city=biz.city|default:"Southern California" state=biz.state|default:"CA" %}{{ name }} provides professional appliance repair across {{ city }}, {{ state }} and surrounding communities. Our technicians live and work in the areas we serve.{% endblocktrans %}{% endif %}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 mt-10">
+            <div class="text-center">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <h3 class="font-bold text-sm mb-1 text-white">{% trans "Local Technicians" %}</h3>
+                <p class="text-text-muted text-xs">{% trans "Our technicians live in the Inland Empire. Shorter drive times mean faster arrivals and same-day availability." %}</p>
+            </div>
+            <div class="text-center">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3 class="font-bold text-sm mb-1 text-white">{% trans "Same-Day Service" %}</h3>
+                <p class="text-text-muted text-xs">{% trans "Available 7 days a week, 8 AM to 8 PM across all service areas. No overtime or weekend surcharges." %}</p>
+            </div>
+            <div class="text-center">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <h3 class="font-bold text-sm mb-1 text-white">{% trans "Warranty Included" %}</h3>
+                <p class="text-text-muted text-xs">{% trans "Every repair backed by a warranty on parts and labor. If the issue returns, we fix it free." %}</p>
+            </div>
+            <div class="text-center">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <h3 class="font-bold text-sm mb-1 text-white">{% trans "No Travel Fees" %}</h3>
+                <p class="text-text-muted text-xs">{% trans "Flat-rate pricing across all service areas. The same diagnostic fee and repair rates apply regardless of your location." %}</p>
+            </div>
+        </div>
+        <div class="text-text-muted mt-10 space-y-4 text-center max-w-3xl mx-auto font-sans">
+            <p>{% trans "Whether you need refrigerator repair, washer repair, dryer repair, or dishwasher repair, our certified team arrives same-day with fully stocked trucks and OEM parts for fast, reliable fixes." %}</p>
+        </div>
+    </div>
+</section>
+
+{# ── Service Areas FAQ (SEO: PAA targeting + JSON-LD) ── #}
+{% if faq_items %}
+<section class="bg-background py-16 md:py-24 max-w-3xl mx-auto px-4 md:px-8">
+    <div class="section-header">
+        <h2 class="text-2xl md:text-3xl font-display uppercase font-extrabold text-primary">{% trans "Service Area Questions" %}</h2>
+    </div>
+    <div>
+        {% for item in faq_items %}
+        <div class="border-b border-white/10" x-data="faqItem" data-faq-section="loc-faq" data-faq-index="{{ forloop.counter0 }}" @faq-close.window="onClose">
+            <button class="w-full text-left py-5 flex justify-between items-center font-semibold text-lg text-white hover:text-primary transition-colors min-h-[44px]"
+                @click="toggle"
+                :aria-expanded="expandedStr" aria-controls="loc-faq-{{ forloop.counter0 }}">
+                {{ item.question }}
+                <span class="text-primary text-2xl ml-4 flex-shrink-0" x-show="open" aria-hidden="true">&minus;</span>
+                <span class="text-primary text-2xl ml-4 flex-shrink-0" x-show="notOpen" aria-hidden="true">+</span>
+            </button>
+            <div id="loc-faq-{{ forloop.counter0 }}" x-show="open" x-collapse class="pb-5 text-text-muted">
+                {{ item.answer }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+{# ── CTA ── #}
+<section class="bg-surface text-white py-16 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="container-site text-center relative z-10">
+        <h2 class="text-2xl md:text-3xl font-display uppercase font-extrabold mb-4 text-white">{% trans "Don't See Your City Listed?" %}</h2>
+        <p class="text-text-muted mb-8 max-w-lg mx-auto font-sans">{% trans "We cover over 140 ZIP codes across Riverside County and are expanding regularly. Call or contact us — there's a good chance we already service your area." %}</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="/{% if current_lang == 'es' %}es/{% endif %}contact/" class="btn btn-primary px-8 py-3 w-full sm:w-auto">{% trans "Contact Us" %}</a>
+            {% if biz and biz.phone %}
+            <a href="tel:{{ biz.phone }}" class="btn btn-outline px-8 py-3 w-full sm:w-auto">
+                {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block alpine_plugins %}
+<script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.14.9/dist/cdn.min.js" defer></script>
+{% endblock %}

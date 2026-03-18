@@ -1,0 +1,27 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>{% trans "Server Error" %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', system-ui, sans-serif; background: #1A1B20; color: #fff; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+        .container { text-align: center; max-width: 480px; }
+        h1 { font-size: 6rem; font-weight: 900; color: #FFD504; line-height: 1; text-transform: uppercase; }
+        p { color: #A0A0A5; margin-top: 0.5rem; }
+        a { display: inline-block; margin-top: 2rem; padding: 0.75rem 2rem; background: #fff; color: #121212; text-decoration: none; border-radius: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.875rem; }
+        a:hover { background: #FFD504; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>500</h1>
+        <p>{% trans "Something went wrong on our end." %}</p>
+        <p>{% trans "Please try again later or contact us for assistance." %}</p>
+        <a href="/">{% trans "Go Home" %}</a>
+    </div>
+</body>
+</html>

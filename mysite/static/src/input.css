@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display font-extrabold uppercase tracking-tight leading-tight;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(255, 213, 4, 0.3);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* ── Buttons ─────────────────────────────────── */
+  .btn {
+    @apply inline-flex items-center justify-center px-8 py-3.5 rounded-button font-display font-bold text-sm uppercase tracking-wider transition-all duration-300 cursor-pointer border-none;
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .btn-primary {
+    @apply bg-white text-text-dark shadow-button;
+  }
+
+  .btn-primary:hover {
+    @apply -translate-y-0.5 shadow-button-hover bg-primary;
+  }
+
+  .btn-outline {
+    @apply border-2 border-white/20 text-white bg-transparent;
+  }
+
+  .btn-outline:hover {
+    @apply border-white bg-white/5;
+  }
+
+  .btn-white {
+    @apply bg-white text-text-dark;
+  }
+
+  .btn-white:hover {
+    @apply bg-primary -translate-y-0.5;
+  }
+
+  .btn-accent {
+    @apply bg-primary text-text-dark shadow-button;
+  }
+
+  .btn-accent:hover {
+    @apply bg-primary-hover -translate-y-0.5 shadow-button-hover;
+  }
+
+  /* ── Container ───────────────────────────────── */
+  .container-site {
+    @apply max-w-container mx-auto px-5 md:px-8;
+  }
+
+  /* ── Section Header ──────────────────────────── */
+  .section-header::after {
+    content: "";
+    @apply block w-10 h-1 bg-primary mt-4;
+  }
+
+  /* ── Service Card (dark theme) ───────────────── */
+  .service-card {
+    @apply bg-surface p-8 rounded-card border border-white/5 relative overflow-hidden;
+    transition:
+      transform 0.4s ease,
+      box-shadow 0.4s ease;
+  }
+
+  .service-card::after {
+    content: "";
+    @apply absolute bottom-0 left-0 right-0 h-1 bg-primary;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .service-card:hover {
+    @apply -translate-y-2.5 shadow-card;
+  }
+
+  .service-card:hover::after {
+    transform: scaleX(1);
+  }
+
+  /* ── Price Box (dark theme) ──────────────────── */
+  .price-box {
+    @apply border border-white/10 p-8 text-center rounded-card bg-surface;
+  }
+
+  .price-box.highlight {
+    @apply border-primary/30 bg-primary/5;
+  }
+
+  /* ── Service Body Content (richtext) ─────────── */
+  .service-body {
+    @apply max-w-none space-y-6;
+  }
+
+  .service-body h2 {
+    @apply text-2xl font-display font-extrabold text-primary uppercase mt-12;
+  }
+
+  .service-body h2:first-child {
+    @apply mt-0;
+  }
+
+  .service-body h2::after {
+    content: "";
+    @apply block w-10 h-1 bg-primary mt-4;
+  }
+
+  .service-body p {
+    @apply text-text-muted leading-relaxed text-base;
+  }
+
+  .service-body p:first-of-type {
+    @apply text-lg text-white/80;
+  }
+
+  .service-body ul,
+  .service-body ol {
+    @apply text-text-muted pl-5 space-y-2;
+  }
+
+  .service-body li {
+    @apply leading-relaxed;
+  }
+
+  .service-body a {
+    @apply text-primary underline underline-offset-2 hover:text-primary-hover transition-colors;
+  }
+
+  .service-body strong {
+    @apply text-white font-semibold;
+  }
+
+  /* ── Accordion ───────────────────────────────── */
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .accordion-content.open {
+    max-height: 500px;
+  }
+
+  /* ── Booking Widget ──────────────────────────── */
+  .booking-widget {
+    @apply bg-surface/90 border border-white/10 p-8 rounded-card shadow-widget relative;
+    backdrop-filter: blur(10px);
+  }
+
+  .booking-widget::before {
+    content: "";
+    @apply absolute inset-0 rounded-card pointer-events-none;
+    background: linear-gradient(45deg, rgba(255, 213, 4, 0.3), transparent 60%);
+    opacity: 0.1;
+  }
+
+  /* ── Glow Indicator ──────────────────────────── */
+  .glow-dot {
+    @apply w-2.5 h-2.5 rounded-full bg-glow shadow-glow;
+  }
+
+  /* ── Trust Chip ──────────────────────────────── */
+  .trust-chip {
+    @apply flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full text-sm font-medium;
+  }
+
+  /* ── Form Input (dark theme) ─────────────────── */
+  .input-dark {
+    @apply w-full bg-white/5 border border-white/10 px-4 py-3.5 rounded-input text-white font-sans text-base;
+    transition: border-color 0.3s;
+  }
+
+  .input-dark:focus {
+    @apply outline-none border-primary;
+  }
+
+  .input-dark::placeholder {
+    @apply text-text-muted;
+  }
+
+  /* ── Diagonal Stripes (decorative) ───────────── */
+  .stripe-bg {
+    @apply absolute inset-0 overflow-hidden pointer-events-none;
+  }
+
+  .stripe-bg::before,
+  .stripe-bg::after {
+    content: "";
+    @apply absolute bg-primary;
+    transform: rotate(45deg);
+  }
+
+  .stripe-bg::before {
+    width: 120px;
+    height: 200%;
+    top: -50%;
+    right: 15%;
+    opacity: 0.04;
+  }
+
+  .stripe-bg::after {
+    width: 60px;
+    height: 200%;
+    top: -50%;
+    right: 25%;
+    opacity: 0.02;
+  }
+
+  /* ── Prose (dark theme override) ─────────────── */
+  .prose {
+    @apply text-text-muted;
+  }
+
+  .prose h2 {
+    @apply text-primary font-display font-extrabold uppercase;
+  }
+
+  .prose h3 {
+    @apply text-white font-display font-bold uppercase;
+  }
+
+  .prose a {
+    @apply text-primary hover:text-primary-hover;
+  }
+
+  .prose strong {
+    @apply text-white;
+  }
+
+  .prose blockquote {
+    @apply border-primary text-text-muted italic;
+  }
+}
+
+/* ── Reduced Motion (accessibility) ────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Scrollbar (dark theme) ────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1b20;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3b42;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4a4b52;
+}

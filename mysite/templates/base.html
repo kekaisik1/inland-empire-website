@@ -1,0 +1,515 @@
+{% load static wagtailcore_tags wagtailuserbar seo_tags i18n i18n_helpers %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" class="scroll-smooth">
+
+<head>
+    <meta charset="utf-8" />
+    <title>
+        {% block title %}
+        {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+        {% endblock %}
+        {% block title_suffix %}
+        {% wagtail_site as current_site %}
+        {% if current_site and current_site.site_name %} — {{ current_site.site_name }}{% endif %}
+        {% endblock %}
+    </title>
+    {% block meta_description %}
+    {% if page.search_description %}
+    <meta name="description" content="{{ page.search_description }}" />
+    {% elif page.title %}
+    <meta name="description" content="{{ page.title }}{% if biz %} — {{ biz.business_name }}{% if biz.city %} {% trans 'in' %} {{ biz.city }}, {{ biz.state }}{% endif %}. {% trans 'Same-day service, warranty included.' %} {% blocktrans with phone=biz.phone_display %}Call {{ phone }}.{% endblocktrans %}{% endif %}" />
+    {% endif %}
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1A1B20" />
+
+    {# Search engine verification #}
+    {% if biz and biz.google_site_verification %}
+    <meta name="google-site-verification" content="{{ biz.google_site_verification }}" />
+    {% endif %}
+    {% if biz and biz.bing_site_verification %}
+    <meta name="msvalidate.01" content="{{ biz.bing_site_verification }}" />
+    {% endif %}
+
+    {# Geo meta tags for local SEO (Google local pack + Maps) #}
+    {% if biz and biz.city %}
+    <meta name="geo.region" content="US-{{ biz.state|default:'CA' }}" />
+    <meta name="geo.placename" content="{{ biz.city }}, {{ biz.state|default:'CA' }}" />
+    {% if biz.latitude and biz.longitude %}
+    <meta name="geo.position" content="{{ biz.latitude }};{{ biz.longitude }}" />
+    <meta name="ICBM" content="{{ biz.latitude }}, {{ biz.longitude }}" />
+    {% endif %}
+    {% endif %}
+
+    {# SEO: meta robots — override in templates that need noindex #}
+    {% block meta_robots %}
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    {% endblock %}
+
+    {# Open Graph #}
+    <meta property="og:title" content="{% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}" />
+    {% if page.search_description %}
+    <meta property="og:description" content="{{ page.search_description }}" />
+    {% elif page.title %}
+    <meta property="og:description" content="{{ page.title }}{% if biz %} — {{ biz.business_name }}{% endif %}" />
+    {% endif %}
+    {% block og_type %}<meta property="og:type" content="website" />{% endblock %}
+    {% wagtail_site as current_site_og %}
+    {% if current_site_og and current_site_og.site_name %}
+    <meta property="og:site_name" content="{{ current_site_og.site_name }}" />
+    {% endif %}
+    {% if page.get_url %}
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ page.get_url }}" />
+    {% endif %}
+    <meta property="og:locale" content="{% if LANGUAGE_CODE == 'es' %}es_MX{% else %}en_US{% endif %}" />
+    {% block og_image %}
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-default.png' %}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="{% if biz %}{{ biz.business_name }} — {% trans 'Professional Appliance Repair' %}{% else %}{% trans 'LOWL Appliance Repair' %}{% endif %}" />
+    {% endblock %}
+    {# OG locale alternates for multilingual support #}
+    {% if LANGUAGE_CODE == 'en' %}
+    <meta property="og:locale:alternate" content="es_MX" />
+    {% else %}
+    <meta property="og:locale:alternate" content="en_US" />
+    {% endif %}
+
+    {# Twitter Card #}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}" />
+    {% if page.search_description %}
+    <meta name="twitter:description" content="{{ page.search_description }}" />
+    {% elif page.title %}
+    <meta name="twitter:description" content="{{ page.title }}{% if biz %} — {{ biz.business_name }}{% endif %}" />
+    {% endif %}
+    {% block twitter_image %}
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-default.png' %}" />
+    {% endblock %}
+
+    {# hreflang alternate links for translated pages #}
+    {% block hreflang %}
+    {% if page %}
+    {% for translation in page.get_translations.all %}
+    <link rel="alternate" hreflang="{{ translation.locale.language_code }}" href="{{ request.scheme }}://{{ request.get_host }}{{ translation.get_url }}" />
+    {% endfor %}
+    <link rel="alternate" hreflang="{{ page.locale.language_code }}" href="{{ request.scheme }}://{{ request.get_host }}{{ page.get_url }}" />
+    {# x-default: point to the English (default) version #}
+    {% if page.locale.language_code == 'en' %}
+    <link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{{ page.get_url }}" />
+    {% else %}
+    {% for translation in page.get_translations.all %}{% if translation.locale.language_code == 'en' %}
+    <link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{{ translation.get_url }}" />
+    {% endif %}{% endfor %}
+    {% endif %}
+    {% endif %}
+    {% endblock %}
+
+    {# Favicon #}
+    <link rel="icon" href="{% static 'favicon.ico' %}" sizes="32x32" />
+    <link rel="icon" href="{% static 'images/icon.svg' %}" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}" />
+    <link rel="manifest" href="{% static 'site.webmanifest' %}" />
+
+    {# Preconnect for critical external services #}
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+
+    {# Fonts: Montserrat (display) + Inter (body) + Sacramento (decorative) #}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Inter:wght@300;400;500;600&family=Sacramento&display=swap" as="style" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Inter:wght@300;400;500;600&family=Sacramento&display=swap" rel="stylesheet" />
+
+    {# Built Tailwind CSS — preloaded for faster LCP #}
+    <link rel="preload" href="{% static 'css/output.css' %}" as="style" />
+    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+
+    {# Canonical URL — overridable for paginated pages #}
+    {% block canonical %}
+    {% if page.get_url %}
+    <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ page.get_url }}" />
+    {% endif %}
+    {% endblock %}
+
+    {% block extra_head %}{% endblock %}
+
+    {# JSON-LD Structured Data #}
+    {% block jsonld %}
+    {% jsonld_website %}
+    {% if biz %}
+    {% jsonld_local_business %}
+    {% jsonld_organization %}
+    {% endif %}
+    {% jsonld_breadcrumbs %}
+    {% endblock %}
+
+    {# Google Analytics #}
+    {% if biz and biz.google_analytics_id %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ biz.google_analytics_id }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ biz.google_analytics_id }}');
+    </script>
+    {% endif %}
+
+    {% if request.in_preview_panel %}
+    <base target="_blank">
+    {% endif %}
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="{% block body_class %}{% endblock %} flex flex-col min-h-screen">
+    {% wagtailuserbar %}
+
+    {# GTM noscript #}
+    {% if biz and biz.gtm_id %}
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id={{ biz.gtm_id }}"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    {% endif %}
+
+    {# Skip Navigation #}
+    <a href="#main-content"
+        class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-text-dark focus:px-4 focus:py-2 focus:rounded-button">
+        {% trans "Skip to main content" %}
+    </a>
+
+    {# ── Navbar (glassmorphism dark) ── #}
+    <nav class="fixed top-0 z-50 w-full border-b border-white/5"
+        style="background:rgba(26,27,32,0.85);backdrop-filter:blur(12px)"
+        x-data="mobileNav" aria-label="{% trans 'Main navigation' %}">
+        <div class="container-site flex h-20 items-center justify-between">
+            {# Logo #}
+            <a href="/" class="font-display text-2xl font-black tracking-tight" aria-label="{{ biz.business_name|default:'Home' }}">
+                <span class="text-primary">{% if biz %}{{ biz.business_name|cut:" Appliance Repair" }}{% else %}LOWL{% endif %}</span>
+                <span class="text-white"> INLAND REPAIR</span>
+            </a>
+
+            {# Desktop Nav #}
+            <div class="hidden items-center gap-8 lg:flex">
+                <a href="/" class="text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Home" %}</a>
+
+                {# Services Dropdown #}
+                <div class="group relative h-20 flex items-center">
+                    <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/"
+                        class="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">
+                        {% trans "Services" %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="h-3.5 w-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </a>
+                    <div class="absolute top-full left-0 w-64 max-w-[calc(100vw-2rem)] rounded-card border border-white/10 bg-surface p-2 shadow-card opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200"
+                        role="menu">
+                        <div class="max-h-[60vh] overflow-y-auto">
+                            {% for service in global_services %}
+                            <a href="{% pageurl service %}" role="menuitem"
+                                class="block rounded-lg px-4 py-2 text-sm text-text-muted hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary focus:outline-none transition-colors">
+                                {{ service.title }}
+                            </a>
+                            {% endfor %}
+                            <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/"
+                                class="block w-full border-t border-white/10 mt-2 pt-2 text-center text-xs font-bold text-primary hover:underline">
+                                {% trans "View All Services" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {# Service Areas Dropdown #}
+                <div class="group relative h-20 flex items-center">
+                    <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/"
+                        class="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">
+                        {% trans "Service Areas" %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="h-3.5 w-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </a>
+                    <div class="absolute top-full left-0 w-64 max-w-[calc(100vw-2rem)] rounded-card border border-white/10 bg-surface p-2 shadow-card opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200"
+                        role="menu">
+                        <div class="max-h-[60vh] overflow-y-auto">
+                            {% for city in global_cities %}
+                            <a href="{% pageurl city %}" role="menuitem"
+                                class="block rounded-lg px-4 py-2 text-sm text-text-muted hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary focus:outline-none transition-colors">
+                                {{ city.title }}
+                            </a>
+                            {% endfor %}
+                            <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/"
+                                class="block w-full border-t border-white/10 mt-2 pt-2 text-center text-xs font-bold text-primary hover:underline">
+                                {% trans "View All Areas" %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}blog/" class="text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Blog" %}</a>
+                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}about-us/" class="text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "About" %}</a>
+                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}contact/" class="text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Contact" %}</a>
+            </div>
+
+            {# Desktop CTA + Language Switcher #}
+            <div class="hidden items-center gap-4 lg:flex">
+                {% get_current_language as current_lang %}
+                <div class="flex items-center border border-white/10 rounded-button overflow-hidden text-xs font-semibold"
+                    role="group" aria-label="{% trans 'Language' %}">
+                    {% if current_lang == 'en' %}
+                    <span class="px-3 py-1.5 bg-primary text-text-dark" aria-current="true">EN</span>
+                    {% else %}
+                    <a href="{% translation_url page 'en' '/' %}"
+                        class="px-3 py-1.5 transition-colors text-text-muted hover:text-white"
+                        hreflang="en">EN</a>
+                    {% endif %}
+                    {% if current_lang == 'es' %}
+                    <span class="px-3 py-1.5 bg-primary text-text-dark" aria-current="true">ES</span>
+                    {% else %}
+                    <a href="{% translation_url page 'es' '/es/' %}"
+                        class="px-3 py-1.5 transition-colors text-text-muted hover:text-white"
+                        hreflang="es">ES</a>
+                    {% endif %}
+                </div>
+
+                {% if biz and biz.phone %}
+                <a href="tel:{{ biz.phone }}"
+                    class="flex items-center gap-2 text-sm font-semibold text-white hover:text-primary transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    {{ biz.phone_display }}
+                </a>
+                {% endif %}
+                <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking
+                    class="btn btn-primary text-xs">
+                    {% trans "Book Now" %}
+                </a>
+            </div>
+
+            {# Mobile Toggle #}
+            <button class="lg:hidden p-2 text-white min-w-[44px] min-h-[44px] flex items-center justify-center"
+                @click="toggle"
+                :aria-expanded="expandedStr"
+                aria-controls="mobile-menu"
+                aria-label="{% trans 'Toggle navigation menu' %}">
+                <svg x-show="notOpen" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" x2="20" y1="12" y2="12" />
+                    <line x1="4" x2="20" y1="6" y2="6" />
+                    <line x1="4" x2="20" y1="18" y2="18" />
+                </svg>
+                <svg x-show="isOpen" x-cloak xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                </svg>
+            </button>
+        </div>
+
+        {# Mobile Menu #}
+        <div x-show="isOpen" x-cloak x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-2"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-2"
+            id="mobile-menu"
+            class="border-t border-white/5 bg-background px-4 py-4 lg:hidden h-[calc(100dvh-128px)] overflow-y-auto">
+            <div class="flex flex-col gap-4">
+                <a href="/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Home" %}</a>
+                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Services" %}</a>
+                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Service Areas" %}</a>
+                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}blog/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Blog" %}</a>
+                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}about-us/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "About" %}</a>
+                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}contact/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Contact" %}</a>
+
+                {# Mobile Language Switcher #}
+                <div class="flex items-center gap-2 py-2">
+                    <span class="text-xs text-text-muted font-semibold uppercase">{% trans "Language" %}:</span>
+                    <div class="flex items-center border border-white/10 rounded-button overflow-hidden text-xs font-semibold">
+                        {% if current_lang == 'en' %}
+                        <span class="px-3 py-1.5 bg-primary text-text-dark">EN</span>
+                        {% else %}
+                        <a href="{% translation_url page 'en' '/' %}" class="px-3 py-1.5 transition-colors text-text-muted" @click="close">EN</a>
+                        {% endif %}
+                        {% if current_lang == 'es' %}
+                        <span class="px-3 py-1.5 bg-primary text-text-dark">ES</span>
+                        {% else %}
+                        <a href="{% translation_url page 'es' '/es/' %}" class="px-3 py-1.5 transition-colors text-text-muted" @click="close">ES</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="pt-4 mt-auto flex flex-col gap-3">
+                    <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking
+                        class="btn btn-primary w-full justify-center py-3 text-base">
+                        {% trans "Book Now" %}
+                    </a>
+                    {% if biz and biz.phone %}
+                    <a href="tel:{{ biz.phone }}"
+                        class="btn btn-outline w-full justify-center py-3 text-base">
+                        {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    {# Spacer for fixed nav #}
+    <div class="h-20" aria-hidden="true"></div>
+
+    {# ── Main Content ── #}
+    <main id="main-content" class="flex-grow" role="main">
+        {% block content %}{% endblock %}
+    </main>
+
+    {# ── Footer (dark) ── #}
+    <footer class="bg-footer text-white pt-20 pb-8 text-sm">
+        <div class="container-site">
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 mb-12">
+                {# Brand Column #}
+                <div>
+                    <h3 class="font-display text-xl font-black text-white mb-4">
+                        <span class="text-primary">{% if biz %}{{ biz.business_name|cut:" Appliance Repair" }}{% else %}LOWL{% endif %}</span>
+                        <span class="text-white"> INLAND</span>
+                    </h3>
+                    <p class="text-text-muted leading-relaxed">
+                        {% if biz and biz.city %}
+                        {% blocktrans with city=biz.city|default:"your area" state=biz.state|default:"CA" %}Professional appliance repair in {{ city }}, {{ state }} and surrounding areas.{% endblocktrans %}
+                        {% else %}
+                        {% trans "Professional appliance repair services. Fast, reliable, and guaranteed." %}
+                        {% endif %}
+                    </p>
+                </div>
+
+                {# Services Column #}
+                <div>
+                    <h4 class="font-display font-bold uppercase text-xs tracking-widest mb-4 text-white/80">{% trans "Services" %}</h4>
+                    <ul class="space-y-3">
+                        {% for service in global_services|slice:":5" %}
+                        <li>
+                            <a href="{% pageurl service %}" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">
+                                {{ service.title }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {# Company Column #}
+                <div>
+                    <h4 class="font-display font-bold uppercase text-xs tracking-widest mb-4 text-white/80">{% trans "Company" %}</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}about-us/" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "About Us" %}</a></li>
+                        <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}contact/" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Contact" %}</a></li>
+                        <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}blog/" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Blog" %}</a></li>
+                        <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Service Areas" %}</a></li>
+                    </ul>
+                </div>
+
+                {# Contact Column #}
+                <div>
+                    <h4 class="font-display font-bold uppercase text-xs tracking-widest mb-4 text-white/80">{% trans "Contact" %}</h4>
+                    <address class="not-italic text-text-muted space-y-3">
+                        {% if biz %}
+                        {% if biz.address_line1 %}<p>{{ biz.address_line1 }}</p>{% endif %}
+                        <p>{{ biz.city|default:"" }}{% if biz.city and biz.state %}, {% endif %}{{ biz.state|default:"" }} {{ biz.zip_code|default:"" }}</p>
+                        {% if biz.phone %}
+                        <p class="mt-4">
+                            <a href="tel:{{ biz.phone }}" class="text-primary hover:text-primary-light transition-colors font-semibold">
+                                {{ biz.phone_display }}
+                            </a>
+                        </p>
+                        {% endif %}
+                        {% if biz.email %}
+                        <p>
+                            <a href="mailto:{{ biz.email }}" class="hover:text-white transition-colors">{{ biz.email }}</a>
+                        </p>
+                        {% endif %}
+                        {% if biz.business_hours %}
+                        <div class="mt-4 flex items-center gap-2">
+                            <span class="glow-dot"></span>
+                            <span class="text-white/80">{% blocktrans with hours=biz.business_hours %}Open {{ hours }}{% endblocktrans %}</span>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                    </address>
+                </div>
+            </div>
+
+            {# Footer Bottom #}
+            <div class="border-t border-white/5 pt-8 text-center text-text-muted text-xs">
+                <p>&copy; {% now "Y" %} {% if biz %}{{ biz.business_name }}{% else %}LOWL Appliance Repair{% endif %}. {% trans "All rights reserved." %}</p>
+            </div>
+        </div>
+    </footer>
+
+    {# ── Mobile Bottom Bar ── #}
+    <div class="fixed bottom-0 left-0 right-0 z-50 flex h-16 border-t border-white/5 px-4 py-2 lg:hidden"
+        style="background:rgba(26,27,32,0.95);backdrop-filter:blur(12px)"
+        role="complementary" aria-label="{% trans 'Quick actions' %}">
+        <div class="flex w-full gap-3">
+            {% if biz and biz.phone %}
+            <a href="tel:{{ biz.phone }}"
+                class="flex flex-1 items-center justify-center rounded-button border border-white/10 bg-transparent text-sm font-semibold text-white active:bg-white/5 min-h-[44px]">
+                {% trans "Call" %}
+            </a>
+            {% endif %}
+            <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking
+                class="flex flex-1 items-center justify-center rounded-button bg-primary text-sm font-semibold text-text-dark hover:bg-primary-hover min-h-[44px]">
+                {% trans "Book" %}
+            </a>
+        </div>
+    </div>
+
+    {# Bottom padding for mobile bar #}
+    <div class="h-16 lg:hidden" aria-hidden="true"></div>
+
+    {# Alpine.js CSP-compatible component registrations #}
+    <script src="{% static 'js/alpine-components.js' %}"></script>
+    {% block alpine_plugins %}{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.14.9/dist/cdn.min.js" defer></script>
+    {# Booking source identifier for UTM forwarding #}
+    <script>window.__BOOKING_SOURCE = "{{ biz.booking_source|default:'lowl' }}";</script>
+    <script src="{% static 'js/utm.js' %}"></script>
+    {# ZIP code service area check #}
+    <script>
+    window.__ZIP_CHECK_I18N = {
+        checkArea: "{% filter escapejs %}{% trans "Check Your Area" %}{% endfilter %}",
+        checkAreaDesc: "{% filter escapejs %}{% trans "Enter your ZIP code to verify we service your area" %}{% endfilter %}",
+        checkAvailability: "{% filter escapejs %}{% trans "Check service availability" %}{% endfilter %}",
+        zipCode: "{% filter escapejs %}{% trans "ZIP Code" %}{% endfilter %}",
+        enterZip: "{% filter escapejs %}{% trans "Enter ZIP code" %}{% endfilter %}",
+        continueBooking: "{% filter escapejs %}{% trans "Continue to Booking" %}{% endfilter %}",
+        weServiceArea: "{% filter escapejs %}{% trans "We service your area!" %}{% endfilter %}",
+        noServiceArea: "{% filter escapejs %}{% trans "Sorry, we don't service this area yet" %}{% endfilter %}",
+        enterZipCode: "{% filter escapejs %}{% trans "Please enter your ZIP code" %}{% endfilter %}",
+        moreDigit: "{% filter escapejs %}{% trans "more digit" %}{% endfilter %}",
+        moreDigits: "{% filter escapejs %}{% trans "more digits" %}{% endfilter %}",
+        close: "{% filter escapejs %}{% trans "Close" %}{% endfilter %}"
+    };
+    </script>
+    <script src="{% static 'js/zip-check.js' %}"></script>
+    {# GTM deferred #}
+    {% if biz and biz.gtm_id %}
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','{{ biz.gtm_id }}');
+    </script>
+    {% endif %}
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

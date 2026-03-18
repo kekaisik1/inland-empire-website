@@ -1,0 +1,22 @@
+{% load i18n %}
+{% if ancestors or current_page %}
+<nav aria-label="{% trans 'Breadcrumb' %}" class="flex items-center text-sm text-text-muted mb-6">
+    <a href="/" class="hover:text-primary transition-colors">{% trans "Home" %}</a>
+    {% for ancestor in ancestors %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="w-4 h-4 mx-2 shrink-0" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6" />
+    </svg>
+    <a href="{{ ancestor.url }}" class="hover:text-primary transition-colors">{{ ancestor.title }}</a>
+    {% endfor %}
+    {% if current_page %}
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="w-4 h-4 mx-2 shrink-0" aria-hidden="true">
+        <polyline points="9 18 15 12 9 6" />
+    </svg>
+    <span class="text-white font-medium" aria-current="page">{{ current_page.title }}</span>
+    {% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags seo_tags i18n %}
+
+{% block body_class %}page-service-detail{% endblock %}
+
+{% block og_image %}
+{% if page.featured_image %}
+{% image page.featured_image fill-1200x630 as og_img %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ og_img.url }}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="{{ page.title }}" />
+{% else %}
+{{ block.super }}
+{% endif %}
+{% endblock %}
+
+{% block twitter_image %}
+{% if page.featured_image %}
+{% image page.featured_image fill-1200x630 as tw_img %}
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ tw_img.url }}" />
+{% else %}
+{{ block.super }}
+{% endif %}
+{% endblock %}
+
+{% block title %}{{ page.title }}{% if biz and biz.city %} {% trans "in" %} {{ biz.city }}, {{ biz.state }}{% endif %} | {{ biz.business_name|cut:" Appliance Repair"|default:"LOWL" }}{% endblock %}
+{% block title_suffix %}{% endblock %}
+
+{% block meta_description %}
+{% if page.search_description %}
+<meta name="description" content="{{ page.search_description }}" />
+{% elif page.intro %}
+<meta name="description" content="{{ page.intro }}{% if biz %} {% blocktrans with service=page.title|lower city=biz.city state=biz.state fee=biz.service_call_fee rating=biz.google_rating phone=biz.phone_display %}Same-day {{ service }} in {{ city }}, {{ state }}. ${{ fee }} diagnostic — waived with repair. {{ rating }}★ rated. Call {{ phone }}.{% endblocktrans %}{% endif %}" />
+{% endif %}
+{% endblock %}
+
+{% block jsonld %}
+{{ block.super }}
+{% if biz %}
+{% jsonld_service %}
+{% endif %}
+{% jsonld_faq %}
+{% endblock %}
+
+{% block content %}
+{# ── Hero ── #}
+<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="absolute -bottom-36 -right-12 w-96 h-96 rounded-full border-[40px] border-primary/10 pointer-events-none" aria-hidden="true"></div>
+    <div class="container-site relative z-10">
+        {% site_breadcrumbs %}
+        <h1 class="text-3xl md:text-4xl font-display uppercase font-extrabold mt-4 text-white">{{ page.title }}</h1>
+        <p class="text-text-muted mt-4 max-w-xl text-lg font-sans">{{ page.intro }}</p>
+        {% if page.hero_usp %}
+        <p class="text-text-muted mt-2 font-sans">{{ page.hero_usp }}</p>
+        {% endif %}
+        <div class="mt-8 flex flex-wrap gap-4">
+            <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary">{% trans "Book This Service" %}</a>
+            {% if biz and biz.phone %}
+            <a href="tel:{{ biz.phone }}" class="btn btn-outline">
+                {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<div class="bg-background py-16 md:py-24">
+    <div class="container-site">
+        <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+            {# ── Main Content ── #}
+            <div class="lg:col-span-2 space-y-16">
+                {# Body Content #}
+                {% if page.body %}
+                <div class="service-body">
+                    {{ page.body|richtext }}
+                </div>
+                {% endif %}
+
+                {# Problems We Fix #}
+                {% if page.problems_we_fix %}
+                <section>
+                    <div class="section-header">
+                        <h2 class="text-2xl font-display uppercase font-extrabold text-white">{% trans "Problems We Fix" %}</h2>
+                    </div>
+                    <ul class="grid sm:grid-cols-2 gap-3 mt-6">
+                        {% for block in page.problems_we_fix %}
+                        <li class="flex items-center gap-3 bg-primary/10 text-primary px-4 py-3 rounded-button font-sans">
+                            <span class="text-primary font-bold flex-shrink-0" aria-hidden="true">&#10003;</span>
+                            {{ block.value }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+                {% endif %}
+
+                {# Why Choose Us #}
+                {% if page.why_choose_us %}
+                <section>
+                    <div class="section-header">
+                        <h2 class="text-2xl font-display uppercase font-extrabold text-white">{% trans "Why Choose Us" %}</h2>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-6 mt-6">
+                        {% for block in page.why_choose_us %}
+                        <div class="bg-surface p-6 rounded-card border border-white/5">
+                            <h3 class="font-bold mb-2 text-white">{{ block.value.title }}</h3>
+                            <p class="text-text-muted text-sm font-sans">{{ block.value.description }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+
+                {# Our Repair Process (E-E-A-T trust signal) #}
+                {% if biz %}
+                <section>
+                    <div class="section-header">
+                        <h2 class="text-2xl font-display uppercase font-extrabold text-white">{% blocktrans with service=page.title %}Our {{ service }} Process{% endblocktrans %}</h2>
+                    </div>
+                    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6 mt-6">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-3 text-lg font-bold" aria-hidden="true">1</div>
+                            <h3 class="font-bold text-sm mb-1 text-white">{% trans "Schedule" %}</h3>
+                            <p class="text-text-muted text-xs font-sans">{% trans "Book online or call us directly. Same-day slots are available 7 days a week, 8 AM to 8 PM — no overtime charges." %}</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-3 text-lg font-bold" aria-hidden="true">2</div>
+                            <h3 class="font-bold text-sm mb-1 text-white">{% trans "Diagnose" %}</h3>
+                            <p class="text-text-muted text-xs font-sans">{% blocktrans with fee=biz.service_call_fee %}A certified technician inspects the appliance and provides an itemized quote. The ${{ fee }} diagnostic is waived when you approve the repair — no obligation if you decline.{% endblocktrans %}</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary mx-auto mb-3 text-lg font-bold" aria-hidden="true">3</div>
+                            <h3 class="font-bold text-sm mb-1 text-white">{% trans "Repair" %}</h3>
+                            <p class="text-text-muted text-xs font-sans">{% trans "We fix it on the spot with OEM parts from our fully stocked trucks. You only pay after the job is done. Every repair includes a warranty on parts and labor." %}</p>
+                        </div>
+                    </div>
+                </section>
+                {% endif %}
+
+                {# FAQ #}
+                {% if page.faq %}
+                <section>
+                    <div class="section-header">
+                        <h2 class="text-2xl font-display uppercase font-extrabold text-white">{% trans "Frequently Asked Questions" %}</h2>
+                    </div>
+                    <div class="mt-6">
+                        {% for block in page.faq %}
+                        <div class="border-b border-white/10" x-data="faqItem" data-faq-section="svc-faq" data-faq-index="{{ forloop.counter0 }}" @faq-close.window="onClose">
+                            <button class="w-full text-left py-5 flex justify-between items-center font-semibold text-white hover:text-primary transition-colors min-h-[44px]"
+                                @click="toggle"
+                                :aria-expanded="expandedStr" aria-controls="svc-faq-{{ forloop.counter0 }}">
+                                {{ block.value.question }}
+                                <span class="text-primary text-2xl ml-4 flex-shrink-0" x-show="open" aria-hidden="true">&minus;</span>
+                                <span class="text-primary text-2xl ml-4 flex-shrink-0" x-show="notOpen" aria-hidden="true">+</span>
+                            </button>
+                            <div id="svc-faq-{{ forloop.counter0 }}" x-show="open" x-collapse class="pb-5 text-text-muted font-sans">
+                                {{ block.value.answer }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
+
+                {# Brands We Repair (keyword density for "[appliance] repair [brand]" queries) #}
+                <section>
+                    <div class="section-header">
+                        <h2 class="text-2xl font-display uppercase font-extrabold text-white">{% blocktrans with service=page.title %}{{ service }} — Brands We Service{% endblocktrans %}</h2>
+                    </div>
+                    <p class="text-text-muted text-sm mb-6 font-sans">{% blocktrans with service=page.title|lower %}Our technicians are factory-trained for {{ service }} across all major brands. We carry brand-specific OEM parts on every truck for fast, same-day fixes — from budget-friendly Kenmore to premium Sub-Zero.{% endblocktrans %}</p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Whirlpool</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Samsung</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">LG</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">GE</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Maytag</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Kenmore</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Frigidaire</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Bosch</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">KitchenAid</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Sub-Zero</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Viking</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Thermador</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Amana</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Electrolux</span>
+                        <span class="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-sm font-medium">Speed Queen</span>
+                    </div>
+                    <p class="text-text-muted text-xs mt-4">{% trans "Don't see your brand? We likely service it — call us to confirm." %}</p>
+                </section>
+            </div>
+
+            {# ── Sidebar ── #}
+            <aside class="space-y-8">
+                {# Booking CTA Card #}
+                <div class="bg-surface p-6 rounded-card border border-primary/20 lg:sticky lg:top-24">
+                    <h3 class="font-bold text-primary text-lg mb-4">{% trans "Book This Repair" %}</h3>
+                    <p class="text-text-muted text-sm mb-6 font-sans">{% blocktrans with service=page.title|lower %}Get same-day {{ service }} with our EPA-certified technicians. OEM parts, warranty included, you pay only after the job is done.{% endblocktrans %}</p>
+                    <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary w-full justify-center mb-3">
+                        {% trans "Book Online" %}
+                    </a>
+                    {% if biz and biz.phone %}
+                    <a href="tel:{{ biz.phone }}" class="btn btn-outline w-full justify-center">
+                        {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
+                    </a>
+                    {% endif %}
+                    {% if biz %}
+                    <div class="mt-6 space-y-3 text-sm text-text-muted font-sans">
+                        <div class="flex items-center gap-2">
+                            <span class="text-primary" aria-hidden="true">&#10003;</span>
+                            {% trans "Warranty Included" %}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-primary" aria-hidden="true">&#10003;</span>
+                            {% blocktrans with fee=biz.service_call_fee %}${{ fee }} Service Call{% endblocktrans %}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-primary" aria-hidden="true">&#10003;</span>
+                            {% trans "Same-Day Service" %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {# Related Services #}
+                {% if related_services_optimized %}
+                <div class="bg-surface p-6 rounded-card border border-white/10">
+                    <h3 class="font-bold text-lg mb-4 text-white">{% trans "Related Services" %}</h3>
+                    <ul class="space-y-3">
+                        {% for rel in related_services_optimized %}
+                        <li>
+                            <a href="{% pageurl rel.related_service %}"
+                                class="flex items-center gap-2 text-sm text-text-muted hover:text-primary transition-colors py-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4 text-primary flex-shrink-0">
+                                    <path d="m9 18 6-6-6-6"/>
+                                </svg>
+                                {{ rel.related_service.title }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </aside>
+        </div>
+    </div>
+</div>
+{# ── Bottom CTA ── #}
+<section class="bg-surface text-white py-16 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="container-site text-center relative z-10">
+        <h2 class="text-2xl md:text-3xl font-display uppercase font-extrabold mb-4 text-white">{% blocktrans with service=page.title %}Need {{ service }}?{% endblocktrans %}</h2>
+        <p class="text-text-muted mb-8 max-w-lg mx-auto font-sans">{% blocktrans with service=page.title|lower %}Book same-day {{ service }} with our certified technicians. Warranty included on all repairs.{% endblocktrans %}</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary px-8 py-3 w-full sm:w-auto">{% trans "Book This Service" %}</a>
+            {% if biz and biz.phone %}
+            <a href="tel:{{ biz.phone }}" class="btn btn-outline px-8 py-3 w-full sm:w-auto">
+                {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block alpine_plugins %}
+<script src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.14.9/dist/cdn.min.js" defer></script>
+{% endblock %}

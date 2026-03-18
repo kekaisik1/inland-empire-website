@@ -1,0 +1,19 @@
+{% load i18n %}
+{# Reusable CTA banner — include with: {% include "includes/cta_section.html" %} #}
+<section class="bg-surface py-20 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="container-site text-center relative z-10">
+        <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase mb-4">{% trans "Ready to Get Your Appliance Fixed?" %}</h2>
+        <p class="text-text-muted mb-8 max-w-lg mx-auto">{% if biz %}{% blocktrans with fee=biz.service_call_fee %}Same-day appointments available 7 days a week. ${{ fee }} diagnostic — waived when you approve the repair. Warranty included on every job.{% endblocktrans %}{% else %}{% trans "Same-day appointments available 7 days a week. Diagnostic fee waived with repair. Warranty included on every job." %}{% endif %}</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary px-8 py-3 w-full sm:w-auto">
+                {% trans "Book Same-Day Repair" %}
+            </a>
+            {% if biz and biz.phone %}
+            <a href="tel:{{ biz.phone }}" class="btn btn-outline px-8 py-3 w-full sm:w-auto">
+                {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>

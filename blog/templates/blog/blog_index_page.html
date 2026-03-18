@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags seo_tags i18n %}
+
+{% block body_class %}page-blog{% endblock %}
+
+{% block title %}{% trans "Appliance Repair Tips & Blog" %} | {{ biz.business_name|cut:" Appliance Repair"|default:"LOWL" }}{% endblock %}
+{% block title_suffix %}{% endblock %}
+
+{% block meta_description %}
+{% if page.search_description %}
+<meta name="description" content="{{ page.search_description }}" />
+{% elif biz %}
+<meta name="description" content="{% blocktrans with name=biz.business_name city=biz.city|default:'Southern California' state=biz.state|default:'CA' %}Expert appliance repair tips, maintenance guides & troubleshooting advice from {{ name }} in {{ city }}, {{ state }}. Keep your appliances running longer.{% endblocktrans %}" />
+{% elif page.hero_subtitle %}
+<meta name="description" content="{{ page.hero_subtitle }}" />
+{% endif %}
+{% endblock %}
+
+{% block canonical %}
+{% if posts.number > 1 %}
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}?page={{ posts.number }}" />
+{% else %}
+<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ page.get_url }}" />
+{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+{# Pagination: rel prev/next (absolute URLs for Bing and other crawlers) #}
+{% if posts.has_previous %}
+<link rel="prev" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}?page={{ posts.previous_page_number }}" />
+{% endif %}
+{% if posts.has_next %}
+<link rel="next" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}?page={{ posts.next_page_number }}" />
+{% endif %}
+{% endblock %}
+
+{% block jsonld %}
+{{ block.super }}
+{% jsonld_itemlist %}
+{% endblock %}
+
+{% block content %}
+{# ── Hero ── #}
+<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="container-site relative z-10">
+        {% site_breadcrumbs %}
+        <h1 class="text-3xl md:text-4xl font-display uppercase font-extrabold mt-4 text-white">{{ page.hero_title }}</h1>
+        {% if page.hero_subtitle %}
+        <p class="text-text-muted mt-4 max-w-xl text-lg font-sans">{{ page.hero_subtitle }}</p>
+        {% endif %}
+    </div>
+</header>
+
+{# ── Posts Grid ── #}
+<section class="bg-background">
+    <div class="container-site py-16 md:py-24">
+        {% if page.intro %}
+        <p class="text-text-muted text-lg mb-12 max-w-2xl font-sans">{{ page.intro }}</p>
+        {% endif %}
+
+        <div class="grid gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+            {% for post in posts %}
+            <article class="bg-surface rounded-card border border-white/5 overflow-hidden hover:border-white/10 transition-colors group">
+                <a href="{% pageurl post %}" class="block">
+                    {% if post.featured_image %}
+                    <div class="aspect-video overflow-hidden bg-surface">
+                        {% picture post.featured_image "fill-400x225" css_class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" %}
+                    </div>
+                    {% else %}
+                    <div class="aspect-video bg-primary/10 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.5" class="text-primary/30">
+                            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
+                            <path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/>
+                        </svg>
+                    </div>
+                    {% endif %}
+                    <div class="p-6">
+                        <time datetime="{{ post.date|date:'Y-m-d' }}" class="text-xs text-text-muted font-medium uppercase tracking-wide">
+                            {{ post.date|date:"M j, Y" }}
+                        </time>
+                        <h2 class="font-bold text-lg mt-2 text-white group-hover:text-primary transition-colors leading-snug">{{ post.title }}</h2>
+                        <p class="text-text-muted text-sm mt-2 font-sans">{{ post.intro|truncatewords:20 }}</p>
+                    </div>
+                </a>
+            </article>
+            {% empty %}
+            <div class="col-span-full text-center py-12">
+                <p class="text-text-muted text-lg font-sans">{% trans "No blog posts yet. Check back soon!" %}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {# ── Pagination ── #}
+        {% if posts.has_other_pages %}
+        <nav class="flex justify-center items-center gap-2 mt-16" aria-label="{% trans 'Blog pagination' %}">
+            {% if posts.has_previous %}
+            <a href="?page={{ posts.previous_page_number }}"
+                class="px-4 py-2 rounded-button border border-white/10 text-sm font-medium text-text-muted hover:border-primary hover:text-primary transition-colors min-h-[44px] flex items-center"
+                aria-label="{% trans 'Previous page' %}">
+                &larr; {% trans "Previous" %}
+            </a>
+            {% endif %}
+
+            {% for page_num in posts.paginator.page_range %}
+            {% if page_num == posts.number %}
+            <span class="px-4 py-2 rounded-button bg-primary text-text-dark text-sm font-medium min-h-[44px] flex items-center"
+                aria-current="page">{{ page_num }}</span>
+            {% elif page_num > posts.number|add:"-3" and page_num < posts.number|add:"3" %}
+            <a href="?page={{ page_num }}"
+                class="px-4 py-2 rounded-button border border-white/10 text-sm font-medium text-text-muted hover:border-primary hover:text-primary transition-colors min-h-[44px] flex items-center">
+                {{ page_num }}
+            </a>
+            {% endif %}
+            {% endfor %}
+
+            {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}"
+                class="px-4 py-2 rounded-button border border-white/10 text-sm font-medium text-text-muted hover:border-primary hover:text-primary transition-colors min-h-[44px] flex items-center"
+                aria-label="{% trans 'Next page' %}">
+                {% trans "Next" %} &rarr;
+            </a>
+            {% endif %}
+        </nav>
+        {% endif %}
+    </div>
+</section>
+
+{# ── CTA ── #}
+<section class="bg-surface text-white py-16 relative overflow-hidden">
+    <div class="stripe-bg" aria-hidden="true"></div>
+    <div class="container-site text-center relative z-10">
+        <h2 class="text-2xl md:text-3xl font-display uppercase font-extrabold mb-4 text-white">{% trans "Need Appliance Repair Now?" %}</h2>
+        <p class="text-text-muted mb-8 max-w-lg mx-auto font-sans">{% trans "Skip the reading — book same-day service with our certified technicians. Warranty included on all repairs." %}</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary px-8 py-3 w-full sm:w-auto">{% trans "Book Now" %}</a>
+            {% if biz and biz.phone %}
+            <a href="tel:{{ biz.phone }}" class="btn btn-outline px-8 py-3 w-full sm:w-auto">
+                {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

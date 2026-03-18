@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Page Not Found" %}{% endblock %}
+{% block title_suffix %}{% endblock %}
+
+{% block meta_robots %}
+<meta name="robots" content="noindex, nofollow" />
+{% endblock %}
+
+{% block content %}
+<section class="container-site py-24 md:py-32 text-center">
+    <h1 class="text-6xl md:text-8xl font-display font-black text-primary mb-4">404</h1>
+    <p class="text-xl text-text-muted mb-2">{% trans "Page Not Found" %}</p>
+    <p class="text-text-muted mb-8 max-w-md mx-auto">{% trans "The page you're looking for doesn't exist or has been moved. Try searching or use the links below." %}</p>
+
+    {# Search Bar #}
+    <form action="{% url 'search' %}" method="get" class="max-w-md mx-auto mb-10">
+        <div class="flex gap-3">
+            <label for="search-404" class="sr-only">{% trans "Search" %}</label>
+            <input type="text" id="search-404" name="query"
+                placeholder="{% trans 'Search for services, areas, articles...' %}"
+                class="input-dark flex-1" />
+            <button type="submit" class="btn btn-primary px-6">{% trans "Search" %}</button>
+        </div>
+    </form>
+
+    {# Navigation Links #}
+    <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <a href="/" class="btn btn-primary px-8 py-3">{% trans "Go Home" %}</a>
+        <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/" class="btn btn-outline px-8 py-3">{% trans "Browse Services" %}</a>
+        <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}contact/" class="btn btn-outline px-8 py-3">{% trans "Contact Us" %}</a>
+    </div>
+
+    {# Popular Pages #}
+    <div class="max-w-md mx-auto text-left">
+        <p class="text-sm font-semibold text-text-muted mb-3">{% trans "Popular pages:" %}</p>
+        <ul class="space-y-2 text-sm">
+            <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/refrigerator-repair/" class="text-primary hover:underline">{% trans "Refrigerator Repair" %}</a></li>
+            <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/washer-repair/" class="text-primary hover:underline">{% trans "Washer Repair" %}</a></li>
+            <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/" class="text-primary hover:underline">{% trans "Service Areas" %}</a></li>
+        </ul>
+    </div>
+</section>
+{% endblock %}

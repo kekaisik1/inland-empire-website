@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+*.log
+local_settings.py
+media/
+/static/
+
+# Compiled translations
+*.mo
+
+# Environment
+.env
+.venv/
+env/
+venv/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ruff
+.ruff_cache/
+
+# Screenshots & design artifacts
+*.png
+/design-*.html
+/react-app*.js
+
+# Playwright
+.playwright-mcp/
+
+# Claude
+.claude/
