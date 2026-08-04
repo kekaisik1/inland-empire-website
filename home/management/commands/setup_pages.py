@@ -9,6 +9,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from wagtail.models import Page, Site
 
@@ -1005,6 +1006,242 @@ SERVICE_CONTENT: list[dict[str, Any]] = [
         ],
         "related": ["oven-repair", "stove-repair"],
     },
+    {
+        "title": "Garbage Disposal Repair",
+        "slug": "garbage-disposal-repair",
+        "seo_title": "Garbage Disposal Repair — Same-Day Service",
+        "search_description": (
+            "Same-day garbage disposal repair for jams, leaks, humming motors, "
+            "drain backups, and reset issues. Clear diagnosis and warranty included."
+        ),
+        "intro": (
+            "Fast garbage disposal repair for jammed, leaking, humming, or "
+            "backed-up kitchen disposals"
+        ),
+        "short_description": "Fix jammed, leaking, humming, or backed-up disposals.",
+        "hero_usp": "Same-day help for stuck blades, leaks, clogs, and disposal motors.",
+        "body": (
+            "<h2>Garbage Disposal Repair for Busy Kitchens</h2>"
+            "<p>A disposal that hums, leaks, jams, or backs up can stop the whole "
+            "kitchen. Inland Empire Appliance Repair diagnoses garbage disposal "
+            "problems the same day whenever scheduling allows, checks the electrical "
+            "reset, mounting, seals, flywheel, and drain connection, and explains "
+            "whether repair or replacement is the better value.</p>"
+            "<h2>Jams, Leaks, Odors, and Drain Backups</h2>"
+            "<p>We handle stuck impellers, tripped overload protectors, worn splash "
+            "guards, loose sink flanges, leaking dishwasher inlets, and disposal-to-drain "
+            "connection issues. If the motor is burned out or the housing is cracked, "
+            "we tell you before you spend money on a repair that will not last.</p>"
+            "<h2>Clear Kitchen Appliance Diagnostics</h2>"
+            "<p>Your technician provides an upfront quote before work begins. Approved "
+            "repairs include parts-and-labor warranty coverage and practical care "
+            "guidance to reduce future jams and odors.</p>"
+        ),
+        "problems": [
+            "Garbage disposal humming but not spinning",
+            "Disposal jammed or stuck",
+            "Water leaking under the sink",
+            "Disposal trips the reset button",
+            "Bad odors from the disposal",
+            "Dishwasher backing up into the sink",
+            "Loose mounting ring or splash guard",
+            "Kitchen drain slow after running disposal",
+        ],
+        "benefits": [
+            (
+                "Same-Day Kitchen Help",
+                "Appointments are available quickly for common disposal failures and sink-area leaks.",
+            ),
+            (
+                "Repair-or-Replace Guidance",
+                "We explain whether the disposal can be repaired safely or should be replaced.",
+            ),
+            (
+                "Drain Connection Checks",
+                "Technicians inspect the disposal, dishwasher inlet, sink flange, and drain connection together.",
+            ),
+            (
+                "Warranty Included",
+                "Approved disposal repairs include warranty coverage on parts and labor.",
+            ),
+        ],
+        "faq": [
+            (
+                "Why is my garbage disposal humming but not spinning?",
+                "A humming disposal is usually jammed, has a stuck flywheel, or has a failing motor. Turn it off and do not keep trying to run it; a technician can safely diagnose the cause.",
+            ),
+            (
+                "Can you fix a leaking garbage disposal?",
+                "Yes. We check the sink flange, mounting assembly, dishwasher inlet, drain outlet, seals, and housing to determine whether repair or replacement is the right fix.",
+            ),
+            (
+                "Is garbage disposal repair worth it?",
+                "If the unit is newer and the problem is a jam, seal, reset, or connection issue, repair often makes sense. A cracked housing or burned-out motor may be better replaced.",
+            ),
+            (
+                "Do you repair disposals connected to dishwashers?",
+                "Yes. We inspect dishwasher inlet connections and drain routing when a dishwasher backs up or leaves water in the sink.",
+            ),
+        ],
+        "related": ["dishwasher-repair", "stove-repair", "microwave-repair"],
+    },
+    {
+        "title": "Cooktop Repair",
+        "slug": "cooktop-repair",
+        "seo_title": "Cooktop Repair — Gas, Electric, and Induction Service",
+        "search_description": (
+            "Cooktop repair for gas, electric, and induction units. Fix burners "
+            "that will not ignite, heat evenly, or respond to controls. Warranty included."
+        ),
+        "intro": (
+            "Cooktop repair for gas, electric, and induction burners that will not "
+            "heat, ignite, or respond"
+        ),
+        "short_description": "Repair gas, electric, and induction cooktop burner issues.",
+        "hero_usp": "Same-day diagnostics for ignition, element, glass-top, and control failures.",
+        "body": (
+            "<h2>Cooktop Repair for Gas, Electric, and Induction Kitchens</h2>"
+            "<p>When a cooktop burner will not light, heat evenly, or respond to "
+            "controls, meal prep becomes frustrating and unsafe. Inland Empire "
+            "Appliance Repair diagnoses gas, electric, ceramic glass, and induction "
+            "cooktops with clear testing before any parts are replaced.</p>"
+            "<h2>Burners, Igniters, Elements, and Controls</h2>"
+            "<p>Common cooktop failures include weak spark ignition, clogged burner "
+            "ports, failed radiant elements, broken infinite switches, cracked knobs, "
+            "damaged wiring, and induction error codes. We check the appliance and "
+            "visible connection points so the repair targets the actual fault.</p>"
+            "<h2>Safe Cooking Appliance Service</h2>"
+            "<p>Gas and electric cooking repairs require careful safety checks. Your "
+            "technician explains the diagnosis, provides an itemized quote, and backs "
+            "approved repairs with warranty coverage.</p>"
+        ),
+        "problems": [
+            "Gas cooktop burner will not ignite",
+            "Electric cooktop element not heating",
+            "Induction cooktop error code",
+            "Burner heats unevenly or stays on high",
+            "Spark igniter keeps clicking",
+            "Cooktop knob or control not responding",
+            "Glass cooktop heating zone failed",
+            "Cooktop trips breaker",
+        ],
+        "benefits": [
+            (
+                "Gas, Electric, and Induction",
+                "We diagnose common cooktop types and explain safe repair options.",
+            ),
+            (
+                "Control and Element Testing",
+                "Technicians test igniters, switches, elements, controls, and visible wiring before quoting.",
+            ),
+            (
+                "Clear Upfront Quote",
+                "You approve the repair only after the diagnosis and price are explained.",
+            ),
+            (
+                "Warranty Included",
+                "Approved cooktop repairs include warranty coverage on parts and labor.",
+            ),
+        ],
+        "faq": [
+            (
+                "Why will my gas cooktop not ignite?",
+                "Common causes include a clogged burner port, dirty igniter, failed spark module, loose connection, or gas flow issue. We test the ignition system before replacing parts.",
+            ),
+            (
+                "Can you repair electric glass cooktops?",
+                "Yes. We diagnose radiant elements, infinite switches, controls, wiring, and power issues on electric glass cooktops.",
+            ),
+            (
+                "Do you service induction cooktops?",
+                "Yes. We can diagnose many induction cooktop error codes, control problems, and heating failures when parts and access are available.",
+            ),
+            (
+                "Is a cracked glass cooktop repairable?",
+                "A cracked glass surface usually requires replacement of the cooktop glass rather than a patch. We can explain parts availability and whether the repair is cost-effective.",
+            ),
+        ],
+        "related": ["oven-repair", "stove-repair", "microwave-repair"],
+    },
+    {
+        "title": "Ice Maker Repair",
+        "slug": "ice-maker-repair",
+        "seo_title": "Ice Maker Repair — Refrigerator and Standalone Ice Machines",
+        "search_description": (
+            "Ice maker repair for refrigerator and standalone units. Fix no ice, "
+            "small cubes, leaks, clogs, frozen fill lines, and dispenser issues. "
+            "Warranty included."
+        ),
+        "intro": (
+            "Ice maker repair for refrigerator and standalone units with leaks, "
+            "clogs, or no-ice issues"
+        ),
+        "short_description": "Fix no-ice, leaking, clogged, or slow ice maker problems.",
+        "hero_usp": "Same-day diagnostics for fill valves, frozen lines, sensors, leaks, and dispenser issues.",
+        "body": (
+            "<h2>Ice Maker Repair for Refrigerators and Standalone Units</h2>"
+            "<p>An ice maker that stops producing, leaks, or makes small cloudy cubes "
+            "can point to water supply, temperature, valve, sensor, filter, or control "
+            "problems. Inland Empire Appliance Repair diagnoses refrigerator ice "
+            "makers and many standalone ice machines with a practical repair plan.</p>"
+            "<h2>No Ice, Small Cubes, Leaks, and Frozen Lines</h2>"
+            "<p>We inspect the fill valve, water line, filter, ice mold, thermostat or "
+            "sensor, dispenser, and freezer temperature conditions. If the issue is "
+            "connected to a larger refrigerator cooling problem, we identify that "
+            "instead of treating only the symptom.</p>"
+            "<h2>Warranty-Backed Ice Maker Service</h2>"
+            "<p>Your technician provides an upfront quote before work begins. Approved "
+            "repairs use manufacturer-approved parts where available and include "
+            "warranty coverage.</p>"
+        ),
+        "problems": [
+            "Ice maker not making ice",
+            "Ice cubes are small or hollow",
+            "Ice maker leaking water",
+            "Frozen fill tube or water line",
+            "Ice dispenser not working",
+            "Ice maker overflowing",
+            "Bad taste or odor in ice",
+            "Standalone ice machine not keeping up",
+        ],
+        "benefits": [
+            (
+                "Refrigerator and Standalone Units",
+                "We diagnose built-in refrigerator ice makers and many standalone ice machines.",
+            ),
+            (
+                "Water and Temperature Checks",
+                "Technicians inspect water supply, filters, fill valves, sensors, and freezer temperature.",
+            ),
+            (
+                "Root-Cause Diagnosis",
+                "If the ice issue comes from a cooling failure, we identify the refrigerator problem too.",
+            ),
+            (
+                "Warranty Included",
+                "Approved ice maker repairs include warranty coverage on parts and labor.",
+            ),
+        ],
+        "faq": [
+            (
+                "Why did my ice maker stop making ice?",
+                "Common causes include a frozen fill tube, clogged filter, failed water inlet valve, shut-off arm issue, sensor failure, or freezer temperature problem.",
+            ),
+            (
+                "Can you fix an ice maker that leaks?",
+                "Yes. We check the water line, fill valve, ice mold, drain path, and dispenser area to find the leak source.",
+            ),
+            (
+                "Do you repair standalone ice machines?",
+                "We diagnose many residential and light-commercial standalone ice machines when service access and parts are available.",
+            ),
+            (
+                "Why are my ice cubes small or hollow?",
+                "Small or hollow cubes often come from restricted water flow, a clogged filter, low water pressure, or a failing inlet valve.",
+            ),
+        ],
+        "related": ["refrigerator-repair", "freezer-repair", "commercial-appliance-repair"],
+    },
 ]
 
 
@@ -1017,8 +1254,13 @@ class Command(BaseCommand):
         if HomePage.objects.exists():
             self.stdout.write(
                 self.style.SUCCESS(
-                    "HomePage already exists — skipping setup to preserve data."
+                    "HomePage already exists — preserving pages and checking required legal routes."
                 )
+            )
+            call_command(
+                "seo_content_fixes",
+                stdout=self.stdout,
+                stderr=self.stderr,
             )
             return
 
@@ -1039,7 +1281,7 @@ class Command(BaseCommand):
         Site.objects.create(
             hostname="localhost",
             port=8000,
-            site_name="LOWL Appliance Repair",
+            site_name="Inland Empire Appliance Repair",
             root_page=home_page,
             is_default_site=True,
         )
@@ -1215,6 +1457,15 @@ class Command(BaseCommand):
         home_page.add_child(instance=blog_index)
         blog_index.save_revision().publish()
         self.stdout.write(self.style.SUCCESS(" + Blog"))
+
+        # The public footer always links to these routes. Keep the setup command
+        # idempotent while ensuring a fresh or partially seeded site cannot ship
+        # broken legal links.
+        call_command(
+            "seo_content_fixes",
+            stdout=self.stdout,
+            stderr=self.stderr,
+        )
 
         self.stdout.write(self.style.SUCCESS("\nAll pages created successfully!"))
         self.stdout.write("Site: http://localhost:8000/")

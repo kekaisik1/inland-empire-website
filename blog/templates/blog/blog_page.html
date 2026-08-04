@@ -3,7 +3,7 @@
 
 {% block body_class %}page-blog-detail{% endblock %}
 
-{% block title %}{{ page.title }} | {{ biz.business_name|default:"LOWL Appliance Repair" }}{% endblock %}
+{% block title %}{% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}{% endblock %}
 {% block title_suffix %}{% endblock %}
 
 {% block meta_description %}
@@ -62,11 +62,15 @@
 {% endblock %}
 
 {% block content %}
+<div class="pointer-events-none fixed left-0 top-0 z-[70] h-1 w-full bg-transparent" x-data="readingProgress" @scroll.window="onScroll" aria-hidden="true">
+    <div class="h-full bg-primary" :style="barStyle"></div>
+</div>
 {# ── Hero ── #}
-<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden">
+<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden" data-secondary-hero="blog-detail">
     <div class="stripe-bg" aria-hidden="true"></div>
     <div class="container-site relative z-10">
         {% site_breadcrumbs %}
+        <p class="mt-8 font-display text-xs font-bold uppercase tracking-[0.24em] text-primary">{% trans "Field note" %}</p>
         <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-medium uppercase tracking-wide">
             <time datetime="{{ page.date|date:'Y-m-d' }}" class="text-text-muted">
                 {{ page.date|date:"F j, Y" }}
@@ -77,8 +81,10 @@
                 {% trans "Updated" %} <time datetime="{{ page.last_published_at|date:'Y-m-d' }}">{{ page.last_published_at|date:"F j, Y" }}</time>
             </span>
             {% endif %}
+            <span class="text-white/20">|</span>
+            <span class="text-text-muted">{{ page.reading_time }} {% trans "min read" %}</span>
         </div>
-        <h1 class="text-3xl md:text-4xl font-display uppercase font-extrabold mt-2 text-white">{{ page.title }}</h1>
+        <h1 class="mt-3 max-w-4xl break-words font-display text-4xl font-black uppercase leading-[0.98] text-white sm:text-5xl">{{ page.title }}</h1>
         <p class="text-text-muted mt-4 max-w-xl text-lg font-sans">{{ page.intro }}</p>
         {% if page.author_name %}
         <p class="text-text-muted text-sm mt-3 font-sans">{% blocktrans with author=page.author_name %}By {{ author }}{% endblocktrans %}</p>
@@ -88,9 +94,9 @@
 
 <div class="bg-background">
     <div class="container-site py-16 md:py-24">
-        <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+        <div class="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] lg:gap-12" data-layout-safe-sidebar>
             {# ── Main Content ── #}
-            <article class="lg:col-span-2">
+            <article class="min-w-0" data-blog-article>
                 {# Featured Image #}
                 {% if page.featured_image %}
                 <figure class="mb-12 rounded-card overflow-hidden">
@@ -99,10 +105,10 @@
                 {% endif %}
 
                 {# StreamField Body #}
-                <div class="prose sm:prose-lg max-w-none text-text-muted">
+                <div class="blog-body prose sm:prose-lg max-w-none text-text-muted">
                     {% for block in page.body %}
                     {% if block.block_type == "heading" %}
-                    <h2>{{ block.value }}</h2>
+                    <h2 id="{{ block.value|slugify }}" class="scroll-mt-28">{{ block.value }}</h2>
                     {% elif block.block_type == "paragraph" %}
                     {{ block.value }}
                     {% elif block.block_type == "image" %}
@@ -150,7 +156,17 @@
             </article>
 
             {# ── Sidebar ── #}
-            <aside class="space-y-8">
+            <aside class="min-w-0 w-full space-y-8">
+                {% if page.headings %}
+                <nav class="rounded-card border border-white/10 bg-surface p-6 lg:sticky lg:top-24" x-data="blogToc" aria-labelledby="blog-toc-title">
+                    <h2 id="blog-toc-title" class="font-display text-sm font-black uppercase tracking-[0.16em] text-primary">{% trans "In This Article" %}</h2>
+                    <ol class="mt-5 space-y-3 border-l border-white/10 pl-4">
+                        {% for heading in page.headings %}
+                        <li><a href="#{{ heading|slugify }}" class="toc-link toc-link-inactive block text-sm text-text-muted transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" data-toc-index="{{ forloop.counter0 }}">{{ heading }}</a></li>
+                        {% endfor %}
+                    </ol>
+                </nav>
+                {% endif %}
                 {# CTA Card #}
                 <div class="bg-surface p-6 rounded-card border border-primary/20">
                     <h3 class="font-display uppercase font-extrabold text-primary text-lg mb-4">{% trans "Need Appliance Repair?" %}</h3>
@@ -184,4 +200,5 @@
         </div>
     </div>
 </div>
+<button type="button" class="fixed bottom-20 right-4 z-40 grid h-11 w-11 place-items-center rounded-full border border-primary/40 bg-surface text-primary shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:bottom-6 lg:right-6" x-data="backToTop" @scroll.window="onScroll" x-show="visible" x-cloak @click="scrollUp" aria-label="{% trans 'Back to top' %}">&#8593;</button>
 {% endblock %}

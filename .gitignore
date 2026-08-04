@@ -45,11 +45,17 @@ Thumbs.db
 
 # Screenshots & design artifacts
 *.png
+!/mysite/static/images/*.png
+!/mysite/static/images/**/*.png
 /design-*.html
 /react-app*.js
 
 # Playwright
 .playwright-mcp/
+
+# Local agent workflow artifacts
+.hermes/
+.project.context.md
 
 # Claude
 .claude/

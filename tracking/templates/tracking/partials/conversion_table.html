@@ -1,0 +1,14 @@
+{% load i18n %}
+<section>
+    <h2>{% trans "Conversion by source" %}</h2>
+    <table class="listing">
+        <thead><tr><th>{% trans "Source" %}</th><th>{% trans "Sessions" %}</th><th>{% trans "Conversions" %}</th><th>{% trans "Rate" %}</th></tr></thead>
+        <tbody>
+        {% for source in sources %}
+            <tr><td>{{ source.utm_source }}</td><td>{{ source.total }}</td><td>{{ source.conversions }}</td><td>{{ source.rate }}%</td></tr>
+        {% empty %}
+            <tr><td colspan="4">{% trans "No data yet" %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>

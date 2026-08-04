@@ -3,7 +3,7 @@
 
 {% block body_class %}page-static{% endblock %}
 
-{% block title %}{{ page.seo_title|default:page.title }} | {{ biz.business_name|default:"LOWL Appliance Repair" }}{% endblock %}
+{% block title %}{{ page.seo_title|default:page.title }}{% endblock %}
 {% block title_suffix %}{% endblock %}
 
 {% block jsonld %}
@@ -21,7 +21,7 @@
 
 {% block content %}
 {# ── Hero ── #}
-<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden">
+<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden" data-secondary-hero="static-page">
     <div class="stripe-bg" aria-hidden="true"></div>
     <div class="container-site relative z-10">
         {% site_breadcrumbs %}
@@ -38,11 +38,11 @@
     <div class="container-site py-16 md:py-24">
         {% if page.slug == "about-us" %}
         {# About page: 2-column layout with trust sidebar #}
-        <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+        <div class="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] lg:gap-12" data-layout-safe-sidebar>
             <div class="lg:col-span-2 prose prose-lg max-w-none text-text-muted font-sans">
                 {{ page.body|richtext }}
             </div>
-            <aside class="space-y-8">
+            <aside class="min-w-0 w-full space-y-8">
                 {# Trust Signals #}
                 <div class="bg-surface p-6 rounded-card border border-primary/20">
                     <h3 class="font-display uppercase font-extrabold text-primary text-lg mb-4">{% trans "Why Choose Us" %}</h3>
@@ -112,13 +112,14 @@
 {% if page.slug == "contact" %}
 <section class="bg-surface py-16 md:py-24">
     <div class="container-site">
-        <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+        <div class="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] lg:gap-12" data-layout-safe-sidebar>
             {# Contact Form #}
             <div class="lg:col-span-2">
                 <div class="section-header">
                     <h2 class="text-2xl font-display uppercase font-extrabold text-primary">{% trans "Send Us a Message" %}</h2>
                 </div>
 
+                <div data-contact-status aria-live="polite" aria-atomic="true">
                 {% if messages %}
                 {% for message in messages %}
                 <div class="mb-8 p-4 rounded-card border
@@ -130,39 +131,44 @@
                 </div>
                 {% endfor %}
                 {% endif %}
+                </div>
 
-                <form action="{% url 'contact_submit' %}" method="post" class="mt-8 space-y-6">
+                <form action="{% url 'contact_submit' %}" method="post" class="mt-8 space-y-6" data-contact-form x-data="contactForm" @submit="onSubmit" @invalid.capture="onInvalid" @input="onInput" novalidate>
                     {% csrf_token %}
                     <div>
                         <label for="id_name" class="block text-sm font-semibold text-text-muted mb-2">{% trans "Name" %} *</label>
-                        <input type="text" name="name" id="id_name" required
+                        <input type="text" name="name" id="id_name" required maxlength="100" autocomplete="name" aria-describedby="id_name_help"
                             class="input-dark"
                             placeholder="{% trans 'Your name' %}" />
+                        <p id="id_name_help" class="mt-2 text-xs text-text-muted">{% trans "Enter the name we should use when replying." %}</p>
                     </div>
                     <div>
                         <label for="id_email" class="block text-sm font-semibold text-text-muted mb-2">{% trans "Email" %} *</label>
-                        <input type="email" name="email" id="id_email" required
+                        <input type="email" name="email" id="id_email" required maxlength="254" autocomplete="email" aria-describedby="id_email_help"
                             class="input-dark"
                             placeholder="{% trans 'your@email.com' %}" />
+                        <p id="id_email_help" class="mt-2 text-xs text-text-muted">{% trans "Use an address where we can send a response." %}</p>
                     </div>
                     <div>
                         <label for="id_phone" class="block text-sm font-semibold text-text-muted mb-2">{% trans "Phone" %}</label>
-                        <input type="tel" name="phone" id="id_phone"
+                        <input type="tel" name="phone" id="id_phone" maxlength="20" autocomplete="tel" inputmode="tel" aria-describedby="id_phone_help"
                             class="input-dark"
                             placeholder="{% trans '(555) 000-0000' %}" />
+                        <p id="id_phone_help" class="mt-2 text-xs text-text-muted">{% trans "Optional. Include your area code." %}</p>
                     </div>
                     <div>
                         <label for="id_message" class="block text-sm font-semibold text-text-muted mb-2">{% trans "Message" %} *</label>
-                        <textarea name="message" id="id_message" rows="5" required
+                        <textarea name="message" id="id_message" rows="5" required maxlength="5000" aria-describedby="id_message_help"
                             class="input-dark resize-y"
                             placeholder="{% trans 'How can we help?' %}"></textarea>
+                        <p id="id_message_help" class="mt-2 text-xs text-text-muted">{% trans "Include the appliance type and what it is doing." %}</p>
                     </div>
                     <button type="submit" class="btn btn-primary px-8 py-3">{% trans "Send Message" %}</button>
                 </form>
             </div>
 
             {# Contact Sidebar #}
-            <aside class="space-y-8">
+            <aside class="min-w-0 w-full space-y-8">
                 {% if biz %}
                 <div class="bg-surface p-6 rounded-card border border-white/10">
                     <h3 class="font-display uppercase font-extrabold text-lg mb-4 text-white">{% trans "Contact Info" %}</h3>

@@ -3,17 +3,147 @@
 from __future__ import annotations
 
 import logging
+import re
 
 from django.db import models
-from wagtail.admin.panels import FieldPanel, TabbedInterface, ObjectList
+from wagtail.admin.panels import FieldPanel, HelpPanel, MultiFieldPanel, ObjectList, TabbedInterface
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
+from wagtail.fields import RichTextField
 from wagtail.models import Page
 
+from home.reviews import get_customer_review_items
+
 logger = logging.getLogger(__name__)
+
+MAIN_NAV_DEFAULT_ORDER = "home,services,service_areas,brands,blog,about,contact"
+FOOTER_COMPANY_DEFAULT_ORDER = (
+    "about,contact,blog,service_areas,privacy_policy,terms_of_service"
+)
 
 
 class HomePage(Page):
     """The site's homepage — fetches live services for the landing page."""
+
+    hero_title = models.CharField(
+        max_length=255,
+        blank=True,
+        default="Same-Day Appliance Repair",
+        help_text="Main homepage H1. Leave blank to use the translated fallback.",
+    )
+    hero_subtitle = models.TextField(
+        blank=True,
+        default=(
+            "Professional appliance repair for refrigerators, washers, dryers, "
+            "dishwashers, and ovens. Same-day service with certified technicians "
+            "and warranty on all repairs."
+        ),
+        help_text="Intro text shown under the homepage H1.",
+    )
+    commercial_title = models.CharField(
+        max_length=255,
+        blank=True,
+        default="Commercial & Residential Appliance Repair",
+    )
+    commercial_body = RichTextField(
+        blank=True,
+        default=(
+            "<p>We repair household and light-commercial refrigerators, freezers, "
+            "washers, dryers, dishwashers, ovens, and related appliances across the "
+            "Inland Empire.</p><p>Service begins with an on-site diagnosis. Before "
+            "work starts, the technician explains the issue, available repair "
+            "options, and the price for approval.</p>"
+        ),
+    )
+    services_heading = models.CharField(
+        max_length=255,
+        blank=True,
+        default="What Appliances Do We Repair?",
+    )
+    process_heading = models.CharField(
+        max_length=255,
+        blank=True,
+        default="How to Book Appliance Repair",
+    )
+    process_subheading = models.TextField(
+        blank=True,
+        default=(
+            "Choose a service, confirm your service area, and schedule a visit. "
+            "We diagnose the appliance before you approve any repair."
+        ),
+    )
+    pricing_heading = models.CharField(
+        max_length=255,
+        blank=True,
+        default="How Much Does Appliance Repair Cost?",
+    )
+    pricing_note = models.TextField(
+        blank=True,
+        default=(
+            "Your final price depends on the appliance, the fault, and required "
+            "parts. The technician confirms the repair price before work begins."
+        ),
+    )
+    brands_heading = models.CharField(
+        max_length=255,
+        blank=True,
+        default="What Appliance Brands Do We Repair?",
+    )
+    brands_subheading = models.TextField(
+        blank=True,
+        default=(
+            "We service common household and premium appliance brands. Select a "
+            "linked brand for details, or call to confirm your model."
+        ),
+    )
+    areas_heading = models.CharField(
+        max_length=255,
+        blank=True,
+        default="Appliance Repair Across the Inland Empire",
+    )
+    areas_subheading = models.TextField(
+        blank=True,
+        default=(
+            "Serving homes and businesses across Corona, Riverside, and surrounding "
+            "Inland Empire communities. Enter your ZIP code to confirm coverage."
+        ),
+    )
+    testimonials_heading = models.CharField(
+        max_length=255,
+        blank=True,
+        default="What Our Customers Say",
+    )
+    faq_heading = models.CharField(
+        max_length=255,
+        blank=True,
+        default="Frequently Asked Questions",
+    )
+
+    content_panels = Page.content_panels + [
+        MultiFieldPanel(
+            [FieldPanel("hero_title"), FieldPanel("hero_subtitle")],
+            heading="Hero",
+        ),
+        MultiFieldPanel(
+            [FieldPanel("commercial_title"), FieldPanel("commercial_body")],
+            heading="Commercial & residential block",
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("services_heading"),
+                FieldPanel("process_heading"),
+                FieldPanel("process_subheading"),
+                FieldPanel("pricing_heading"),
+                FieldPanel("pricing_note"),
+                FieldPanel("brands_heading"),
+                FieldPanel("brands_subheading"),
+                FieldPanel("areas_heading"),
+                FieldPanel("areas_subheading"),
+                FieldPanel("testimonials_heading"),
+                FieldPanel("faq_heading"),
+            ],
+            heading="Section headings",
+        ),
+    ]
 
     max_count = 1
     subpage_types = [
@@ -27,15 +157,46 @@ class HomePage(Page):
         """Add live services and FAQ items to the template context."""
         from django.utils.translation import gettext as _
 
+        from home.brand_assets import get_brand_cards
+        from home.service_seed_data import (
+            FEATURED_SERVICE_HUB_SLUGS,
+            SEO_LANDING_SERVICE_SLUGS,
+        )
+        from locations.models import CityPage
         from services.models import ServicePage
 
         context = super().get_context(request)
-        context["services"] = (
+        service_pages = list(
             ServicePage.objects.live()
-            .filter(locale=self.locale)
-            .only("id", "title", "slug", "url_path", "intro", "short_description")
+            .filter(locale=self.locale, is_regional_service_page=False)
+            .order_by("path")
+            .only(
+                "id",
+                "title",
+                "slug",
+                "url_path",
+                "intro",
+                "short_description",
+                "featured_image",
+            )
         )
-        # FAQ items for JSON-LD (matches the hardcoded FAQ in home_page.html)
+        service_pages_by_slug = {page.slug: page for page in service_pages}
+        context["services"] = [
+            page for page in service_pages if page.slug not in SEO_LANDING_SERVICE_SLUGS
+        ]
+        context["featured_services"] = [
+            service_pages_by_slug[slug]
+            for slug in FEATURED_SERVICE_HUB_SLUGS
+            if slug in service_pages_by_slug
+        ]
+        context["brand_cards"] = get_brand_cards(service_pages_by_slug)
+        context["cities"] = list(
+            CityPage.objects.live()
+            .filter(locale=self.locale)
+            .order_by("title")
+            .only("id", "title", "slug", "url_path", "state")
+        )
+
         city = ""
         fee = "70"
         try:
@@ -71,36 +232,9 @@ class HomePage(Page):
             )
         )
 
-        # Review items for JSON-LD (matches hardcoded testimonials)
-        context["review_items"] = [
-            {
-                "author": "Maria G.",
-                "rating": 5,
-                "text": _(
-                    "Called in the morning and they were here by noon."
-                    " Fixed my refrigerator on the spot."
-                    " Very professional and fair pricing."
-                ),
-            },
-            {
-                "author": "James T.",
-                "rating": 5,
-                "text": _(
-                    "Great experience with washer repair."
-                    " The technician explained everything clearly"
-                    " and the warranty gives peace of mind."
-                ),
-            },
-            {
-                "author": "David R.",
-                "rating": 5,
-                "text": _(
-                    "They repaired our commercial dishwasher quickly."
-                    " Reasonable rates and they waived the service call fee."
-                    " Highly recommend!"
-                ),
-            },
-        ]
+        # Review items are sourced via the Phase 04 provenance gate; captured
+        # source-business reviews are withheld until target-owned evidence exists.
+        context["review_items"] = get_customer_review_items()
 
         context["faq_items"] = [
             {
@@ -200,7 +334,7 @@ class SiteSettings(BaseSiteSetting):
     # Business identity
     business_name = models.CharField(
         max_length=255,
-        default="LOWL Appliance Repair",
+        default="Inland Empire Appliance Repair",
         help_text="Business name shown in header, footer, and SEO",
     )
     tagline = models.CharField(
@@ -237,14 +371,14 @@ class SiteSettings(BaseSiteSetting):
     # Booking
     booking_url = models.URLField(
         blank=True,
-        default="https://lowl-booking-production.up.railway.app/",
+        default="",
         help_text="External booking system URL (UTM params will be appended automatically)",
     )
     booking_source = models.CharField(
         max_length=50,
         blank=True,
-        default="lowl",
-        help_text="Source parameter appended to booking URL (e.g. 'lowl', 'profix')",
+        default="inland",
+        help_text="Source parameter appended to booking URL (e.g. 'inland', 'website')",
     )
 
     # Business details
@@ -326,6 +460,14 @@ class SiteSettings(BaseSiteSetting):
     gtm_id = models.CharField(
         max_length=30, blank=True, help_text="Google Tag Manager ID (e.g. GTM-XXXXXXX)"
     )
+    callrail_swap_url = models.URLField(
+        blank=True,
+        default="",
+        help_text=(
+            "CallRail swap.js URL for Dynamic Number Insertion "
+            "(configured per target account; leave blank when disabled)"
+        ),
+    )
     google_site_verification = models.CharField(
         max_length=100,
         blank=True,
@@ -335,6 +477,28 @@ class SiteSettings(BaseSiteSetting):
         max_length=100,
         blank=True,
         help_text="Bing Webmaster Tools verification code",
+    )
+
+    # Navigation ordering
+    main_nav_order = models.CharField(
+        max_length=255,
+        blank=True,
+        default=MAIN_NAV_DEFAULT_ORDER,
+        help_text=(
+            "Comma-separated top navigation keys in display order. Allowed keys: "
+            "home, services, service_areas, brands, blog, about, contact. "
+            "Remove a key to hide it."
+        ),
+    )
+    footer_company_order = models.CharField(
+        max_length=255,
+        blank=True,
+        default=FOOTER_COMPANY_DEFAULT_ORDER,
+        help_text=(
+            "Comma-separated footer company link keys in display order. Allowed "
+            "keys: about, contact, blog, service_areas, privacy_policy, "
+            "terms_of_service. Remove a key to hide it."
+        ),
     )
 
     # Admin panels
@@ -351,7 +515,12 @@ class SiteSettings(BaseSiteSetting):
 
     contact_panels = [
         FieldPanel("phone"),
-        FieldPanel("phone_display"),
+        HelpPanel(
+            content=(
+                "<p>The display phone is formatted automatically from the "
+                "stored phone number when these settings are saved.</p>"
+            )
+        ),
         FieldPanel("email"),
         FieldPanel("address_line1"),
         FieldPanel("address_line2"),
@@ -380,6 +549,19 @@ class SiteSettings(BaseSiteSetting):
     analytics_panels = [
         FieldPanel("google_analytics_id"),
         FieldPanel("gtm_id"),
+        FieldPanel("callrail_swap_url"),
+    ]
+
+    navigation_panels = [
+        HelpPanel(
+            content=(
+                "<p>Edit comma-separated keys below to reorder or hide "
+                "top navigation and footer links. Rendering behavior is added "
+                "in later platform/UI phases.</p>"
+            )
+        ),
+        FieldPanel("main_nav_order"),
+        FieldPanel("footer_company_order"),
     ]
 
     edit_handler = TabbedInterface(
@@ -389,6 +571,7 @@ class SiteSettings(BaseSiteSetting):
             ObjectList(booking_panels, heading="Booking"),
             ObjectList(seo_panels, heading="SEO"),
             ObjectList(analytics_panels, heading="Analytics"),
+            ObjectList(navigation_panels, heading="Navigation"),
         ]
     )
 
@@ -397,6 +580,24 @@ class SiteSettings(BaseSiteSetting):
 
     def __str__(self) -> str:
         return self.business_name
+
+    @staticmethod
+    def _format_phone_for_display(phone: str) -> str:
+        """Return a display phone from a stored phone value without source defaults."""
+        digits = re.sub(r"\D", "", phone)
+        if len(digits) == 11 and digits.startswith("1"):
+            area, prefix, line = digits[1:4], digits[4:7], digits[7:11]
+            return f"({area}) {prefix}-{line}"
+        if len(digits) == 10:
+            area, prefix, line = digits[0:3], digits[3:6], digits[6:10]
+            return f"({area}) {prefix}-{line}"
+        return phone.lstrip("+") if phone else ""
+
+    def save(self, *args: object, **kwargs: object) -> None:
+        """Keep editor-facing display phone synchronized with the stored phone."""
+        if self.phone:
+            self.phone_display = self._format_phone_for_display(self.phone)
+        super().save(*args, **kwargs)
 
     @property
     def full_address(self) -> str:

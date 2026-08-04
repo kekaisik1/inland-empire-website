@@ -1,14 +1,14 @@
-# Spanish translations for LOWL Appliance Repair website.
-# Copyright (C) 2026 LOWL
-# This file is distributed under the same license as the LOWL package.
+# Spanish translations for Inland Empire Appliance Repair website.
+# Copyright (C) 2026 Inland Empire Appliance Repair
+# This file is distributed under the same license as the Inland Empire Appliance Repair package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: LOWL Website 1.0\n"
+"Project-Id-Version: Inland Empire Website 1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-07 00:00+0000\n"
 "PO-Revision-Date: 2026-03-07 00:00+0000\n"
-"Last-Translator: LOWL Team\n"
+"Last-Translator: Inland Empire Team\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -21,9 +21,10 @@ msgid "Skip to main content"
 msgstr "Ir al contenido principal"
 
 msgid "Main navigation"
-msgstr "Navegacion principal"
+msgstr "Navegación principal"
 
-# ── base.html — Navbar ──
+# ── base.html — Navbar; services_index_page.html & locations_index_page.html
+# — Title tags ──
 msgid "Home"
 msgstr "Inicio"
 
@@ -31,7 +32,7 @@ msgid "Services"
 msgstr "Servicios"
 
 msgid "Service Areas"
-msgstr "Areas de Servicio"
+msgstr "Áreas de Servicio"
 
 msgid "Blog"
 msgstr "Blog"
@@ -46,31 +47,37 @@ msgid "View All Services"
 msgstr "Ver Todos los Servicios"
 
 msgid "View All Areas"
-msgstr "Ver Todas las Areas"
+msgstr "Ver Todas las Áreas"
 
 msgid "Book Now"
 msgstr "Reservar Ahora"
 
 msgid "Toggle navigation menu"
-msgstr "Abrir menu de navegacion"
+msgstr "Abrir menú de navegación"
 
 msgid "Language"
 msgstr "Idioma"
 
 msgid "Not available in Spanish"
-msgstr "No disponible en espanol"
+msgstr "No disponible en español"
 
 #, python-format
 msgid "Call %(phone)s"
 msgstr "Llamar al %(phone)s"
 
 # ── base.html — Footer ──
-msgid "Professional appliance repair services. Fast, reliable, and guaranteed."
-msgstr "Servicios profesionales de reparacion de electrodomesticos. Rapido, confiable y garantizado."
+msgid ""
+"Professional appliance repair services. Fast, reliable, and guaranteed."
+msgstr ""
+"Servicios profesionales de reparación de electrodomésticos. Rápido, "
+"confiable y garantizado."
 
 #, python-format
-msgid "Professional appliance repair in %(city)s, %(state)s and surrounding areas."
-msgstr "Reparacion profesional de electrodomesticos en %(city)s, %(state)s y areas cercanas."
+msgid ""
+"Professional appliance repair in %(city)s, %(state)s and surrounding areas."
+msgstr ""
+"Reparación profesional de electrodomésticos en %(city)s, %(state)s y áreas "
+"cercanas."
 
 msgid "Company"
 msgstr "Empresa"
@@ -86,7 +93,7 @@ msgid "All rights reserved."
 msgstr "Todos los derechos reservados."
 
 msgid "Quick actions"
-msgstr "Acciones rapidas"
+msgstr "Acciones rápidas"
 
 msgid "Call"
 msgstr "Llamar"
@@ -99,31 +106,31 @@ msgid "in"
 msgstr "en"
 
 msgid "Same-Day Appliance Repair"
-msgstr "Reparacion de Electrodomesticos el Mismo Dia"
+msgstr "Reparación de Electrodomésticos el Mismo Día"
 
 msgid "Trust indicators"
 msgstr "Indicadores de confianza"
 
 msgid "4.9 Rating"
-msgstr "Calificacion 4.9"
+msgstr "Calificación 4.9"
 
 msgid "Warranty Included"
-msgstr "Garantia Incluida"
+msgstr "Garantía Incluida"
 
 msgid "Same-Day Service"
-msgstr "Servicio el Mismo Dia"
+msgstr "Servicio el Mismo Día"
 
 msgid "Pay After Work"
-msgstr "Paga Despues del Trabajo"
+msgstr "Paga Después del Trabajo"
 
 msgid "Service Type"
 msgstr "Tipo de Servicio"
 
 msgid "Zip Code"
-msgstr "Codigo Postal"
+msgstr "Código Postal"
 
 msgid "ZIP Code"
-msgstr "Codigo Postal"
+msgstr "Código Postal"
 
 #, python-format
 msgid "e.g. %(zip)s"
@@ -133,14 +140,22 @@ msgid "Check Availability"
 msgstr "Verificar Disponibilidad"
 
 # ── home_page.html — Sections ──
-msgid "Professional appliance repair technician diagnosing a commercial refrigerator"
-msgstr "Tecnico profesional de reparacion de electrodomesticos diagnosticando un refrigerador comercial"
+msgid ""
+"Professional appliance repair technician diagnosing a commercial "
+"refrigerator"
+msgstr ""
+"Técnico profesional de reparación de electrodomésticos diagnosticando un "
+"refrigerador comercial"
 
 msgid "Commercial & Residential Appliance Repair"
-msgstr "Reparacion de Electrodomesticos Comercial y Residencial"
+msgstr "Reparación de Electrodomésticos Comercial y Residencial"
 
-msgid "From home kitchens to industrial setups, our certified technicians are equipped to handle repairs of any scale."
-msgstr "Desde cocinas domesticas hasta instalaciones industriales, nuestros tecnicos certificados estan equipados para manejar reparaciones de cualquier escala."
+msgid ""
+"From home kitchens to industrial setups, our certified technicians are "
+"equipped to handle repairs of any scale."
+msgstr ""
+"Desde cocinas domésticas hasta instalaciones industriales, nuestros técnicos"
+" certificados están equipados para manejar reparaciones de cualquier escala."
 
 msgid "Licensed for all major brands"
 msgstr "Licenciados para todas las marcas principales"
@@ -152,49 +167,62 @@ msgid "Commercial grade parts"
 msgstr "Repuestos de grado comercial"
 
 msgid "What Appliances Do We Repair?"
-msgstr "Que Electrodomesticos Reparamos?"
+msgstr "¿Qué Electrodomésticos Reparamos?"
 
 msgid "Services coming soon."
-msgstr "Servicios proximamente."
+msgstr "Servicios próximamente."
 
 msgid "How to Book Appliance Repair"
-msgstr "Como Reservar Reparacion de Electrodomesticos"
+msgstr "Cómo Reservar Reparación de Electrodomésticos"
+
+#, python-format
+msgid "How to Book Appliance Repair with %(name)s"
+msgstr "Cómo reservar reparación de electrodomésticos con %(name)s"
+
+msgid "Book same-day appliance repair in 3 easy steps: schedule online, get a diagnosis, and get it fixed on the spot."
+msgstr "Reserve reparación de electrodomésticos para el mismo día en 3 pasos sencillos: programe en línea, obtenga un diagnóstico y reciba la reparación en el momento."
 
 msgid "Book Online"
-msgstr "Reservar en Linea"
+msgstr "Reservar en Línea"
 
 msgid "Select your appliance and preferred time slot."
-msgstr "Selecciona tu electrodomestico y horario preferido."
+msgstr "Selecciona tu electrodoméstico y horario preferido."
 
 msgid "Diagnosis"
-msgstr "Diagnostico"
+msgstr "Diagnóstico"
 
 msgid "Tech arrives, inspects, and provides a quote."
-msgstr "El tecnico llega, inspecciona y proporciona un presupuesto."
+msgstr "El técnico llega, inspecciona y proporciona un presupuesto."
+
+msgid "A certified technician arrives, inspects the appliance, and provides a transparent quote."
+msgstr "Un técnico certificado llega, inspecciona el electrodoméstico y proporciona un presupuesto transparente."
 
 msgid "Repair"
-msgstr "Reparacion"
+msgstr "Reparación"
 
 msgid "We fix it on the spot with stocked parts."
 msgstr "Lo reparamos en el momento con repuestos en stock."
 
+msgid "We fix it on the spot with fully stocked parts. Warranty included on all repairs."
+msgstr "Lo reparamos en el momento con repuestos disponibles. Todas las reparaciones incluyen garantía."
+
 msgid "How Much Does Appliance Repair Cost?"
-msgstr "Cuanto Cuesta la Reparacion de Electrodomesticos?"
+msgstr "¿Cuánto Cuesta la Reparación de Electrodomésticos?"
 
 msgid "Service Call"
 msgstr "Llamada de Servicio"
 
 msgid "Waived with repair."
-msgstr "Se descuenta con la reparacion."
+msgstr "Se descuenta con la reparación."
 
 msgid "Labor Rate"
 msgstr "Tarifa de Mano de Obra"
 
 msgid "Flat rate based on job type (not hourly)."
-msgstr "Tarifa fija segun el tipo de trabajo (no por hora)."
+msgstr "Tarifa fija según el tipo de trabajo (no por hora)."
 
 msgid "Warranty"
-msgstr "Garantia"
+msgstr "Garantía"
 
 msgid "Included"
 msgstr "Incluida"
@@ -207,49 +235,92 @@ msgid "Frequently Asked Questions"
 msgstr "Preguntas Frecuentes"
 
 msgid "Do you service commercial appliances?"
-msgstr "Reparan electrodomesticos comerciales?"
+msgstr "¿Reparan electrodomésticos comerciales?"
 
-msgid "Yes, we service both commercial and residential appliances. Our technicians are certified to work on industrial-grade equipment and standard home appliances."
-msgstr "Si, reparamos electrodomesticos comerciales y residenciales. Nuestros tecnicos estan certificados para trabajar con equipos de grado industrial y electrodomesticos estandar del hogar."
+msgid ""
+"Yes, we service both commercial and residential appliances. Our technicians "
+"are certified to work on industrial-grade equipment and standard home "
+"appliances."
+msgstr ""
+"Si, reparamos electrodomésticos comerciales y residenciales. Nuestros "
+"técnicos están certificados para trabajar con equipos de grado industrial y "
+"electrodomésticos estándar del hogar."
 
 msgid "Is there a warranty on repairs?"
-msgstr "Hay garantia en las reparaciones?"
+msgstr "¿Hay garantía en las reparaciones?"
 
-msgid "All repairs come with a warranty on parts and labor. If you experience any issues within the warranty period, we will fix it at no additional cost."
-msgstr "Todas las reparaciones incluyen garantia en piezas y mano de obra. Si experimentas algun problema dentro del periodo de garantia, lo repararemos sin costo adicional."
+msgid ""
+"All repairs come with a warranty on parts and labor. If you experience any "
+"issues within the warranty period, we will fix it at no additional cost."
+msgstr ""
+"Todas las reparaciones incluyen garantía en piezas y mano de obra. Si "
+"experimentas algún problema dentro del periodo de garantía, lo repararemos "
+"sin costo adicional."
 
 msgid "What areas do you cover?"
-msgstr "Que areas cubren?"
+msgstr "¿Qué áreas cubren?"
 
 #, python-format
-msgid "We serve %(city)s and surrounding cities. Call us to confirm service availability in your area."
-msgstr "Servimos a %(city)s y ciudades cercanas. Llamanos para confirmar la disponibilidad del servicio en tu area."
+msgid ""
+"We serve %(city)s and surrounding cities. Call us to confirm service "
+"availability in your area."
+msgstr ""
+"Servimos a %(city)s y ciudades cercanas. Llamaños para confirmar la "
+"disponibilidad del servicio en tu área."
 
-msgid "We serve Southern California and surrounding cities. Call us to confirm service availability in your area."
-msgstr "Servimos al sur de California y ciudades cercanas. Llamanos para confirmar la disponibilidad del servicio en tu area."
+msgid ""
+"We serve Southern California and surrounding cities. Call us to confirm "
+"service availability in your area."
+msgstr ""
+"Servimos al sur de California y ciudades cercanas. Llamaños para confirmar "
+"la disponibilidad del servicio en tu área."
 
 msgid "How quickly can you get here?"
-msgstr "Que tan rapido pueden llegar?"
+msgstr "¿Qué tan rápido pueden llegar?"
 
-msgid "We offer same-day service for most repairs. Book online or call to get the next available slot."
-msgstr "Ofrecemos servicio el mismo dia para la mayoria de las reparaciones. Reserva en linea o llama para obtener el proximo horario disponible."
+msgid ""
+"We offer same-day service for most repairs. Book online or call to get the "
+"next available slot."
+msgstr ""
+"Ofrecemos servicio el mismo día para la mayoría de las reparaciones. Reserva"
+" en línea o llama para obtener el proximo horario disponible."
 
 # ── home_page.html — CTA ──
 msgid "Ready to Get Your Appliance Fixed?"
-msgstr "Listo para Reparar tu Electrodomestico?"
+msgstr "¿Listo para Reparar tu Electrodoméstico?"
 
 msgid "Book your repair today and get same-day service with a full warranty."
-msgstr "Reserva tu reparacion hoy y obtiene servicio el mismo dia con garantia completa."
+msgstr ""
+"Reserva tu reparación hoy y obtiene servicio el mismo día con garantía "
+"completa."
 
 # ── services — Index ──
+msgid "Featured service hubs"
+msgstr "Servicios destacados"
+
+msgid "Specialty Appliance Repair Pages"
+msgstr "Páginas especializadas de reparación de electrodomésticos"
+
+msgid ""
+"Commercial and high-end appliance requests now have dedicated entry points "
+"before the general service list, so business and premium-brand repairs are "
+"easy to find."
+msgstr ""
+"Ahora hay enlaces dedicados para reparaciones de electrodomésticos "
+"comerciales y de alta gama antes de la lista general de servicios, para que "
+"sea más fácil encontrar servicio para negocios y marcas premium."
+
 msgid "No services available yet."
-msgstr "Aun no hay servicios disponibles."
+msgstr "Aún no hay servicios disponibles."
 
 msgid "Need Appliance Repair?"
-msgstr "Necesitas Reparacion de Electrodomesticos?"
+msgstr "¿Necesitas Reparación de Electrodomésticos?"
 
-msgid "Book your service today for fast, reliable repairs with a full warranty."
-msgstr "Reserva tu servicio hoy para reparaciones rapidas, confiables y con garantia completa."
+msgid ""
+"Book your service today for fast, reliable repairs with a full warranty."
+msgstr ""
+"Reserva tu servicio hoy para reparaciones rápidas, confiables y con garantía"
+" completa."
 
 # ── services — Detail ──
 msgid "Book This Service"
@@ -259,14 +330,14 @@ msgid "Problems We Fix"
 msgstr "Problemas que Reparamos"
 
 msgid "Why Choose Us"
-msgstr "Por Que Elegirnos"
+msgstr "Por Qué Elegirnos"
 
 msgid "Book This Repair"
-msgstr "Reservar Esta Reparacion"
+msgstr "Reservar Esta Reparación"
 
 #, python-format
 msgid "Get same-day %(service)s with our certified technicians."
-msgstr "Obtiene %(service)s el mismo dia con nuestros tecnicos certificados."
+msgstr "Obtiene %(service)s el mismo día con nuestros técnicos certificados."
 
 #, python-format
 msgid "$%(fee)s Service Call"
@@ -277,21 +348,23 @@ msgstr "Servicios Relacionados"
 
 # ── locations — Index ──
 msgid "No service areas listed yet."
-msgstr "Aun no hay areas de servicio listadas."
+msgstr "Aún no hay áreas de servicio listadas."
 
 msgid "Don't See Your City?"
-msgstr "No Ves Tu Ciudad?"
+msgstr "¿No Ves Tu Ciudad?"
 
 msgid "We may still cover your area. Contact us to check availability."
-msgstr "Es posible que aun cubramos tu area. Contactanos para verificar la disponibilidad."
+msgstr ""
+"Es posible que aún cubramos tu área. Contactaños para verificar la "
+"disponibilidad."
 
 msgid "Contact Us"
-msgstr "Contactanos"
+msgstr "Contáctanos"
 
 # ── locations — City Detail ──
 #, python-format
 msgid "Appliance Repair in %(city)s, %(state)s"
-msgstr "Reparacion de Electrodomesticos en %(city)s, %(state)s"
+msgstr "Reparación de Electrodomésticos en %(city)s, %(state)s"
 
 #, python-format
 msgid "Book Now in %(city)s"
@@ -306,10 +379,10 @@ msgid "Professional %(service)s in %(city)s."
 msgstr "%(service)s profesional en %(city)s."
 
 msgid "Our Technicians"
-msgstr "Nuestros Tecnicos"
+msgstr "Nuestros Técnicos"
 
 msgid "Service Zip Codes"
-msgstr "Codigos Postales de Servicio"
+msgstr "Códigos Postales de Servicio"
 
 #, python-format
 msgid "Book in %(city)s"
@@ -317,43 +390,45 @@ msgstr "Reservar en %(city)s"
 
 #, python-format
 msgid "Same-day appliance repair for %(city)s, %(state)s residents."
-msgstr "Reparacion de electrodomesticos el mismo dia para residentes de %(city)s, %(state)s."
+msgstr ""
+"Reparación de electrodomésticos el mismo día para residentes de %(city)s, "
+"%(state)s."
 
 msgid "Nearby Areas"
-msgstr "Areas Cercanas"
+msgstr "Áreas Cercanas"
 
 # ── blog — Index ──
 msgid "Appliance Repair Tips & Blog"
-msgstr "Consejos y Blog de Reparacion de Electrodomesticos"
+msgstr "Consejos y Blog de Reparación de Electrodomésticos"
 
 msgid "No blog posts yet. Check back soon!"
-msgstr "Aun no hay publicaciones. Vuelve pronto!"
+msgstr "Aún no hay publicaciones. Vuelve pronto!"
 
 msgid "Blog pagination"
-msgstr "Paginacion del blog"
+msgstr "Páginacion del blog"
 
 msgid "Previous page"
-msgstr "Pagina anterior"
+msgstr "Página anterior"
 
 msgid "Previous"
 msgstr "Anterior"
 
 msgid "Next page"
-msgstr "Pagina siguiente"
+msgstr "Página siguiente"
 
 msgid "Next"
 msgstr "Siguiente"
 
 # ── blog — Detail ──
 msgid "Book same-day service with our certified technicians."
-msgstr "Reserva servicio el mismo dia con nuestros tecnicos certificados."
+msgstr "Reserva servicio el mismo día con nuestros técnicos certificados."
 
 msgid "Recent Posts"
 msgstr "Publicaciones Recientes"
 
 # ── static_page.html — Contact Form ──
 msgid "Send Us a Message"
-msgstr "Envianos un Mensaje"
+msgstr "Enviaños un Mensaje"
 
 msgid "Name"
 msgstr "Nombre"
@@ -362,19 +437,19 @@ msgid "Your name"
 msgstr "Tu nombre"
 
 msgid "Email"
-msgstr "Correo electronico"
+msgstr "Correo electrónico"
 
 msgid "your@email.com"
 msgstr "tu@correo.com"
 
 msgid "Phone"
-msgstr "Telefono"
+msgstr "Teléfono"
 
 msgid "Message"
 msgstr "Mensaje"
 
 msgid "How can we help?"
-msgstr "Como podemos ayudarte?"
+msgstr "¿Cómo podemos ayudarte?"
 
 msgid "Send Message"
 msgstr "Enviar Mensaje"
@@ -384,14 +459,16 @@ msgid "Search"
 msgstr "Buscar"
 
 msgid "Search for services, areas, articles..."
-msgstr "Buscar servicios, areas, articulos..."
+msgstr "Buscar servicios, áreas, artículos..."
 
 #, python-format
 msgid "Showing results for \"<strong class=\"text-gray-800\">%(query)s</strong>\""
-msgstr "Mostrando resultados para \"<strong class=\"text-gray-800\">%(query)s</strong>\""
+msgstr ""
+"Mostrando resultados para \"<strong class=\"text-"
+"gray-800\">%(query)s</strong>\""
 
 msgid "Search pagination"
-msgstr "Paginacion de busqueda"
+msgstr "Páginacion de busqueda"
 
 #, python-format
 msgid "No results found for \"<strong>%(query)s</strong>\""
@@ -401,14 +478,16 @@ msgid "Try different keywords or browse our services."
 msgstr "Prueba con otras palabras clave o navega por nuestros servicios."
 
 msgid "Enter a search term above to find services, locations, and articles."
-msgstr "Ingresa un termino de busqueda arriba para encontrar servicios, ubicaciones y articulos."
+msgstr ""
+"Ingresa un término de busqueda arriba para encontrar servicios, ubicaciones "
+"y artículos."
 
 # ── 404.html ──
 msgid "Page Not Found"
-msgstr "Pagina No Encontrada"
+msgstr "Página No Encontrada"
 
 msgid "The page you're looking for doesn't exist or has been moved."
-msgstr "La pagina que buscas no existe o ha sido movida."
+msgstr "La página que buscas no existe o ha sido movida."
 
 msgid "Go Home"
 msgstr "Ir al Inicio"
@@ -421,131 +500,178 @@ msgid "Check Your Area"
 msgstr "Verifica Tu Area"
 
 msgid "Enter your ZIP code to verify we service your area"
-msgstr "Ingresa tu codigo postal para verificar que cubrimos tu area"
+msgstr "Ingresa tu código postal para verificar que cubrimos tu área"
 
 msgid "Check service availability"
 msgstr "Verificar disponibilidad de servicio"
 
 msgid "Enter ZIP code"
-msgstr "Ingresa codigo postal"
+msgstr "Ingresa código postal"
 
 msgid "Continue to Booking"
 msgstr "Continuar a Reservar"
 
 msgid "We service your area!"
-msgstr "Cubrimos tu area!"
+msgstr "Cubrimos tu área!"
 
 msgid "Sorry, we don't service this area yet"
-msgstr "Lo sentimos, aun no cubrimos esta area"
+msgstr "Lo sentimos, aún no cubrimos esta área"
 
 msgid "Please enter your ZIP code"
-msgstr "Por favor ingresa tu codigo postal"
+msgstr "Por favor ingresa tu código postal"
 
 msgid "more digit"
-msgstr "digito mas"
+msgstr "dígito más"
 
 msgid "more digits"
-msgstr "digitos mas"
+msgstr "dígitos más"
 
 msgid "Close"
 msgstr "Cerrar"
 
 # ── home_page.html — Brands & Testimonials (SEO) ──
 msgid "What Appliance Brands Do We Repair?"
-msgstr "Que Marcas de Electrodomesticos Reparamos?"
+msgstr "¿Qué Marcas de Electrodomésticos Reparamos?"
 
-msgid "Our certified technicians are factory-trained to repair all major appliance brands. We carry OEM parts for fast, reliable fixes."
-msgstr "Nuestros tecnicos certificados estan capacitados de fabrica para reparar todas las marcas principales de electrodomesticos. Llevamos repuestos OEM para reparaciones rapidas y confiables."
+msgid ""
+"Our certified technicians are factory-trained to repair all major appliance "
+"brands. We carry OEM parts for fast, reliable fixes."
+msgstr ""
+"Nuestros técnicos certificados están capacitados de fábrica para reparar "
+"todas las marcas principales de electrodomésticos. Llevamos repuestos OEM "
+"para reparaciones rápidas y confiables."
 
 msgid "What Our Customers Say"
-msgstr "Lo Que Dicen Nuestros Clientes"
+msgstr "Lo Qué Dicen Nuestros Clientes"
 
 #, python-format
 msgid "Rated %(rating)s stars from %(count)s reviews on Google"
-msgstr "Calificado con %(rating)s estrellas de %(count)s resenas en Google"
+msgstr "Calificado con %(rating)s estrellas de %(count)s reseñas en Google"
 
 msgid "Rated 4.9 stars from 150+ reviews on Google"
-msgstr "Calificado con 4.9 estrellas de mas de 150 resenas en Google"
+msgstr "Calificado con 4.9 estrellas de más de 150 reseñas en Google"
 
 msgid "5 star rating"
-msgstr "calificacion de 5 estrellas"
-
-msgid "Called in the morning and they were here by noon. Fixed my refrigerator on the spot. Very professional and fair pricing."
-msgstr "Llame en la manana y estaban aqui al mediodia. Repararon mi refrigerador en el momento. Muy profesional y precios justos."
-
-msgid "Great experience with washer repair. The technician explained everything clearly and the warranty gives peace of mind."
-msgstr "Excelente experiencia con la reparacion de lavadora. El tecnico explico todo claramente y la garantia da tranquilidad."
-
-msgid "They repaired our commercial dishwasher quickly. Reasonable rates and they waived the service call fee. Highly recommend!"
-msgstr "Repararon nuestro lavavajillas comercial rapidamente. Tarifas razonables y no cobraron la llamada de servicio. Altamente recomendado!"
+msgstr "calificación de 5 estrellas"
 
 # ── services_index_page.html — SEO Meta & Content ──
 #, python-format
-msgid "%(name)s — full-service appliance repair for refrigerators, washers, dryers, dishwashers, ovens & more. Rated %(rating)s★ (%(count)s reviews). Same-day service. Call %(phone)s."
-msgstr "%(name)s — reparacion completa de electrodomesticos: refrigeradores, lavadoras, secadoras, lavavajillas, hornos y mas. Calificado %(rating)s★ (%(count)s resenas). Servicio el mismo dia. Llama al %(phone)s."
+msgid ""
+"%(name)s — full-service appliance repair for refrigerators, washers, dryers,"
+" dishwashers, ovens & more. Rated %(rating)s★ (%(count)s reviews). Same-day "
+"service. Call %(phone)s."
+msgstr ""
+"%(name)s — reparación completa de electrodomésticos: refrigeradores, "
+"lavadoras, secadoras, lavavajillas, hornos y más. Calificado %(rating)s★ "
+"(%(count)s reseñas). Servicio el mismo día. Llama al %(phone)s."
 
-msgid "LOWL — full-service appliance repair for refrigerators, washers, dryers, dishwashers, ovens & more."
-msgstr "LOWL — reparacion completa de electrodomesticos: refrigeradores, lavadoras, secadoras, lavavajillas, hornos y mas."
+msgid ""
+"Inland Empire Appliance Repair — full-service appliance repair for "
+"refrigerators, washers, dryers, dishwashers, ovens & more."
+msgstr ""
+"Inland Empire Appliance Repair — reparación completa de electrodomésticos: "
+"refrigeradores, lavadoras, secadoras, lavavajillas, hornos y más."
 
 msgid "Why Choose Our Repair Services"
-msgstr "Por Que Elegir Nuestros Servicios de Reparacion"
+msgstr "Por Qué Elegir Nuestros Servicios de Reparación"
 
 #, python-format
-msgid "%(name)s provides certified, same-day appliance repair in %(city)s and surrounding areas."
-msgstr "%(name)s ofrece reparacion certificada de electrodomesticos el mismo dia en %(city)s y areas cercanas."
+msgid ""
+"%(name)s provides certified, same-day appliance repair in %(city)s and "
+"surrounding areas."
+msgstr ""
+"%(name)s ofrece reparación certificada de electrodomésticos el mismo día en "
+"%(city)s y áreas cercanas."
 
 msgid "Most repairs completed the same day you call."
-msgstr "La mayoria de las reparaciones se completan el mismo dia que llamas."
+msgstr "La mayoría de las reparaciones se completan el mismo día que llamas."
 
 msgid "Every repair backed by our parts and labor warranty."
-msgstr "Cada reparacion respaldada por nuestra garantia de piezas y mano de obra."
+msgstr ""
+"Cada reparación respaldada por nuestra garantía de piezas y mano de obra."
 
 msgid "Certified Technicians"
-msgstr "Tecnicos Certificados"
+msgstr "Técnicos Certificados"
 
 msgid "Factory-trained and licensed for all major brands."
-msgstr "Capacitados de fabrica y licenciados para todas las marcas principales."
+msgstr ""
+"Capacitados de fábrica y licenciados para todas las marcas principales."
 
 msgid "Transparent Pricing"
 msgstr "Precios Transparentes"
 
 #, python-format
 msgid "$%(fee)s diagnostic — waived with repair. No hidden fees."
-msgstr "$%(fee)s diagnostico — se descuenta con la reparacion. Sin cargos ocultos."
+msgstr ""
+"$%(fee)s diagnóstico — se descuenta con la reparación. Sin cargos ocultos."
 
 msgid "Upfront quotes. No hidden fees."
 msgstr "Presupuestos por adelantado. Sin cargos ocultos."
 
 # ── locations_index_page.html — SEO Meta & Content ──
 #, python-format
-msgid "Find appliance repair near you. %(name)s serves %(city)s, %(state)s and surrounding cities. Same-day service, warranty included. Call %(phone)s."
-msgstr "Encuentra reparacion de electrodomesticos cerca de ti. %(name)s sirve a %(city)s, %(state)s y ciudades cercanas. Servicio el mismo dia, garantia incluida. Llama al %(phone)s."
+msgid ""
+"Find appliance repair near you. %(name)s serves %(city)s, %(state)s and "
+"surrounding cities. Same-day service, warranty included. Call %(phone)s."
+msgstr ""
+"Encuentra reparación de electrodomésticos cerca de ti. %(name)s sirve a "
+"%(city)s, %(state)s y ciudades cercanas. Servicio el mismo día, garantía "
+"incluida. Llama al %(phone)s."
 
 msgid "Local Appliance Repair You Can Trust"
-msgstr "Reparacion Local de Electrodomesticos en la que Puedes Confiar"
+msgstr "Reparación Local de Electrodomésticos en la que Puedes Confiar"
 
 #, python-format
-msgid "%(name)s provides professional appliance repair services across %(city)s, %(state)s and surrounding communities. Our technicians live and work in the areas we serve, so we understand the urgency of a broken appliance."
-msgstr "%(name)s ofrece servicios profesionales de reparacion de electrodomesticos en %(city)s, %(state)s y comunidades cercanas. Nuestros tecnicos viven y trabajan en las areas que servimos, por lo que entendemos la urgencia de un electrodomestico descompuesto."
+msgid ""
+"%(name)s provides professional appliance repair services across %(city)s, "
+"%(state)s and surrounding communities. Our technicians live and work in the "
+"areas we serve, so we understand the urgency of a broken appliance."
+msgstr ""
+"%(name)s ofrece servicios profesionales de reparación de electrodomésticos "
+"en %(city)s, %(state)s y comunidades cercanas. Nuestros técnicos viven y "
+"trabajan en las áreas que servimos, por lo que entendemos la urgencia de un "
+"electrodoméstico descompuesto."
 
-msgid "Whether you need refrigerator repair, washer repair, dryer repair, or dishwasher repair, our certified team arrives same-day with fully stocked trucks and OEM parts for fast, reliable fixes."
-msgstr "Ya sea que necesites reparacion de refrigerador, lavadora, secadora o lavavajillas, nuestro equipo certificado llega el mismo dia con camiones completamente equipados y repuestos OEM para reparaciones rapidas y confiables."
+msgid ""
+"Whether you need refrigerator repair, washer repair, dryer repair, or "
+"dishwasher repair, our certified team arrives same-day with fully stocked "
+"trucks and OEM parts for fast, reliable fixes."
+msgstr ""
+"Ya sea que necesites reparación de refrigerador, lavadora, secadora o "
+"lavavajillas, nuestro equipo certificado llega el mismo día con camiones "
+"completamente equipados y repuestos OEM para reparaciones rápidas y "
+"confiables."
 
 # ── New SEO strings (March 2026) ──
-
 # home_page.html — New FAQ items
 msgid "How much does appliance repair cost?"
-msgstr "Cuanto cuesta la reparacion de electrodomesticos?"
+msgstr "¿Cuánto cuesta la reparación de electrodomésticos?"
 
 #, python-format
-msgid "Our diagnostic service call is $%(fee)s, which is waived when you approve the repair. Final cost depends on the appliance type and parts needed. We always provide a transparent quote before starting any work — no hidden fees."
-msgstr "Nuestra llamada de servicio diagnostico es de $%(fee)s, que se descuenta cuando apruebas la reparacion. El costo final depende del tipo de electrodomestico y las piezas necesarias. Siempre proporcionamos un presupuesto transparente antes de comenzar cualquier trabajo — sin cargos ocultos."
+msgid ""
+"Our diagnostic service call is $%(fee)s, which is waived when you approve "
+"the repair. Final cost depends on the appliance type and parts needed. We "
+"always provide a transparent quote before starting any work — no hidden "
+"fees."
+msgstr ""
+"Nuestra llamada de servicio diagnóstico es de $%(fee)s, que se descuenta "
+"cuando apruebas la reparación. El costo final depende del tipo de "
+"electrodoméstico y las piezas necesarias. Siempre proporcionamos un "
+"presupuesto transparente antes de comenzar cualquier trabajo — sin cargos "
+"ocultos."
 
 msgid "What appliance brands do you repair?"
-msgstr "Que marcas de electrodomesticos reparan?"
+msgstr "¿Qué marcas de electrodomésticos reparan?"
 
-msgid "We repair all major brands including Whirlpool, Samsung, LG, GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, and Thermador. Our technicians are factory-trained and carry OEM parts for fast repairs."
-msgstr "Reparamos todas las marcas principales incluyendo Whirlpool, Samsung, LG, GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking y Thermador. Nuestros tecnicos estan capacitados de fabrica y llevan repuestos OEM para reparaciones rapidas."
+msgid ""
+"We repair all major brands including Whirlpool, Samsung, LG, GE, Maytag, "
+"Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, and Thermador. Our"
+" technicians are factory-trained and carry OEM parts for fast repairs."
+msgstr ""
+"Reparamos todas las marcas principales incluyendo Whirlpool, Samsung, LG, "
+"GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking y "
+"Thermador. Nuestros técnicos están capacitados de fábrica y llevan repuestos"
+" OEM para reparaciones rápidas."
 
 # service_page.html — Process section
 #, python-format
@@ -556,31 +682,38 @@ msgid "Schedule"
 msgstr "Agenda"
 
 msgid "Book online or call. Same-day appointments available 7 days a week."
-msgstr "Reserva en linea o llama. Citas el mismo dia disponibles los 7 dias de la semana."
+msgstr ""
+"Reserva en línea o llama. Citas el mismo día disponibles los 7 dias de la "
+"semana."
 
 msgid "Diagnose"
-msgstr "Diagnostico"
+msgstr "Diagnóstico"
 
 #, python-format
-msgid "$%(fee)s diagnostic — waived with repair. Transparent quote before any work begins."
-msgstr "$%(fee)s diagnostico — se descuenta con la reparacion. Presupuesto transparente antes de comenzar cualquier trabajo."
+msgid ""
+"$%(fee)s diagnostic — waived with repair. Transparent quote before any work "
+"begins."
+msgstr ""
+"$%(fee)s diagnóstico — se descuenta con la reparación. Presupuesto "
+"transparente antes de comenzar cualquier trabajo."
 
-msgid "Fixed on the spot with OEM parts from our fully stocked trucks. Warranty included."
-msgstr "Reparado en el momento con repuestos OEM de nuestros camiones completamente equipados. Garantia incluida."
+msgid ""
+"Fixed on the spot with OEM parts from our fully stocked trucks. Warranty "
+"included."
+msgstr ""
+"Reparado en el momento con repuestos OEM de nuestros camiones completamente "
+"equipados. Garantía incluida."
 
 # services_index_page.html & locations_index_page.html — Title tags
 msgid "Appliance Repair Services"
-msgstr "Servicios de Reparacion de Electrodomesticos"
+msgstr "Servicios de Reparación de Electrodomésticos"
 
 msgid "Appliance Repair"
-msgstr "Reparacion de Electrodomesticos"
-
-msgid "Service Areas"
-msgstr "Areas de Servicio"
+msgstr "Reparación de Electrodomésticos"
 
 # ── breadcrumbs.html ──
 msgid "Breadcrumb"
-msgstr "Ruta de navegacion"
+msgstr "Ruta de navegación"
 
 # ── static_page.html — Phone placeholder ──
 msgid "(555) 000-0000"
@@ -588,55 +721,73 @@ msgstr "(555) 000-0000"
 
 # ── base.html — Fallback meta description ──
 msgid "Same-day service, warranty included."
-msgstr "Servicio el mismo dia, garantia incluida."
+msgstr "Servicio el mismo día, garantía incluida."
 
 msgid "Professional Appliance Repair"
-msgstr "Reparacion Profesional de Electrodomesticos"
+msgstr "Reparación Profesional de Electrodomésticos"
 
-msgid "LOWL Appliance Repair"
-msgstr "LOWL Reparacion de Electrodomesticos"
+msgid "Inland Empire Appliance Repair"
+msgstr "Inland Empire Reparación de Electrodomésticos"
 
-# ── home_page.html — Title tag ──
-msgid "Same-Day Service"
-msgstr "Servicio el Mismo Dia"
+msgid "Inland Empire Appliance Repair technician servicing an appliance"
+msgstr ""
+"Técnico de Inland Empire Reparación de Electrodomésticos dando servicio a un"
+" electrodoméstico"
 
-msgid "LOWL Appliance Repair — Same-day service for refrigerators, washers, dryers, dishwashers & ovens. Warranty included."
-msgstr "LOWL Reparacion de Electrodomesticos — Servicio el mismo dia para refrigeradores, lavadoras, secadoras, lavavajillas y hornos. Garantia incluida."
+msgid ""
+"Same-day appliance repair — refrigerators, washers, dryers & ovens. Warranty"
+" included on all repairs."
+msgstr ""
+"Reparación de electrodomésticos el mismo día — refrigeradores, lavadoras, "
+"secadoras y hornos. Garantía incluida."
 
 # ── home_page.html — Meta description ──
 #, python-format
-msgid "%(name)s offers same-day appliance repair in %(city)s, %(state)s. %(rating)s★ rated (%(count)s+ reviews). Refrigerator, washer, dryer, dishwasher & oven repair. $%(fee)s diagnostic — waived with repair. Call %(phone)s."
-msgstr "%(name)s ofrece reparacion de electrodomesticos el mismo dia en %(city)s, %(state)s. Calificado %(rating)s★ (%(count)s+ resenas). Reparacion de refrigeradores, lavadoras, secadoras, lavavajillas y hornos. $%(fee)s diagnostico — se descuenta con la reparacion. Llama al %(phone)s."
+msgid ""
+"Same-day appliance repair in %(city)s, %(state)s. %(rating)s★ rated "
+"(%(count)s+ reviews). Refrigerators, washers, dryers & ovens. $%(fee)s "
+"diagnostic waived with repair."
+msgstr ""
+"Reparación de electrodomésticos el mismo día en %(city)s, %(state)s. "
+"%(rating)s★ (%(count)s+ reseñas). Refrigeradores, lavadoras, secadoras y "
+"hornos. Diagnóstico $%(fee)s, gratis con reparación."
 
 # ── service_page.html — Meta description ──
 #, python-format
-msgid "Same-day %(service)s in %(city)s, %(state)s. $%(fee)s diagnostic — waived with repair. %(rating)s★ rated. Call %(phone)s."
-msgstr "%(service)s el mismo dia en %(city)s, %(state)s. $%(fee)s diagnostico — se descuenta con la reparacion. Calificado %(rating)s★. Llama al %(phone)s."
+msgid ""
+"Same-day %(service)s in %(city)s, %(state)s. $%(fee)s diagnostic — waived "
+"with repair. %(rating)s★ rated. Call %(phone)s."
+msgstr ""
+"%(service)s el mismo día en %(city)s, %(state)s. $%(fee)s diagnóstico — se "
+"descuenta con la reparación. Calificado %(rating)s★. Llama al %(phone)s."
 
 # ── city_page.html — Meta description ──
 #, python-format
-msgid "%(rating)s★ rated. Same-day service, $%(fee)s diagnostic. Call %(phone)s."
-msgstr "Calificado %(rating)s★. Servicio el mismo dia, $%(fee)s diagnostico. Llama al %(phone)s."
+msgid ""
+"%(rating)s★ rated. Same-day service, $%(fee)s diagnostic. Call %(phone)s."
+msgstr ""
+"Calificado %(rating)s★. Servicio el mismo día, $%(fee)s diagnóstico. Llama "
+"al %(phone)s."
 
 msgid "Serving ZIP codes:"
-msgstr "Codigos postales de servicio:"
+msgstr "Códigos postales de servicio:"
 
 # ── blog_page.html — Article meta tags ──
 msgid "appliance repair"
-msgstr "reparacion de electrodomesticos"
+msgstr "reparación de electrodomésticos"
 
 msgid "home appliances"
-msgstr "electrodomesticos del hogar"
+msgstr "electrodomésticos del hogar"
 
 msgid "repair tips"
-msgstr "consejos de reparacion"
+msgstr "consejos de reparación"
 
 # ── blog_page.html — Tags & Related Posts ──
 msgid "Post tags"
-msgstr "Etiquetas del articulo"
+msgstr "Etiquetas del artículo"
 
 msgid "Related Articles"
-msgstr "Articulos Relacionados"
+msgstr "Artículos Relacionados"
 
 # ── blog_page.html — Author byline ──
 #, python-format
@@ -649,9 +800,9 @@ msgid ""
 "Expert appliance repair tips, maintenance guides & troubleshooting advice "
 "from %(name)s in %(city)s, %(state)s. Keep your appliances running longer."
 msgstr ""
-"Consejos expertos de reparacion de electrodomesticos, guias de "
-"mantenimiento y soluciones de %(name)s en %(city)s, %(state)s. Mantenga sus "
-"electrodomesticos funcionando por mas tiempo."
+"Consejos expertos de reparación de electrodomésticos, guias de mantenimiento"
+" y soluciones de %(name)s en %(city)s, %(state)s. Mantenga sus "
+"electrodomésticos funcionando por más tiempo."
 
 # ── blog_page.html — Meta description suffix ──
 #, python-format
@@ -661,15 +812,15 @@ msgstr "Lea consejos expertos de %(name)s en %(city)s."
 # ── city_page.html — CTA section ──
 #, python-format
 msgid "Need Appliance Repair in %(city)s?"
-msgstr "Necesita Reparacion de Electrodomesticos en %(city)s?"
+msgstr "¿Necesita Reparación de Electrodomésticos en %(city)s?"
 
 #, python-format
 msgid ""
 "Book same-day service for %(city)s residents. Warranty included on all "
 "repairs."
 msgstr ""
-"Reserve servicio el mismo dia para residentes de %(city)s. Garantia incluida "
-"en todas las reparaciones."
+"Reserve servicio el mismo día para residentes de %(city)s. Garantía incluida"
+" en todas las reparaciones."
 
 # ── locations_index_page.html — Hero subtitle ──
 #, python-format
@@ -677,7 +828,7 @@ msgid ""
 "%(name)s provides same-day appliance repair across %(city)s, %(state)s and "
 "surrounding communities."
 msgstr ""
-"%(name)s ofrece reparacion de electrodomesticos el mismo dia en %(city)s, "
+"%(name)s ofrece reparación de electrodomésticos el mismo día en %(city)s, "
 "%(state)s y comunidades cercanas."
 
 # ── home_page.html — Hero intro paragraph ──
@@ -688,23 +839,23 @@ msgid ""
 "arrive same-day with OEM parts and fix it on the spot. $%(fee)s diagnostic, "
 "waived with repair."
 msgstr ""
-"%(name)s ofrece reparacion rapida y certificada de electrodomesticos en "
+"%(name)s ofrece reparación rápida y certificada de electrodomésticos en "
 "%(city)s, %(state)s. Desde refrigeradores y lavadoras hasta equipos "
-"comerciales — nuestros tecnicos llegan el mismo dia con repuestos originales "
-"y lo reparan en el momento. $%(fee)s diagnostico, exento con la reparacion."
+"comerciales — nuestros técnicos llegan el mismo día con repuestos originales"
+" y lo reparan en el momento. $%(fee)s diagnóstico, exento con la reparación."
 
 msgid ""
 "Professional appliance repair for refrigerators, washers, dryers, "
 "dishwashers, and ovens. Same-day service with certified technicians and "
 "warranty on all repairs."
 msgstr ""
-"Reparacion profesional de electrodomesticos para refrigeradores, lavadoras, "
-"secadoras, lavavajillas y hornos. Servicio el mismo dia con tecnicos "
-"certificados y garantia en todas las reparaciones."
+"Reparación profesional de electrodomésticos para refrigeradores, lavadoras, "
+"secadoras, lavavajillas y hornos. Servicio el mismo día con técnicos "
+"certificados y garantía en todas las reparaciones."
 
 # ── locations_index_page.html — Title tag ──
 msgid "Appliance Repair Service Areas"
-msgstr "Areas de Servicio de Reparacion de Electrodomesticos"
+msgstr "Áreas de Servicio de Reparación de Electrodomésticos"
 
 # ── blog_page.html — Last updated label ──
 msgid "Updated"
@@ -715,167 +866,1197 @@ msgid "Server Error"
 msgstr "Error del Servidor"
 
 msgid "Something went wrong on our end."
-msgstr "Algo salio mal de nuestro lado."
+msgstr "Algo salió mal de nuestro lado."
 
 msgid "Please try again later or contact us for assistance."
-msgstr "Por favor intenta de nuevo mas tarde o contactanos para asistencia."
+msgstr "Por favor intenta de nuevo más tarde o contactaños para asistencia."
 
 # ── pages/views.py — Contact Form Messages ──
 msgid "Thank you! We'll get back to you shortly."
 msgstr "Gracias! Nos pondremos en contacto contigo pronto."
 
 msgid "Thank you! We received your message and will get back to you shortly."
-msgstr "Gracias! Recibimos tu mensaje y nos pondremos en contacto contigo pronto."
+msgstr ""
+"Gracias! Recibimos tu mensaje y nos pondremos en contacto contigo pronto."
 
 msgid "Please correct the errors below and try again."
-msgstr "Por favor corrige los errores a continuacion e intenta de nuevo."
+msgstr "Por favor corrige los errores a continuación e intenta de nuevo."
 
 # ══════════════════════════════════════════════════════════════════════
 # FAQ — Expanded answers & new questions (Home, Services, Locations)
 # ══════════════════════════════════════════════════════════════════════
-
 # ── Home Page FAQ — New questions ──
 msgid "Do I need to be home during the repair?"
-msgstr "Necesito estar en casa durante la reparacion?"
+msgstr "¿Necesito estar en casa durante la reparación?"
 
 msgid "What should I do before the technician arrives?"
-msgstr "Que debo hacer antes de que llegue el tecnico?"
+msgstr "¿Qué debo hacer antes de que llegue el técnico?"
 
 # ── Home Page FAQ — Expanded answers ──
-msgid "Yes, we service both commercial and residential appliances across Riverside County. Our technicians hold EPA 608 certification and are trained to work on industrial-grade equipment — including walk-in coolers, commercial ice machines, and restaurant-grade ovens — as well as standard home appliances. We carry commercial-rated parts on our trucks so most jobs are completed in a single visit."
-msgstr "Si, reparamos electrodomesticos comerciales y residenciales en todo el Condado de Riverside. Nuestros tecnicos cuentan con certificacion EPA 608 y estan capacitados para trabajar con equipos de grado industrial — incluyendo camaras frigorificas, maquinas de hielo comerciales y hornos de restaurante — asi como electrodomesticos estandar del hogar. Llevamos repuestos de grado comercial en nuestros camiones, por lo que la mayoria de los trabajos se completan en una sola visita."
+msgid ""
+"Yes, we service both commercial and residential appliances across Riverside "
+"County. Our technicians hold EPA 608 certification and are trained to work "
+"on industrial-grade equipment — including walk-in coolers, commercial ice "
+"machines, and restaurant-grade ovens — as well as standard home appliances. "
+"We carry commercial-rated parts on our trucks so most jobs are completed in "
+"a single visit."
+msgstr ""
+"Si, reparamos electrodomésticos comerciales y residenciales en todo el "
+"Condado de Riverside. Nuestros técnicos cuentan con certificacion EPA 608 y "
+"están capacitados para trabajar con equipos de grado industrial — incluyendo"
+" cámaras frigoríficas, máquinas de hielo comerciales y hornos de restaurante"
+" — asi como electrodomésticos estándar del hogar. Llevamos repuestos de "
+"grado comercial en nuestros camiones, por lo que la mayoría de los trabajos "
+"se completan en una sola visita."
 
-msgid "Every repair includes a warranty on both parts and labor. If the same issue returns within the warranty period, we come back and fix it at no additional charge — no questions asked. We use OEM and manufacturer-approved replacement parts, which means your appliance is restored to factory performance standards. Ask your technician for specific warranty terms for your repair."
-msgstr "Cada reparacion incluye garantia en piezas y mano de obra. Si el mismo problema regresa dentro del periodo de garantia, volvemos y lo reparamos sin cargo adicional — sin preguntas. Utilizamos repuestos OEM y aprobados por el fabricante, lo que significa que tu electrodomestico se restaura a los estandares de rendimiento de fabrica. Pregunta a tu tecnico por los terminos especificos de garantia para tu reparacion."
+msgid ""
+"Every repair includes a warranty on both parts and labor. If the same issue "
+"returns within the warranty period, we come back and fix it at no additional"
+" charge — no questions asked. We use OEM and manufacturer-approved "
+"replacement parts, which means your appliance is restored to factory "
+"performance standards. Ask your technician for specific warranty terms for "
+"your repair."
+msgstr ""
+"Cada reparación incluye garantía en piezas y mano de obra. Si el mismo "
+"problema regresa dentro del periodo de garantía, volvemos y lo reparamos sin"
+" cargo adicional — sin preguntas. Utilizamos repuestos OEM y aprobados por "
+"el fábricante, lo que significa que tu electrodoméstico se restaura a los "
+"estándares de rendimiento de fábrica. Pregunta a tu técnico por los terminos"
+" especificos de garantía para tu reparación."
 
 #, python-format
-msgid "We serve %(city)s and the surrounding Inland Empire area, including Lake Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, Perris, Canyon Lake, and Norco. Our service area covers over 140 ZIP codes across Riverside County. Enter your ZIP code in the booking form above to confirm same-day availability in your neighborhood."
-msgstr "Servimos a %(city)s y el area circundante del Inland Empire, incluyendo Lake Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, Perris, Canyon Lake y Norco. Nuestra area de servicio cubre mas de 140 codigos postales en el Condado de Riverside. Ingresa tu codigo postal en el formulario de reserva arriba para confirmar la disponibilidad el mismo dia en tu vecindario."
+msgid ""
+"We serve %(city)s and the surrounding Inland Empire area, including Lake "
+"Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, Perris, "
+"Canyon Lake, and Norco. Our service area covers over 140 ZIP codes across "
+"Riverside County. Enter your ZIP code in the booking form above to confirm "
+"same-day availability in your neighborhood."
+msgstr ""
+"Servimos a %(city)s y el área circundante del Inland Empire, incluyendo Lake"
+" Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, Perris,"
+" Canyon Lake y Norco. Nuestra área de servicio cubre más de 140 códigos "
+"postales en el Condado de Riverside. Ingresa tu código postal en el "
+"formulario de reserva arriba para confirmar la disponibilidad el mismo día "
+"en tu vecindario."
 
-msgid "We serve the Inland Empire area, including Lake Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, Perris, Canyon Lake, and Norco. Our service area covers over 140 ZIP codes across Riverside County. Enter your ZIP code in the booking form above to confirm same-day availability in your neighborhood."
-msgstr "Servimos el area del Inland Empire, incluyendo Lake Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, Perris, Canyon Lake y Norco. Nuestra area de servicio cubre mas de 140 codigos postales en el Condado de Riverside. Ingresa tu codigo postal en el formulario de reserva arriba para confirmar la disponibilidad el mismo dia en tu vecindario."
+msgid ""
+"We serve the Inland Empire area, including Lake Elsinore, Murrieta, "
+"Temecula, Menifee, Corona, Riverside, Beaumont, Perris, Canyon Lake, and "
+"Norco. Our service area covers over 140 ZIP codes across Riverside County. "
+"Enter your ZIP code in the booking form above to confirm same-day "
+"availability in your neighborhood."
+msgstr ""
+"Servimos el área del Inland Empire, incluyendo Lake Elsinore, Murrieta, "
+"Temecula, Menifee, Corona, Riverside, Beaumont, Perris, Canyon Lake y Norco."
+" Nuestra área de servicio cubre más de 140 códigos postales en el Condado de"
+" Riverside. Ingresa tu código postal en el formulario de reserva arriba para"
+" confirmar la disponibilidad el mismo día en tu vecindario."
 
-msgid "In most cases, we arrive the same day you book. Morning bookings typically get an afternoon slot. We operate 7 days a week, 8 AM to 8 PM, and evening and weekend appointments are available at no extra charge. For urgent situations — like a leaking washer or a refrigerator that stopped cooling — let us know so we can prioritize your call."
-msgstr "En la mayoria de los casos, llegamos el mismo dia que reservas. Las reservas matutinas generalmente obtienen un horario por la tarde. Operamos los 7 dias de la semana, de 8 AM a 8 PM, y las citas nocturnas y de fin de semana estan disponibles sin cargo adicional. Para situaciones urgentes — como una lavadora con fugas o un refrigerador que dejo de enfriar — avisanos para que podamos priorizar tu llamada."
+msgid ""
+"In most cases, we arrive the same day you book. Morning bookings typically "
+"get an afternoon slot. We operate 7 days a week, 8 AM to 8 PM, and evening "
+"and weekend appointments are available at no extra charge. For urgent "
+"situations — like a leaking washer or a refrigerator that stopped cooling — "
+"let us know so we can prioritize your call."
+msgstr ""
+"En la mayoría de los casos, llegamos el mismo día que reservas. Las reservas"
+" matutinas generalmente obtienen un horario por la tarde. Operamos los 7 "
+"dias de la semana, de 8 AM a 8 PM, y las citas nocturnas y de fin de semana "
+"están disponibles sin cargo adicional. Para situaciones urgentes — como una "
+"lavadora con fugas o un refrigerador que dejo de enfriar — avisaños para que"
+" podamos priorizar tu llamada."
 
 #, python-format
-msgid "Our diagnostic service call is $%(fee)s, which is waived when you approve the repair. Most residential appliance repairs range from $150 to $400 depending on the appliance type, the specific issue, and parts needed. We always provide an itemized, upfront quote before starting any work — no hidden fees, no surprise charges. You only pay after the repair is complete and you are satisfied."
-msgstr "Nuestra llamada de servicio diagnostico es de $%(fee)s, que se descuenta cuando apruebas la reparacion. La mayoria de las reparaciones de electrodomesticos residenciales van de $150 a $400 dependiendo del tipo de electrodomestico, el problema especifico y las piezas necesarias. Siempre proporcionamos un presupuesto detallado y por adelantado antes de comenzar cualquier trabajo — sin cargos ocultos ni sorpresas. Solo pagas despues de que la reparacion este completa y estes satisfecho."
+msgid ""
+"Our diagnostic service call is $%(fee)s, which is waived when you approve "
+"the repair. Most residential appliance repairs range from $150 to $400 "
+"depending on the appliance type, the specific issue, and parts needed. We "
+"always provide an itemized, upfront quote before starting any work — no "
+"hidden fees, no surprise charges. You only pay after the repair is complete "
+"and you are satisfied."
+msgstr ""
+"Nuestra llamada de servicio diagnóstico es de $%(fee)s, que se descuenta "
+"cuando apruebas la reparación. La mayoría de las reparaciones de "
+"electrodomésticos residenciales van de $150 a $400 dependiendo del tipo de "
+"electrodoméstico, el problema especifico y las piezas necesarias. Siempre "
+"proporcionamos un presupuesto detallado y por adelantado antes de comenzar "
+"cualquier trabajo — sin cargos ocultos ni sorpresas. Solo pagas después de "
+"que la reparación este completa y estes satisfecho."
 
-msgid "Our diagnostic service call is $70, which is waived when you approve the repair. Most residential appliance repairs range from $150 to $400 depending on the appliance type, the specific issue, and parts needed. We always provide an itemized, upfront quote before starting any work — no hidden fees, no surprise charges. You only pay after the repair is complete and you are satisfied."
-msgstr "Nuestra llamada de servicio diagnostico es de $70, que se descuenta cuando apruebas la reparacion. La mayoria de las reparaciones de electrodomesticos residenciales van de $150 a $400 dependiendo del tipo de electrodomestico, el problema especifico y las piezas necesarias. Siempre proporcionamos un presupuesto detallado y por adelantado antes de comenzar cualquier trabajo — sin cargos ocultos ni sorpresas. Solo pagas despues de que la reparacion este completa y estes satisfecho."
+msgid ""
+"Our diagnostic service call is $70, which is waived when you approve the "
+"repair. Most residential appliance repairs range from $150 to $400 depending"
+" on the appliance type, the specific issue, and parts needed. We always "
+"provide an itemized, upfront quote before starting any work — no hidden "
+"fees, no surprise charges. You only pay after the repair is complete and you"
+" are satisfied."
+msgstr ""
+"Nuestra llamada de servicio diagnóstico es de $70, que se descuenta cuando "
+"apruebas la reparación. La mayoría de las reparaciones de electrodomésticos "
+"residenciales van de $150 a $400 dependiendo del tipo de electrodoméstico, "
+"el problema especifico y las piezas necesarias. Siempre proporcionamos un "
+"presupuesto detallado y por adelantado antes de comenzar cualquier trabajo —"
+" sin cargos ocultos ni sorpresas. Solo pagas después de que la reparación "
+"este completa y estes satisfecho."
 
-msgid "We repair all major brands including Whirlpool, Samsung, LG, GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, Electrolux, and Speed Queen — plus dozens of other makes. Our technicians are factory-trained and carry brand-specific OEM parts for reliable, lasting repairs. If your brand is not listed, give us a call — chances are we service it."
-msgstr "Reparamos todas las marcas principales incluyendo Whirlpool, Samsung, LG, GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, Electrolux y Speed Queen — ademas de docenas de otras marcas. Nuestros tecnicos estan capacitados de fabrica y llevan repuestos OEM especificos de cada marca para reparaciones confiables y duraderas. Si tu marca no esta en la lista, llamanos — es muy probable que la reparemos."
+msgid ""
+"We repair all major brands including Whirlpool, Samsung, LG, GE, Maytag, "
+"Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, "
+"Electrolux, and Speed Queen — plus dozens of other makes. Our technicians "
+"are factory-trained and carry brand-specific OEM parts for reliable, lasting"
+" repairs. If your brand is not listed, give us a call — chances are we "
+"service it."
+msgstr ""
+"Reparamos todas las marcas principales incluyendo Whirlpool, Samsung, LG, "
+"GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, "
+"Thermador, Amana, Electrolux y Speed Queen — ademas de docenas de otras "
+"marcas. Nuestros técnicos están capacitados de fábrica y llevan repuestos "
+"OEM especificos de cada marca para reparaciones confiables y duraderas. Si "
+"tu marca no esta en la lista, llamaños — es muy probable que la reparemos."
 
-msgid "Yes, someone 18 or older should be present during the visit. The technician will need access to the appliance and may need to ask questions about the issue. For commercial jobs, a manager or authorized staff member should be available. We always call ahead before arrival so you can plan accordingly."
-msgstr "Si, alguien de 18 anos o mayor debe estar presente durante la visita. El tecnico necesitara acceso al electrodomestico y puede necesitar hacer preguntas sobre el problema. Para trabajos comerciales, un gerente o miembro autorizado del personal debe estar disponible. Siempre llamamos antes de llegar para que puedas planificar con anticipacion."
+msgid ""
+"Yes, someone 18 or older should be present during the visit. The technician "
+"will need access to the appliance and may need to ask questions about the "
+"issue. For commercial jobs, a manager or authorized staff member should be "
+"available. We always call ahead before arrival so you can plan accordingly."
+msgstr ""
+"Si, alguien de 18 años o mayor debe estar presente durante la visita. El "
+"técnico necesitara acceso al electrodoméstico y puede necesitar hacer "
+"preguntas sobre el problema. Para trabajos comerciales, un gerente o miembro"
+" autorizado del personal debe estar disponible. Siempre llamamos antes de "
+"llegar para que puedas planificar con anticipacion."
 
-msgid "Clear the area around the appliance so the technician can access it easily. If possible, note the brand, model number (usually on a sticker inside the door or on the back), and a brief description of the problem. This helps us diagnose the issue faster and ensures we have the right parts on hand."
-msgstr "Despeja el area alrededor del electrodomestico para que el tecnico pueda acceder facilmente. Si es posible, anota la marca, numero de modelo (generalmente en una etiqueta dentro de la puerta o en la parte trasera) y una breve descripcion del problema. Esto nos ayuda a diagnosticar el problema mas rapido y asegura que tengamos las piezas correctas a la mano."
+msgid ""
+"Clear the area around the appliance so the technician can access it easily. "
+"If possible, note the brand, model number (usually on a sticker inside the "
+"door or on the back), and a brief description of the problem. This helps us "
+"diagnose the issue faster and ensures we have the right parts on hand."
+msgstr ""
+"Despeja el área alrededor del electrodoméstico para que el técnico pueda "
+"acceder fácilmente. Si es posible, anota la marca, numero de modelo "
+"(generalmente en una etiqueta dentro de la puerta o en la parte trasera) y "
+"una breve descripcion del problema. Esto nos ayuda a diagnosticar el "
+"problema más rápido y asegura que tengamos las piezas correctas a la mano."
 
 # ── Services Index FAQ ──
 msgid "What appliances do you repair?"
-msgstr "Que electrodomesticos reparan?"
+msgstr "¿Qué electrodomésticos reparan?"
 
-msgid "We repair refrigerators, washers, dryers, dishwashers, ovens, stoves, ranges, microwaves, freezers, ice makers, garbage disposals, and more — both residential and commercial units. Our technicians are EPA 608 certified and trained on industrial-grade equipment like walk-in coolers and commercial ice machines, in addition to standard household appliances."
-msgstr "Reparamos refrigeradores, lavadoras, secadoras, lavavajillas, hornos, estufas, cocinas, microondas, congeladores, maquinas de hielo, trituradores de basura y mas — tanto unidades residenciales como comerciales. Nuestros tecnicos cuentan con certificacion EPA 608 y estan capacitados en equipos de grado industrial como camaras frigorificas y maquinas de hielo comerciales, ademas de electrodomesticos estandar del hogar."
+msgid ""
+"We repair refrigerators, washers, dryers, dishwashers, ovens, stoves, "
+"ranges, microwaves, freezers, ice makers, garbage disposals, and more — both"
+" residential and commercial units. Our technicians are EPA 608 certified and"
+" trained on industrial-grade equipment like walk-in coolers and commercial "
+"ice machines, in addition to standard household appliances."
+msgstr ""
+"Reparamos refrigeradores, lavadoras, secadoras, lavavajillas, hornos, "
+"estufas, cocinas, microondas, congeladores, máquinas de hielo, trituradores "
+"de basura y más — tanto unidades residenciales como comerciales. Nuestros "
+"técnicos cuentan con certificacion EPA 608 y están capacitados en equipos de"
+" grado industrial como cámaras frigoríficas y máquinas de hielo comerciales,"
+" ademas de electrodomésticos estándar del hogar."
 
 msgid "Do you offer same-day appliance repair?"
-msgstr "Ofrecen reparacion de electrodomesticos el mismo dia?"
+msgstr "¿Ofrecen reparación de electrodomésticos el mismo día?"
 
-msgid "Yes, we offer same-day service for most repairs. Book before noon and a technician typically arrives that afternoon. We operate 7 days a week, 8 AM to 8 PM, with no overtime or weekend surcharges. Our trucks are fully stocked with OEM parts so most repairs finish in a single visit."
-msgstr "Si, ofrecemos servicio el mismo dia para la mayoria de las reparaciones. Reserva antes del mediodia y un tecnico generalmente llega esa misma tarde. Operamos los 7 dias de la semana, de 8 AM a 8 PM, sin recargos por horas extras o fines de semana. Nuestros camiones estan completamente equipados con repuestos OEM, por lo que la mayoria de las reparaciones se completan en una sola visita."
+msgid ""
+"Yes, we offer same-day service for most repairs. Book before noon and a "
+"technician typically arrives that afternoon. We operate 7 days a week, 8 AM "
+"to 8 PM, with no overtime or weekend surcharges. Our trucks are fully "
+"stocked with OEM parts so most repairs finish in a single visit."
+msgstr ""
+"Si, ofrecemos servicio el mismo día para la mayoría de las reparaciones. "
+"Reserva antes del mediodía y un técnico generalmente llega esa misma tarde. "
+"Operamos los 7 dias de la semana, de 8 AM a 8 PM, sin recargos por horas "
+"extras o fines de semana. Nuestros camiones están completamente equipados "
+"con repuestos OEM, por lo que la mayoría de las reparaciones se completan en"
+" una sola visita."
 
 #, python-format
-msgid "Our diagnostic service call is $%(fee)s, which is waived when you approve the repair. Most residential repairs range from $150 to $400 depending on the appliance type, specific issue, and parts required. We always provide an itemized, upfront quote before starting work — no hidden fees or surprise charges. You pay only after the repair is complete."
-msgstr "Nuestra llamada de servicio diagnostico es de $%(fee)s, que se descuenta cuando apruebas la reparacion. La mayoria de las reparaciones residenciales van de $150 a $400 dependiendo del tipo de electrodomestico, el problema especifico y las piezas necesarias. Siempre proporcionamos un presupuesto detallado y por adelantado antes de comenzar — sin cargos ocultos ni sorpresas. Solo pagas despues de que la reparacion este completa."
+msgid ""
+"Our diagnostic service call is $%(fee)s, which is waived when you approve "
+"the repair. Most residential repairs range from $150 to $400 depending on "
+"the appliance type, specific issue, and parts required. We always provide an"
+" itemized, upfront quote before starting work — no hidden fees or surprise "
+"charges. You pay only after the repair is complete."
+msgstr ""
+"Nuestra llamada de servicio diagnóstico es de $%(fee)s, que se descuenta "
+"cuando apruebas la reparación. La mayoría de las reparaciones residenciales "
+"van de $150 a $400 dependiendo del tipo de electrodoméstico, el problema "
+"especifico y las piezas necesarias. Siempre proporcionamos un presupuesto "
+"detallado y por adelantado antes de comenzar — sin cargos ocultos ni "
+"sorpresas. Solo pagas después de que la reparación este completa."
 
 msgid "What brands do you service?"
-msgstr "Que marcas reparan?"
+msgstr "¿Qué marcas reparan?"
 
-msgid "We repair all major brands including Whirlpool, Samsung, LG, GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, Electrolux, and Speed Queen — plus dozens of other makes. Our technicians are factory-trained and carry brand-specific OEM parts for reliable, lasting repairs."
-msgstr "Reparamos todas las marcas principales incluyendo Whirlpool, Samsung, LG, GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, Electrolux y Speed Queen — ademas de docenas de otras marcas. Nuestros tecnicos estan capacitados de fabrica y llevan repuestos OEM especificos de cada marca para reparaciones confiables y duraderas."
+msgid ""
+"We repair all major brands including Whirlpool, Samsung, LG, GE, Maytag, "
+"Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, "
+"Electrolux, and Speed Queen — plus dozens of other makes. Our technicians "
+"are factory-trained and carry brand-specific OEM parts for reliable, lasting"
+" repairs."
+msgstr ""
+"Reparamos todas las marcas principales incluyendo Whirlpool, Samsung, LG, "
+"GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, "
+"Thermador, Amana, Electrolux y Speed Queen — ademas de docenas de otras "
+"marcas. Nuestros técnicos están capacitados de fábrica y llevan repuestos "
+"OEM especificos de cada marca para reparaciones confiables y duraderas."
 
 msgid "Is there a warranty on appliance repairs?"
-msgstr "Hay garantia en las reparaciones de electrodomesticos?"
+msgstr "¿Hay garantía en las reparaciones de electrodomésticos?"
 
-msgid "Yes, every repair includes a warranty on both parts and labor. If the same issue returns within the warranty period, we come back and fix it at no additional charge. We use OEM and manufacturer-approved parts, which means your appliance is restored to factory performance standards."
-msgstr "Si, cada reparacion incluye garantia en piezas y mano de obra. Si el mismo problema regresa dentro del periodo de garantia, volvemos y lo reparamos sin cargo adicional. Utilizamos repuestos OEM y aprobados por el fabricante, lo que significa que tu electrodomestico se restaura a los estandares de rendimiento de fabrica."
+msgid ""
+"Yes, every repair includes a warranty on both parts and labor. If the same "
+"issue returns within the warranty period, we come back and fix it at no "
+"additional charge. We use OEM and manufacturer-approved parts, which means "
+"your appliance is restored to factory performance standards."
+msgstr ""
+"Si, cada reparación incluye garantía en piezas y mano de obra. Si el mismo "
+"problema regresa dentro del periodo de garantía, volvemos y lo reparamos sin"
+" cargo adicional. Utilizamos repuestos OEM y aprobados por el fábricante, lo"
+" que significa que tu electrodoméstico se restaura a los estándares de "
+"rendimiento de fábrica."
 
 # ── Locations Index FAQ ──
 msgid "What areas do you serve?"
-msgstr "Que areas cubren?"
+msgstr "¿Qué áreas cubren?"
 
-msgid "We serve 10 cities across Riverside County and the Inland Empire, including Lake Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, Perris, Canyon Lake, and Norco. Our service area covers over 140 ZIP codes. Select a city above to see the specific ZIP codes we cover in that area."
-msgstr "Servimos a 10 ciudades en el Condado de Riverside y el Inland Empire, incluyendo Lake Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, Perris, Canyon Lake y Norco. Nuestra area de servicio cubre mas de 140 codigos postales. Selecciona una ciudad arriba para ver los codigos postales especificos que cubrimos en esa area."
+msgid ""
+"We serve 10 cities across Riverside County and the Inland Empire, including "
+"Lake Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, Beaumont, "
+"Perris, Canyon Lake, and Norco. Our service area covers over 140 ZIP codes. "
+"Select a city above to see the specific ZIP codes we cover in that area."
+msgstr ""
+"Servimos a 10 ciudades en el Condado de Riverside y el Inland Empire, "
+"incluyendo Lake Elsinore, Murrieta, Temecula, Menifee, Corona, Riverside, "
+"Beaumont, Perris, Canyon Lake y Norco. Nuestra área de servicio cubre más de"
+" 140 códigos postales. Selecciona una ciudad arriba para ver los códigos "
+"postales especificos que cubrimos en esa área."
 
 msgid "How do I know if you service my area?"
-msgstr "Como se si cubren mi area?"
+msgstr "¿Cómo se si cubren mi área?"
 
-msgid "Enter your ZIP code on our booking page to instantly confirm coverage. We service over 140 ZIP codes across Riverside County. If your ZIP code is not listed, call us directly — we are expanding regularly and can often make arrangements for nearby areas."
-msgstr "Ingresa tu codigo postal en nuestra pagina de reservas para confirmar la cobertura al instante. Cubrimos mas de 140 codigos postales en el Condado de Riverside. Si tu codigo postal no esta en la lista, llamanos directamente — estamos expandiendonos regularmente y frecuentemente podemos hacer arreglos para areas cercanas."
+msgid ""
+"Enter your ZIP code on our booking page to instantly confirm coverage. We "
+"service over 140 ZIP codes across Riverside County. If your ZIP code is not "
+"listed, call us directly — we are expanding regularly and can often make "
+"arrangements for nearby areas."
+msgstr ""
+"Ingresa tu código postal en nuestra página de reservas para confirmar la "
+"cobertura al instante. Cubrimos más de 140 códigos postales en el Condado de"
+" Riverside. Si tu código postal no esta en la lista, llamaños directamente —"
+" estamos expandiéndonos regularmente y frecuentemente podemos hacer arreglos"
+" para áreas cercanas."
 
 msgid "Do you charge extra for travel to distant locations?"
-msgstr "Cobran extra por viajar a ubicaciones lejanas?"
+msgstr "¿Cobran extra por viajar a ubicaciones lejanas?"
 
-msgid "No. We charge the same flat-rate diagnostic fee and repair rates across all service areas — no travel fees, no mileage surcharges. Our technicians are based locally in the Inland Empire, so driving distances are short and we can reach most locations within the hour."
-msgstr "No. Cobramos la misma tarifa fija de diagnostico y reparacion en todas las areas de servicio — sin cargos de viaje ni recargos por kilometraje. Nuestros tecnicos estan ubicados localmente en el Inland Empire, por lo que las distancias de manejo son cortas y podemos llegar a la mayoria de las ubicaciones en menos de una hora."
+msgid ""
+"No. We charge the same flat-rate diagnostic fee and repair rates across all "
+"service areas — no travel fees, no mileage surcharges. Our technicians are "
+"based locally in the Inland Empire, so driving distances are short and we "
+"can reach most locations within the hour."
+msgstr ""
+"No. Cobramos la misma tarifa fija de diagnóstico y reparación en todas las "
+"áreas de servicio — sin cargos de viaje ni recargos por kilometraje. "
+"Nuestros técnicos están ubicados localmente en el Inland Empire, por lo que "
+"las distancias de manejo son cortas y podemos llegar a la mayoría de las "
+"ubicaciones en menos de una hora."
 
 msgid "Can I get same-day service in my city?"
-msgstr "Puedo obtener servicio el mismo dia en mi ciudad?"
+msgstr "¿Puedo obtener servicio el mismo día en mi ciudad?"
 
-msgid "Yes, we offer same-day service across all our service areas. Our technicians are based throughout Riverside County and operate 7 days a week, 8 AM to 8 PM. Book before noon and a technician typically arrives that same afternoon — no overtime or weekend surcharges."
-msgstr "Si, ofrecemos servicio el mismo dia en todas nuestras areas de servicio. Nuestros tecnicos estan ubicados en todo el Condado de Riverside y operan los 7 dias de la semana, de 8 AM a 8 PM. Reserva antes del mediodia y un tecnico generalmente llega esa misma tarde — sin recargos por horas extras o fines de semana."
+msgid ""
+"Yes, we offer same-day service across all our service areas. Our technicians"
+" are based throughout Riverside County and operate 7 days a week, 8 AM to 8 "
+"PM. Book before noon and a technician typically arrives that same afternoon "
+"— no overtime or weekend surcharges."
+msgstr ""
+"Si, ofrecemos servicio el mismo día en todas nuestras áreas de servicio. "
+"Nuestros técnicos están ubicados en todo el Condado de Riverside y operan "
+"los 7 dias de la semana, de 8 AM a 8 PM. Reserva antes del mediodía y un "
+"técnico generalmente llega esa misma tarde — sin recargos por horas extras o"
+" fines de semana."
 
 # ── City Page FAQ ──
 #, python-format
 msgid "How much does appliance repair cost in %(city)s?"
-msgstr "Cuanto cuesta la reparacion de electrodomesticos en %(city)s?"
+msgstr "¿Cuánto cuesta la reparación de electrodomésticos en %(city)s?"
 
 #, python-format
-msgid "Our diagnostic service call is $%(fee)s, which is waived when you approve the repair. Most residential appliance repairs in %(city)s range from $150 to $400 depending on the appliance type, specific issue, and parts required. We always provide an itemized, upfront quote before starting any work — no hidden fees."
-msgstr "Nuestra llamada de servicio diagnostico es de $%(fee)s, que se descuenta cuando apruebas la reparacion. La mayoria de las reparaciones de electrodomesticos residenciales en %(city)s van de $150 a $400 dependiendo del tipo de electrodomestico, el problema especifico y las piezas necesarias. Siempre proporcionamos un presupuesto detallado y por adelantado antes de comenzar cualquier trabajo — sin cargos ocultos."
+msgid ""
+"Our diagnostic service call is $%(fee)s, which is waived when you approve "
+"the repair. Most residential appliance repairs in %(city)s range from $150 "
+"to $400 depending on the appliance type, specific issue, and parts required."
+" We always provide an itemized, upfront quote before starting any work — no "
+"hidden fees."
+msgstr ""
+"Nuestra llamada de servicio diagnóstico es de $%(fee)s, que se descuenta "
+"cuando apruebas la reparación. La mayoría de las reparaciones de "
+"electrodomésticos residenciales en %(city)s van de $150 a $400 dependiendo "
+"del tipo de electrodoméstico, el problema especifico y las piezas "
+"necesarias. Siempre proporcionamos un presupuesto detallado y por adelantado"
+" antes de comenzar cualquier trabajo — sin cargos ocultos."
 
 #, python-format
 msgid "What appliance brands do you repair in %(city)s, %(state)s?"
-msgstr "Que marcas de electrodomesticos reparan en %(city)s, %(state)s?"
+msgstr "¿Qué marcas de electrodomésticos reparan en %(city)s, %(state)s?"
 
 #, python-format
-msgid "We repair all major brands including Whirlpool, Samsung, LG, GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, Electrolux, and Speed Queen. Our technicians carry brand-specific OEM parts on every truck for fast, reliable repairs in %(city)s."
-msgstr "Reparamos todas las marcas principales incluyendo Whirlpool, Samsung, LG, GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, Electrolux y Speed Queen. Nuestros tecnicos llevan repuestos OEM especificos de cada marca en cada camion para reparaciones rapidas y confiables en %(city)s."
+msgid ""
+"We repair all major brands including Whirlpool, Samsung, LG, GE, Maytag, "
+"Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, Thermador, Amana, "
+"Electrolux, and Speed Queen. Our technicians carry brand-specific OEM parts "
+"on every truck for fast, reliable repairs in %(city)s."
+msgstr ""
+"Reparamos todas las marcas principales incluyendo Whirlpool, Samsung, LG, "
+"GE, Maytag, Kenmore, Frigidaire, Bosch, KitchenAid, Sub-Zero, Viking, "
+"Thermador, Amana, Electrolux y Speed Queen. Nuestros técnicos llevan "
+"repuestos OEM especificos de cada marca en cada camion para reparaciones "
+"rápidas y confiables en %(city)s."
 
 #, python-format
 msgid "Do you offer same-day appliance repair in %(city)s?"
-msgstr "Ofrecen reparacion de electrodomesticos el mismo dia en %(city)s?"
+msgstr "¿Ofrecen reparación de electrodomésticos el mismo día en %(city)s?"
 
 #, python-format
-msgid "Yes, we offer same-day service in %(city)s and surrounding areas. Book before noon and a technician typically arrives that afternoon. We operate 7 days a week, 8 AM to 8 PM, with no overtime or weekend surcharges. Our trucks are fully stocked with OEM parts so most repairs finish in a single visit."
-msgstr "Si, ofrecemos servicio el mismo dia en %(city)s y areas circundantes. Reserva antes del mediodia y un tecnico generalmente llega esa misma tarde. Operamos los 7 dias de la semana, de 8 AM a 8 PM, sin recargos por horas extras o fines de semana. Nuestros camiones estan completamente equipados con repuestos OEM, por lo que la mayoria de las reparaciones se completan en una sola visita."
+msgid ""
+"Yes, we offer same-day service in %(city)s and surrounding areas. Book "
+"before noon and a technician typically arrives that afternoon. We operate 7 "
+"days a week, 8 AM to 8 PM, with no overtime or weekend surcharges. Our "
+"trucks are fully stocked with OEM parts so most repairs finish in a single "
+"visit."
+msgstr ""
+"Si, ofrecemos servicio el mismo día en %(city)s y áreas circundantes. "
+"Reserva antes del mediodía y un técnico generalmente llega esa misma tarde. "
+"Operamos los 7 dias de la semana, de 8 AM a 8 PM, sin recargos por horas "
+"extras o fines de semana. Nuestros camiones están completamente equipados "
+"con repuestos OEM, por lo que la mayoría de las reparaciones se completan en"
+" una sola visita."
 
 #, python-format
 msgid "Is there a warranty on repairs in %(city)s?"
-msgstr "Hay garantia en las reparaciones en %(city)s?"
+msgstr "¿Hay garantía en las reparaciones en %(city)s?"
 
 #, python-format
-msgid "Every repair in %(city)s includes a warranty on both parts and labor. If the same issue returns within the warranty period, we come back and fix it at no additional charge — no questions asked. We use OEM and manufacturer-approved parts to restore your appliance to factory performance standards."
-msgstr "Cada reparacion en %(city)s incluye garantia en piezas y mano de obra. Si el mismo problema regresa dentro del periodo de garantia, volvemos y lo reparamos sin cargo adicional — sin preguntas. Utilizamos repuestos OEM y aprobados por el fabricante para restaurar tu electrodomestico a los estandares de rendimiento de fabrica."
+msgid ""
+"Every repair in %(city)s includes a warranty on both parts and labor. If the"
+" same issue returns within the warranty period, we come back and fix it at "
+"no additional charge — no questions asked. We use OEM and manufacturer-"
+"approved parts to restore your appliance to factory performance standards."
+msgstr ""
+"Cada reparación en %(city)s incluye garantía en piezas y mano de obra. Si el"
+" mismo problema regresa dentro del periodo de garantía, volvemos y lo "
+"reparamos sin cargo adicional — sin preguntas. Utilizamos repuestos OEM y "
+"aprobados por el fábricante para restaurar tu electrodoméstico a los "
+"estándares de rendimiento de fábrica."
 
 #, python-format
 msgid "What ZIP codes do you service in %(city)s?"
-msgstr "Que codigos postales cubren en %(city)s?"
+msgstr "¿Qué códigos postales cubren en %(city)s?"
 
 #, python-format
-msgid "We service the following ZIP codes in and around %(city)s: %(zips)s. If your ZIP code is not listed, call us — we are expanding our service area regularly and can often make arrangements for nearby neighborhoods."
-msgstr "Cubrimos los siguientes codigos postales en y alrededor de %(city)s: %(zips)s. Si tu codigo postal no esta en la lista, llamanos — estamos expandiendo nuestra area de servicio regularmente y frecuentemente podemos hacer arreglos para vecindarios cercanos."
+msgid ""
+"We service the following ZIP codes in and around %(city)s: %(zips)s. If your"
+" ZIP code is not listed, call us — we are expanding our service area "
+"regularly and can often make arrangements for nearby neighborhoods."
+msgstr ""
+"Cubrimos los siguientes códigos postales en y alrededor de %(city)s: "
+"%(zips)s. Si tu código postal no esta en la lista, llamaños — estamos "
+"expandiendo nuestra área de servicio regularmente y frecuentemente podemos "
+"hacer arreglos para vecindarios cercanos."
 
 # ── FAQ Section Headings ──
 msgid "Appliance Repair FAQ"
-msgstr "Preguntas Frecuentes de Reparacion de Electrodomesticos"
+msgstr "Preguntas Frecuentes de Reparación de Electrodomésticos"
 
 msgid "Service Area Questions"
-msgstr "Preguntas sobre Areas de Servicio"
+msgstr "Preguntas sobre Áreas de Servicio"
 
 #, python-format
 msgid "%(city)s Appliance Repair FAQ"
-msgstr "Preguntas Frecuentes de Reparacion en %(city)s"
+msgstr "Preguntas Frecuentes de Reparación en %(city)s"
+
+# ── blog_page.html — Mid-Article CTA ──
+msgid "Service callout"
+msgstr "Llamada de servicio"
+
+msgid "Need a professional diagnosis?"
+msgstr "¿Necesita un diagnóstico profesional?"
+
+#, python-format
+msgid ""
+"Our certified technicians can fix this same-day. $%(fee)s diagnostic — "
+"waived with repair."
+msgstr ""
+"Nuestros técnicos certificados pueden repararlo hoy mismo. Diagnóstico "
+"$%(fee)s — se descuenta con la reparación."
+
+msgid ""
+"Our certified technicians can fix this same-day. Diagnostic fee waived with "
+"repair."
+msgstr ""
+"Nuestros técnicos certificados pueden repararlo hoy mismo. Tarifa de "
+"diagnóstico se descuenta con la reparación."
+
+msgid "or book online →"
+msgstr "o reserve en línea →"
+
+# ── static_page.html — SEO H1 overrides ──
+msgid "About Inland Empire Appliance Repair — Inland Empire"
+msgstr ""
+"Acerca de Inland Empire Reparación de Electrodomésticos — Inland Empire"
+
+msgid "Contact Inland Empire Appliance Repair"
+msgstr "Contactar Inland Empire Reparación de Electrodomésticos"
+
+# ── Inland Empire Appliance Repair Card #18 — Spanish visible-copy cleanup ──
+msgid "Brands"
+msgstr "Marcas"
+
+msgid "Featured"
+msgstr "Destacados"
+
+msgid "Privacy Policy"
+msgstr "Política de Privacidad"
+
+msgid "Terms of Service"
+msgstr "Términos de Servicio"
+
+msgid "AC Repair (HVAC)"
+msgstr "Reparación de Aire Acondicionado (HVAC)"
+
+msgid "Dishwasher Repair"
+msgstr "Reparación de Lavavajillas"
+
+msgid "Dryer Repair"
+msgstr "Reparación de Secadoras"
+
+msgid "Freezer Repair"
+msgstr "Reparación de Congeladores"
+
+msgid "GE Appliance Repair"
+msgstr "Reparación de Electrodomésticos GE"
+
+msgid "LG Appliance Repair"
+msgstr "Reparación de Electrodomésticos LG"
+
+msgid "Samsung Appliance Repair"
+msgstr "Reparación de Electrodomésticos Samsung"
+
+msgid "Maytag Appliance Repair"
+msgstr "Reparación de Electrodomésticos Maytag"
+
+msgid "Microwave Repair"
+msgstr "Reparación de Microondas"
+
+msgid "Oven Repair"
+msgstr "Reparación de Hornos"
+
+msgid "Refrigerator Repair"
+msgstr "Reparación de Refrigeradores"
+
+msgid "Stove Repair"
+msgstr "Reparación de Estufas"
+
+msgid "Washer Repair"
+msgstr "Reparación de Lavadoras"
+
+msgid "Water Heater Repair"
+msgstr "Reparación de Calentadores de Agua"
+
+msgid "Whirlpool Appliance Repair"
+msgstr "Reparación de Electrodomésticos Whirlpool"
+
+msgid "Garbage Disposal Repair"
+msgstr "Reparación de Trituradores de Basura"
+
+msgid "Cooktop Repair"
+msgstr "Reparación de Cubiertas de Cocina"
+
+msgid "Ice Maker Repair"
+msgstr "Reparación de Máquinas de Hielo"
+
+msgid "Specialty service hubs"
+msgstr "Páginas de servicio especializadas"
+
+msgid "Commercial and High-End Appliance Repair"
+msgstr "Reparación de Electrodomésticos Comerciales y de Alta Gama"
+
+msgid ""
+"Use these dedicated pages when the repair involves business downtime, "
+"commercial refrigeration, premium built-in appliances, or luxury laundry and"
+" kitchen equipment."
+msgstr ""
+"Use estas páginas dedicadas cuando la reparación implique tiempo fuera de "
+"servicio del negocio, refrigeración comercial, electrodomésticos empotrados "
+"premium o equipos de lavandería y cocina de lujo."
+
+msgid "Open dedicated page"
+msgstr "Abrir página dedicada"
+
+msgid "Diagnostic Fee"
+msgstr "Cargo de Diagnóstico"
+
+msgid "Waived when you approve the repair. No obligation if you decline."
+msgstr ""
+"Se descuenta cuando aprueba la reparación. Sin obligación si la rechaza."
+
+msgid "On all parts and labor — at no extra cost."
+msgstr "En todas las piezas y mano de obra, sin costo adicional."
+
+msgid "About Inland Empire Appliance Repair"
+msgstr "Acerca de Inland Empire Appliance Repair"
+
+msgid ""
+"Local appliance repair technicians with stocked trucks and same-day routes"
+msgstr ""
+"Técnicos locales de reparación de electrodomésticos con camiones equipados y"
+" rutas el mismo día"
+
+msgid ""
+"Inland Empire Appliance Repair serves Inland Empire neighborhoods with "
+"residential and commercial appliance repair. Our technicians arrive with "
+"diagnostic tools, OEM parts, and clear flat-rate estimates so most repairs "
+"are finished in one visit."
+msgstr ""
+"Inland Empire Appliance Repair atiende vecindarios del Inland Empire con "
+"reparación de electrodomésticos residenciales y comerciales. Nuestros "
+"técnicos llegan con herramientas de diagnóstico, piezas OEM y presupuestos "
+"claros de tarifa fija para que la mayoría de las reparaciones terminen en "
+"una sola visita."
+
+msgid "EPA-certified appliance technicians"
+msgstr "Técnicos de electrodomésticos certificados por EPA"
+
+msgid "Warranty included on approved repairs"
+msgstr "Garantía incluida en reparaciones aprobadas"
+
+msgid "Commercial and residential service"
+msgstr "Servicio comercial y residencial"
+
+msgid "Same-day appointments when available"
+msgstr "Citas el mismo día cuando estén disponibles"
+
+#, python-format
+msgid ""
+"Same-day appointments available 7 days a week. $%(fee)s diagnostic — waived "
+"when you approve the repair. Warranty included on every job."
+msgstr ""
+"Citas el mismo día disponibles los 7 días de la semana. Diagnóstico de "
+"$%(fee)s, descontado cuando aprueba la reparación. Garantía incluida en cada"
+" trabajo."
+
+msgid "Book Same-Day Repair"
+msgstr "Reservar reparación el mismo día"
+
+#, python-format
+msgid ""
+"Get same-day %(service)s with our appliance repair team. Parts options and "
+"warranty coverage are explained before approved work proceeds."
+msgstr ""
+"Reserve %(service)s el mismo día con nuestro equipo de reparación de "
+"electrodomésticos. Las opciones de piezas y la cobertura de garantía se "
+"explican antes de proceder con el trabajo aprobado."
+
+msgid "Choose Your Service Area"
+msgstr "Elija su área de servicio"
+
+msgid "Choose the Inland Empire city closest to your appliance repair job."
+msgstr ""
+"Elija la ciudad del Inland Empire más cercana a su reparación de "
+"electrodomésticos."
+
+msgid "Areas We Serve"
+msgstr "Áreas de servicio"
+
+msgid ""
+"Our technicians are based locally in the Inland Empire, which means faster "
+"response times and no travel fees. We cover over 140 ZIP codes across "
+"Riverside County and surrounding areas."
+msgstr ""
+"Nuestros técnicos están ubicados localmente en el Inland Empire, lo que "
+"significa tiempos de respuesta más rápidos y sin cargos de viaje. Cubrimos "
+"más de 140 códigos postales en Riverside County y áreas cercanas."
+
+msgid ""
+"Enter your ZIP code in the booking form to confirm same-day availability in "
+"your area."
+msgstr ""
+"Ingrese su código postal en el formulario de reserva para confirmar la "
+"disponibilidad el mismo día en su área."
+
+msgid "Book Online or Call"
+msgstr "Reservar en línea o llamar"
+
+msgid ""
+"Pick your appliance type, describe the issue, and choose a time slot. Same-"
+"day slots are usually available when you book before noon."
+msgstr ""
+"Elija el tipo de electrodoméstico, describa el problema y seleccione un "
+"horario. Las citas el mismo día suelen estar disponibles cuando reserva "
+"antes del mediodía."
+
+msgid "Same-Day Diagnosis"
+msgstr "Diagnóstico el mismo día"
+
+#, python-format
+msgid ""
+"A certified technician arrives, inspects the appliance, and explains exactly"
+" what's wrong. You receive a transparent quote before any work begins — the "
+"$%(fee)s diagnostic is waived when you approve the repair."
+msgstr ""
+"Un técnico certificado llega, inspecciona el electrodoméstico y explica "
+"exactamente cuál es el problema. Recibirá una cotización transparente antes "
+"de que comience cualquier trabajo; el diagnóstico de $%(fee)s se descuenta "
+"cuando aprueba la reparación."
+
+msgid ""
+"A certified technician arrives, inspects the appliance, and explains exactly"
+" what's wrong. You receive a transparent quote before any work begins — the "
+"$70 diagnostic is waived when you approve the repair."
+msgstr ""
+"Un técnico certificado llega, inspecciona el electrodoméstico y explica "
+"exactamente cuál es el problema. Recibirá una cotización transparente antes "
+"de que comience cualquier trabajo; el diagnóstico de $70 se descuenta cuando"
+" aprueba la reparación."
+
+msgid "On-the-Spot Repair"
+msgstr "Reparación en el sitio"
+
+msgid ""
+"We fix it right there with OEM parts already on the truck. You only pay "
+"after the job is done and you're satisfied. Every repair includes a warranty"
+" on parts and labor."
+msgstr ""
+"Lo reparamos en ese momento con piezas OEM que ya están en el camión. Solo "
+"paga cuando el trabajo está terminado y usted queda satisfecho. Cada "
+"reparación incluye garantía en piezas y mano de obra."
+
+#, python-format
+msgid "%(rating)s Rating"
+msgstr "Calificación %(rating)s"
+
+msgid "Experienced Technicians"
+msgstr "Técnicos con experiencia"
+
+msgid ""
+"Enter your ZIP code in the booking form above to confirm same-day "
+"availability in your area."
+msgstr ""
+"Ingrese su código postal en el formulario de reserva de arriba para "
+"confirmar la disponibilidad el mismo día en su área."
+
+msgid ""
+"Enter your ZIP code in the booking form to confirm current same-day "
+"availability."
+msgstr ""
+"Ingrese su código postal en el formulario de reserva para confirmar la "
+"disponibilidad actual el mismo día."
+
+#, python-format
+msgid ""
+"Book same-day %(service)s with our appliance repair team. Warranty included "
+"on approved repairs."
+msgstr ""
+"Reserve %(service)s el mismo día con nuestro equipo de reparación de "
+"electrodomésticos. Garantía incluida en reparaciones aprobadas."
+
+#, python-format
+msgid "Need %(service)s?"
+msgstr "¿Necesita %(service)s?"
+
+#, python-format
+msgid "%(service)s — Brands & Appliances We Service"
+msgstr "%(service)s — Marcas y electrodomésticos que atendemos"
+
+msgid "Brands We Service"
+msgstr "Marcas que atendemos"
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid "How Our Repair Process Works"
+msgstr "Cómo funciona nuestro proceso de reparación"
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid "From booking to fix — most repairs are completed in a single visit."
+msgstr ""
+"Desde la reserva hasta la reparación, la mayoría de los trabajos se "
+"completan en una sola visita."
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid ""
+"Select your appliance type and preferred time slot. Same-day appointments "
+"available."
+msgstr ""
+"Seleccione el tipo de electrodoméstico y el horario que prefiere. Citas el "
+"mismo día disponibles."
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid "Diagnosis & Quote"
+msgstr "Diagnóstico y cotización"
+
+#: phase-03-repair-01-product reviewed catalog additions
+#, python-format
+msgid ""
+"$%(fee)s diagnostic — waived with repair. You get a transparent quote before"
+" any work begins."
+msgstr ""
+"Diagnóstico de $%(fee)s — se descuenta con la reparación. Recibirá una "
+"cotización transparente antes de que comience cualquier trabajo."
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid ""
+"Transparent quote before any work begins. Diagnostic fee waived with repair."
+msgstr ""
+"Cotización transparente antes de que comience cualquier trabajo. El cargo de"
+" diagnóstico se descuenta con la reparación."
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid "Same-Day Repair"
+msgstr "Reparación el mismo día"
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid ""
+"We fix it on the spot with OEM parts from our fully stocked trucks. Warranty"
+" included."
+msgstr ""
+"Lo reparamos en el sitio con piezas OEM de nuestros camiones completamente "
+"equipados. Garantía incluida."
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid "Schedule Your Appliance Repair Today"
+msgstr "Programe su reparación de electrodomésticos hoy"
+
+#: phase-03-repair-01-product reviewed catalog additions
+#, python-format
+msgid ""
+"From %(city)s to nearby Inland Empire communities, Inland Empire Appliance "
+"Repair technicians cover over 140 ZIP codes with same-day appliance repair "
+"and no travel-fee surprises."
+msgstr ""
+"Desde %(city)s hasta las comunidades cercanas del Inland Empire, los "
+"técnicos de Inland Empire Appliance Repair cubren más de 140 códigos ZIP con"
+" reparación de electrodomésticos el mismo día y sin sorpresas por cargos de "
+"viaje."
+
+#: phase-03-repair-01-product reviewed catalog additions
+#, python-format
+msgid "Schedule Appliance Repair in %(city)s Today"
+msgstr "Programe su reparación de electrodomésticos en %(city)s hoy"
+
+#: phase-03-repair-01-product reviewed catalog additions
+#, python-format
+msgid ""
+"Same-day appointments in %(city)s available 7 days a week. $%(fee)s "
+"diagnostic — waived with repair. Warranty included on every job."
+msgstr ""
+"Citas el mismo día disponibles en %(city)s los 7 días de la semana. "
+"Diagnóstico de $%(fee)s — se descuenta con la reparación. Garantía incluida "
+"en cada trabajo."
+
+#: phase-03-repair-01-product reviewed catalog additions
+#, python-format
+msgid ""
+"Same-day appointments in %(city)s available 7 days a week. Warranty included"
+" on every job."
+msgstr ""
+"Citas el mismo día disponibles en %(city)s los 7 días de la semana. Garantía"
+" incluida en cada trabajo."
+
+#: phase-03-repair-01-product reviewed catalog additions
+msgid ""
+"Professional appliance repair across the Inland Empire with same-day service"
+" and warranty included."
+msgstr ""
+"Reparación profesional de electrodomésticos en todo el Inland Empire, con "
+"servicio el mismo día y garantía incluida."
+
+msgid "Why Choose Our Appliance Repair Services"
+msgstr "Por qué elegir nuestros servicios de reparación de electrodomésticos"
+
+#, python-format
+msgid ""
+"%(name)s provides certified, same-day appliance repair across the Inland "
+"Empire. Here's what sets us apart from other repair companies."
+msgstr ""
+"%(name)s ofrece reparación certificada de electrodomésticos el mismo día en "
+"todo el Inland Empire. Esto es lo que nos diferencia de otras compañías de "
+"reparación."
+
+msgid ""
+"Book before noon and a technician arrives that afternoon. We operate 7 days "
+"a week with no overtime charges."
+msgstr ""
+"Reserve antes del mediodía y un técnico llegará esa misma tarde. Atendemos "
+"los 7 días de la semana sin cargos por horas extra."
+
+msgid ""
+"Every repair is backed by a warranty on parts and labor. If the issue "
+"returns, we come back and fix it free."
+msgstr ""
+"Cada reparación está respaldada por garantía en piezas y mano de obra. Si el"
+" problema regresa, volvemos y lo solucionamos sin costo."
+
+msgid ""
+"EPA 608 certified, factory-trained, and licensed for all major brands. OEM "
+"parts on every truck."
+msgstr ""
+"Certificados por EPA 608, capacitados por fábrica y autorizados para las "
+"principales marcas. Piezas OEM en cada camión."
+
+#, python-format
+msgid ""
+"$%(fee)s diagnostic — waived with repair. Itemized quotes upfront, no hidden"
+" fees, you pay only after the job is done."
+msgstr ""
+"Diagnóstico de $%(fee)s — se descuenta con la reparación. Cotizaciones "
+"detalladas por adelantado, sin cargos ocultos; solo paga cuando el trabajo "
+"está terminado."
+
+msgid ""
+"Itemized quotes upfront, no hidden fees. You pay only after the job is done."
+msgstr ""
+"Cotizaciones detalladas por adelantado, sin cargos ocultos. Solo paga cuando"
+" el trabajo está terminado."
+
+#, python-format
+msgid ""
+"Same-day appliance repair for %(city)s, %(state)s residents. $%(fee)s "
+"diagnostic — waived with repair. Warranty included."
+msgstr ""
+"Reparación de electrodomésticos el mismo día para residentes de %(city)s, "
+"%(state)s. Diagnóstico de $%(fee)s — se descuenta con la reparación. "
+"Garantía incluida."
+
+#, python-format
+msgid "Map of %(city)s Service Area"
+msgstr "Mapa del área de servicio de %(city)s"
+
+#, python-format
+msgid "Google map for %(city)s, %(state)s appliance repair service area"
+msgstr ""
+"Mapa de Google para el área de servicio de reparación de electrodomésticos "
+"en %(city)s, %(state)s"
+
+#, python-format
+msgid ""
+"Technicians use local routes around %(city)s for same-day appliance repair "
+"appointments."
+msgstr ""
+"Los técnicos usan rutas locales alrededor de %(city)s para citas de "
+"reparación de electrodomésticos el mismo día."
+
+#, python-format
+msgid "How Appliance Repair Works in %(city)s"
+msgstr "Cómo funciona la reparación de electrodomésticos en %(city)s"
+
+#, python-format
+msgid ""
+"Book online or call us directly. Same-day slots available in %(city)s, 7 "
+"days a week — no overtime charges."
+msgstr ""
+"Reserve en línea o llámenos directamente. Hay horarios el mismo día "
+"disponibles en %(city)s, 7 días a la semana, sin cargos por horas extra."
+
+#, python-format
+msgid ""
+"A certified technician inspects the appliance and explains the issue. The "
+"$%(fee)s diagnostic is waived when you approve the repair — no obligation if"
+" you decline."
+msgstr ""
+"Un técnico certificado inspecciona el electrodoméstico y explica el "
+"problema. El diagnóstico de $%(fee)s se descuenta cuando aprueba la "
+"reparación; no hay obligación si rechaza el servicio."
+
+msgid ""
+"We fix it on the spot with OEM parts from our fully stocked trucks. You pay "
+"only after the job is done. Every repair includes a warranty on parts and "
+"labor."
+msgstr ""
+"Lo reparamos en el sitio con piezas OEM de nuestros camiones completamente "
+"equipados. Solo paga cuando el trabajo está terminado. Cada reparación "
+"incluye garantía en piezas y mano de obra."
+
+#, python-format
+msgid ""
+"Interactive service-area map for %(city)s, %(state)s. If the map does not "
+"load, call Inland Empire Appliance Repair to confirm current same-day route "
+"availability."
+msgstr ""
+"Mapa interactivo del área de servicio para %(city)s, %(state)s. Si el mapa "
+"no carga, llame a Inland Empire Appliance Repair para confirmar la "
+"disponibilidad actual de rutas el mismo día."
+
+msgid ""
+"Inland Empire Appliance Repair — Same-day service for refrigerators, "
+"washers, dryers, dishwashers & ovens. Warranty included."
+msgstr ""
+"Inland Empire Appliance Repair — servicio el mismo día para refrigeradores, "
+"lavadoras, secadoras, lavavajillas y hornos. Garantía incluida."
+
+msgid "Inland Empire"
+msgstr "Inland Empire"
+
+msgid "Book a Repair"
+msgstr "Reservar una Reparación"
+
+msgid "Every truck is stocked with manufacturer-approved parts so most repairs finish in a single visit — no waiting days for back-ordered components. We work on all major brands and never charge overtime, even on weekends."
+msgstr "Cada vehículo lleva piezas aprobadas por fabricantes, por lo que la mayoría de las reparaciones termina en una sola visita, sin esperar componentes pendientes. Trabajamos con las principales marcas y no cobramos cargos por horario extra, ni siquiera los fines de semana."
+
+msgid "Fully stocked trucks — most repairs done in one visit"
+msgstr "Vehículos completamente equipados — la mayoría de las reparaciones se completa en una visita"
+
+msgid "Flat-rate pricing 7 days a week — no overtime charges"
+msgstr "Precio fijo los 7 días — sin cargos por horario extra"
+
+msgid "Don't see your brand? We likely service it — call us to confirm."
+msgstr "¿No ve su marca? Probablemente la reparamos; llámenos para confirmar."
+
+msgid "Licensed & insured for all major brands"
+msgstr "Con licencia y seguro para las principales marcas"
+
+msgid "OEM & commercial-grade replacement parts"
+msgstr "Piezas de repuesto OEM y de grado comercial"
+
+msgid "Refrigerators, washers, dryers, ovens, dishwashers & more"
+msgstr "Refrigeradores, lavadoras, secadoras, hornos, lavavajillas y más"
+
+# ── Phase 06 repair-02 — secondary-page and blocktranslate coverage ──
+#, python-format
+msgid "%(name)s provides certified, same-day appliance repair in %(city)s and surrounding areas. Here's what sets us apart from other repair companies."
+msgstr "%(name)s ofrece reparación certificada de electrodomésticos el mismo día en %(city)s y áreas cercanas. Esto es lo que nos distingue de otras empresas de reparación."
+
+#, python-format
+msgid "%(name)s provides professional appliance repair across %(city)s, %(state)s and surrounding communities. Our technicians live and work in the areas we serve."
+msgstr "%(name)s ofrece reparación profesional de electrodomésticos en %(city)s, %(state)s y comunidades cercanas. Nuestros técnicos viven y trabajan en las áreas que atendemos."
+
+#, python-format
+msgid "%(rating)s★ from %(count)s+ Google reviews"
+msgstr "%(rating)s★ de más de %(count)s reseñas de Google"
+
+#, python-format
+msgid "%(service)s photo carousel"
+msgstr "Carrusel de fotos de %(service)s"
+
+#, python-format
+msgid "%(service)s — Brand Routes"
+msgstr "%(service)s — Rutas por marca"
+
+msgid "7 days a week"
+msgstr "Los 7 días de la semana"
+
+#, python-format
+msgid "A certified technician inspects the appliance and provides an itemized quote. The $%(fee)s diagnostic is waived when you approve the repair — no obligation if you decline."
+msgstr "Un técnico certificado inspecciona el electrodoméstico y presenta una cotización detallada. El diagnóstico de $%(fee)s se descuenta cuando aprueba la reparación; no hay obligación si la rechaza."
+
+msgid "Address"
+msgstr "Dirección"
+
+msgid "Appliance Brands We Repair"
+msgstr "Marcas de electrodomésticos que reparamos"
+
+msgid "Appliance repair services"
+msgstr "Servicios de reparación de electrodomésticos"
+
+msgid "Available 7 days a week, 8 AM to 8 PM across all service areas. No overtime or weekend surcharges."
+msgstr "Disponible los 7 días de la semana, de 8 a. m. a 8 p. m., en todas las áreas de servicio. Sin recargos por horario extra ni fines de semana."
+
+msgid "Back to top"
+msgstr "Volver arriba"
+
+msgid "Book online or call us directly. Same-day slots are available 7 days a week, 8 AM to 8 PM — no overtime charges."
+msgstr "Reserve en línea o llámenos directamente. Hay horarios para el mismo día los 7 días de la semana, de 8 a. m. a 8 p. m., sin cargos por horario extra."
+
+#, python-format
+msgid "Book same-day %(service)s with our certified technicians. Warranty included on all repairs."
+msgstr "Reserve %(service)s para el mismo día con nuestros técnicos certificados. Todas las reparaciones incluyen garantía."
+
+msgid "Choose the path that matches the building and appliance class."
+msgstr "Elija la ruta que corresponda al tipo de edificio y electrodoméstico."
+
+msgid "Choose your city"
+msgstr "Elija su ciudad"
+
+msgid "Complex repair, clearly routed"
+msgstr "Reparación compleja, con una ruta clara"
+
+msgid "Contact Info"
+msgstr "Información de contacto"
+
+msgid "Customer notes"
+msgstr "Notas de clientes"
+
+msgid "Don't See Your City Listed?"
+msgstr "¿No ve su ciudad en la lista?"
+
+msgid "EPA 608 Certified Technicians"
+msgstr "Técnicos con certificación EPA 608"
+
+msgid "Enter the name we should use when replying."
+msgstr "Ingrese el nombre que debemos usar al responder."
+
+msgid "Every repair backed by a warranty on parts and labor. If the issue returns, we fix it free."
+msgstr "Cada reparación está respaldada por una garantía en piezas y mano de obra. Si el problema vuelve, lo corregimos sin costo."
+
+msgid "Field note"
+msgstr "Nota de campo"
+
+msgid "Flat-Rate Pricing — No Hidden Fees"
+msgstr "Precio fijo — Sin cargos ocultos"
+
+msgid "Flat-rate pricing across all service areas. The same diagnostic fee and repair rates apply regardless of your location."
+msgstr "Precios fijos en todas las áreas de servicio. La misma tarifa de diagnóstico y las mismas tarifas de reparación se aplican sin importar su ubicación."
+
+#, python-format
+msgid "Get same-day %(service)s with our EPA-certified technicians. OEM parts, warranty included, you pay only after the job is done."
+msgstr "Obtenga %(service)s el mismo día con nuestros técnicos certificados por la EPA. Piezas OEM y garantía incluidas; solo paga cuando termina el trabajo."
+
+msgid "Hours"
+msgstr "Horario"
+
+msgid "In This Article"
+msgstr "En este artículo"
+
+msgid "Include the appliance type and what it is doing."
+msgstr "Incluya el tipo de electrodoméstico y lo que está haciendo."
+
+msgid "Inland service desk"
+msgstr "Mesa de servicio de Inland"
+
+msgid "Latest field note"
+msgstr "Nota de campo más reciente"
+
+msgid "Local Technicians"
+msgstr "Técnicos locales"
+
+msgid "More appliance routes"
+msgstr "Más rutas de electrodomésticos"
+
+msgid "Need Appliance Repair Now?"
+msgstr "¿Necesita reparación de electrodomésticos ahora?"
+
+msgid "Next image"
+msgstr "Imagen siguiente"
+
+msgid "No Overtime or Weekend Charges"
+msgstr "Sin cargos por horario extra ni fines de semana"
+
+msgid "No Travel Fees"
+msgstr "Sin cargos de desplazamiento"
+
+#, python-format
+msgid "No results found for \"<strong class=\"text-white\">%(query)s</strong>\""
+msgstr "No se encontraron resultados para \"<strong class=\"text-white\">%(query)s</strong>\""
+
+msgid "OEM Parts — Fully Stocked Trucks"
+msgstr "Piezas OEM — Vehículos completamente equipados"
+
+msgid "Open service hub"
+msgstr "Abrir centro de servicio"
+
+msgid "Optional. Include your area code."
+msgstr "Opcional. Incluya su código de área."
+
+msgid "Our technicians are factory-trained and carry brand-specific OEM parts on every service call. From budget-friendly Kenmore to premium Sub-Zero, we have the tools and expertise to repair your appliance to factory standards."
+msgstr "Nuestros técnicos tienen capacitación de fábrica y llevan piezas OEM específicas de cada marca en cada visita. Desde Kenmore hasta Sub-Zero, contamos con las herramientas y la experiencia para reparar su electrodoméstico según los estándares de fábrica."
+
+msgid "Our technicians live in the Inland Empire. Shorter drive times mean faster arrivals and same-day availability."
+msgstr "Nuestros técnicos viven en el Inland Empire. Los trayectos más cortos permiten llegadas más rápidas y disponibilidad el mismo día."
+
+msgid "Photo carousel controls"
+msgstr "Controles del carrusel de fotos"
+
+msgid "Prefer to Book Directly?"
+msgstr "¿Prefiere reservar directamente?"
+
+msgid "Previous image"
+msgstr "Imagen anterior"
+
+msgid "Rating"
+msgstr "Calificación"
+
+msgid "Repair notebook"
+msgstr "Cuaderno de reparaciones"
+
+#, python-format
+msgid "Repair notes for %(city)s"
+msgstr "Notas de reparación para %(city)s"
+
+msgid "Repair route"
+msgstr "Ruta de reparación"
+
+msgid "Repair work order"
+msgstr "Orden de trabajo de reparación"
+
+msgid "Residential & Commercial Appliances"
+msgstr "Electrodomésticos residenciales y comerciales"
+
+msgid "Same-Day Service — 7 Days a Week"
+msgstr "Servicio el mismo día — Los 7 días de la semana"
+
+msgid "Same-day appointments available 7 days a week. Diagnostic fee waived with repair. Warranty included on every job."
+msgstr "Hay citas para el mismo día los 7 días de la semana. El diagnóstico se descuenta con la reparación. Cada trabajo incluye garantía."
+
+#, python-format
+msgid "Same-day service with EPA-certified technicians. $%(fee)s diagnostic — waived when you approve the repair."
+msgstr "Servicio el mismo día con técnicos certificados por la EPA. Diagnóstico de $%(fee)s, descontado cuando aprueba la reparación."
+
+msgid "Same-day service with certified technicians."
+msgstr "Servicio el mismo día con técnicos certificados."
+
+msgid "Service facts"
+msgstr "Datos del servicio"
+
+msgid "Service hub"
+msgstr "Centro de servicio"
+
+msgid "Service radius"
+msgstr "Radio de servicio"
+
+msgid "Service-area switcher"
+msgstr "Selector de área de servicio"
+
+#, python-format
+msgid "Showing results for \"<strong class=\"text-white\">%(query)s</strong>\""
+msgstr "Mostrando resultados para \"<strong class=\"text-white\">%(query)s</strong>\""
+
+#, python-format
+msgid "Skip the form — book same-day service online. $%(fee)s diagnostic, waived with repair. Available 7 days a week."
+msgstr "Omita el formulario y reserve en línea para el mismo día. Diagnóstico de $%(fee)s, descontado con la reparación. Disponible los 7 días."
+
+msgid "Skip the form — book same-day service online. Available 7 days a week."
+msgstr "Omita el formulario y reserve en línea para el mismo día. Disponible los 7 días de la semana."
+
+msgid "Skip the reading — book same-day service with our certified technicians. Warranty included on all repairs."
+msgstr "Omita la lectura y reserve servicio para el mismo día con nuestros técnicos certificados. Todas las reparaciones incluyen garantía."
+
+msgid "Specialized service hubs"
+msgstr "Centros de servicio especializados"
+
+msgid "Use a brand route for model-specific service information. Unlinked marks identify supported asset coverage only."
+msgstr "Use una ruta de marca para consultar información específica del modelo. Las marcas sin enlace solo indican cobertura de recursos compatibles."
+
+msgid "Use an address where we can send a response."
+msgstr "Use una dirección donde podamos enviarle una respuesta."
+
+msgid "View service details"
+msgstr "Ver detalles del servicio"
+
+msgid "Warranty on All Parts & Labor"
+msgstr "Garantía en todas las piezas y mano de obra"
+
+msgid "We cover over 140 ZIP codes across Riverside County and are expanding regularly. Call or contact us — there's a good chance we already service your area."
+msgstr "Cubrimos más de 140 códigos postales en el condado de Riverside y seguimos ampliando el servicio. Llame o contáctenos; es muy probable que ya atendamos su área."
+
+msgid "We fix it on the spot with OEM parts from our fully stocked trucks. You only pay after the job is done. Every repair includes a warranty on parts and labor."
+msgstr "Lo reparamos en el sitio con piezas OEM de nuestros vehículos completamente equipados. Solo paga cuando termina el trabajo. Cada reparación incluye garantía en piezas y mano de obra."
+
+msgid "covered ZIP codes"
+msgstr "códigos postales cubiertos"
+
+msgid "min read"
+msgstr "min de lectura"
+
+msgid "out of 5 stars"
+msgstr "de 5 estrellas"

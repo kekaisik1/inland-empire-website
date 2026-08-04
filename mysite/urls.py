@@ -1,4 +1,4 @@
-"""URL configuration for the LOWL website."""
+"""URL configuration for the Inland Empire website."""
 
 from __future__ import annotations
 
@@ -8,22 +8,28 @@ from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.urls import include, path
+from django.views.decorators.http import require_GET
 
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from mysite.sitemaps import SITEMAPS
+from mysite.llms_views import llms_full_txt, llms_txt
+from pages.views import vapi_check_zip
 
 
+@require_GET
 def health_check(request: HttpRequest) -> JsonResponse:
     """Health check endpoint for monitoring and container orchestration."""
-    return JsonResponse({"status": "ok"})
+    response = JsonResponse({"status": "ok"})
+    response["Cache-Control"] = "no-store"
+    return response
 
 
 def robots_txt(request: HttpRequest) -> HttpResponse:
     """Serve a dynamic robots.txt with sitemap reference and AI bot blocking."""
-    base_url = f"https://{request.get_host()}"
+    base_url = request.build_absolute_uri("/").rstrip("/")
     # AI training crawlers to block (comprehensive, updated 2026)
     ai_bots = [
         "GPTBot",
@@ -63,6 +69,7 @@ def robots_txt(request: HttpRequest) -> HttpResponse:
         "Disallow: /es/search/",
         "Disallow: /documents/",
         "Disallow: /health/",
+        "Disallow: /api/",
         "",
         "# Block AI training crawlers",
     ]
@@ -89,6 +96,22 @@ def robots_txt(request: HttpRequest) -> HttpResponse:
     return HttpResponse("\n".join(lines), content_type="text/plain; charset=utf-8")
 
 
+@require_GET
+def bing_site_auth(request: HttpRequest) -> HttpResponse:
+    """Serve configured Bing verification XML without embedding credentials."""
+    import re
+
+    token = getattr(settings, "BING_SITE_AUTH_TOKEN", "")
+    if not re.fullmatch(r"[A-Za-z0-9_-]{8,100}", token):
+        return HttpResponse(status=404)
+    response = HttpResponse(
+        f'<?xml version="1.0"?><users><user>{token}</user></users>',
+        content_type="application/xml; charset=utf-8",
+    )
+    response["Cache-Control"] = "public, max-age=86400"
+    return response
+
+
 def _image_sitemap(request: HttpRequest) -> HttpResponse:
     """Serve an image sitemap for blog featured and inline images."""
     from mysite.sitemaps import image_sitemap_view
@@ -102,6 +125,11 @@ urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("health/", health_check, name="health_check"),
+    path("llms.txt", llms_txt, name="llms_txt"),
+    path("llms-full.txt", llms_full_txt, name="llms_full_txt"),
+    path("BingSiteAuth.xml", bing_site_auth, name="bing_site_auth"),
+    path("api/vapi/check-zip/", vapi_check_zip, name="vapi_check_zip"),
+    path("api/track/", include("tracking.urls")),
     path(
         "sitemap.xml",
         sitemap,

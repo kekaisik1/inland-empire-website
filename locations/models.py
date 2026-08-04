@@ -90,6 +90,14 @@ class CityPage(Page):
         related_name="+",
         help_text="Featured image for OG/social sharing (1200x630 recommended)",
     )
+    public_h1 = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=(
+            "Optional public H1/hero heading. Leave blank to use the default "
+            "city SEO heading so navigation and menus keep using the page title."
+        ),
+    )
     hero_usp = models.TextField(blank=True, verbose_name="Hero USP")
     body = RichTextField(blank=True)
     about_techs = RichTextField(blank=True, verbose_name="About Technicians")
@@ -105,6 +113,7 @@ class CityPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("intro"),
         FieldPanel("featured_image"),
+        FieldPanel("public_h1"),
         FieldPanel("hero_usp"),
         FieldPanel("body"),
         FieldPanel("about_techs"),
@@ -138,6 +147,17 @@ class CityPage(Page):
         )
         context["featured_services_optimized"] = list(
             self.featured_services.select_related("service")
+        )
+
+        from blog.models import BlogPage
+        from locations.city_assets import get_static_city_hero_images
+
+        context["static_city_hero_images"] = get_static_city_hero_images(str(self.slug))
+        context["latest_blog_posts"] = list(
+            BlogPage.objects.live()
+            .filter(locale=self.locale)
+            .order_by("-date")
+            .only("id", "title", "slug", "url_path", "date", "intro")[:6]
         )
 
         city = self.title

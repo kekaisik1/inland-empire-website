@@ -8,6 +8,19 @@ from home.tests import create_test_home
 from locations.models import CityPage, LocationsIndexPage
 
 
+def panel_field_names(panels: list[object]) -> set[str]:
+    """Return field names from a nested Wagtail panel definition."""
+    names: set[str] = set()
+    for panel in panels:
+        field_name = getattr(panel, "field_name", None)
+        if field_name:
+            names.add(field_name)
+        children = getattr(panel, "children", None)
+        if children:
+            names.update(panel_field_names(list(children)))
+    return names
+
+
 class LocationsPageTest(TestCase):
     """Test location pages rendering and relationships."""
 
@@ -49,3 +62,12 @@ class LocationsPageTest(TestCase):
     def test_city_page_contains_zip_codes(self) -> None:
         response = self.client.get(self.city.url)
         self.assertContains(response, "92879")
+
+    def test_phase02_city_public_h1_field_exists(self) -> None:
+        field = CityPage._meta.get_field("public_h1")
+
+        self.assertTrue(field.blank)
+        self.assertEqual(field.max_length, 255)
+
+    def test_phase02_city_public_h1_is_editable(self) -> None:
+        self.assertIn("public_h1", panel_field_names(CityPage.content_panels))

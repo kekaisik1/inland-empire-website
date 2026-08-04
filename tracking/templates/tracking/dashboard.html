@@ -1,0 +1,40 @@
+{% extends "wagtailadmin/generic/base.html" %}
+{% load i18n %}
+
+{% block titletag %}{% trans "Tracking Dashboard" %}{% endblock %}
+
+{% block content %}
+<div class="nice-padding">
+    <nav aria-label="{% trans 'Date range' %}" style="display:flex;gap:.5rem;margin-bottom:1.5rem">
+        {% for option in day_options %}
+        <a class="button button-small{% if days == option %} button-secondary{% endif %}" href="?days={{ option }}">{{ option }}d</a>
+        {% endfor %}
+        <a class="button button-small" href="{% url 'tracking_export_csv' %}?days={{ days }}">{% trans "Export CSV" %}</a>
+    </nav>
+
+    <dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:1rem;margin-bottom:2rem">
+        <div><dt>{% trans "Sessions" %}</dt><dd>{{ summary.total_sessions }}</dd></div>
+        <div><dt>{% trans "Conversion rate" %}</dt><dd>{{ summary.conversion_rate }}%</dd></div>
+        <div><dt>{% trans "Top source" %}</dt><dd>{{ summary.top_source }}</dd></div>
+        <div><dt>{% trans "Average events" %}</dt><dd>{{ summary.avg_events }}</dd></div>
+    </dl>
+
+    {% include "tracking/partials/funnel_chart.html" %}
+    {% include "tracking/partials/sessions_table.html" %}
+    {% include "tracking/partials/conversion_table.html" %}
+
+    <section>
+        <h2>{% trans "Top landing pages" %}</h2>
+        <table class="listing">
+            <thead><tr><th>{% trans "Path" %}</th><th>{% trans "Sessions" %}</th><th>{% trans "Conversion" %}</th></tr></thead>
+            <tbody>
+            {% for landing in landing_pages %}
+                <tr><td>{{ landing.path }}</td><td>{{ landing.total }}</td><td>{{ landing.rate }}%</td></tr>
+            {% empty %}
+                <tr><td colspan="3">{% trans "No data yet" %}</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}

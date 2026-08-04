@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags seo_tags i18n %}
+{% load wagtailcore_tags wagtailimages_tags seo_tags i18n static %}
 
 {% block body_class %}page-city-detail{% endblock %}
 
@@ -10,6 +10,11 @@
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="{% blocktrans with city=page.title state=page.state %}Appliance Repair in {{ city }}, {{ state }}{% endblocktrans %}" />
+{% elif static_city_hero_images %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static static_city_hero_images.og %}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="800" />
+<meta property="og:image:alt" content="{% blocktrans with city=page.title state=page.state %}Appliance Repair in {{ city }}, {{ state }}{% endblocktrans %}" />
 {% else %}
 {{ block.super }}
 {% endif %}
@@ -19,19 +24,21 @@
 {% if page.featured_image %}
 {% image page.featured_image fill-1200x630 as tw_img %}
 <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ tw_img.url }}" />
+{% elif static_city_hero_images %}
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static static_city_hero_images.og %}" />
 {% else %}
 {{ block.super }}
 {% endif %}
 {% endblock %}
 
-{% block title %}{% blocktrans with city=page.title state=page.state %}Appliance Repair in {{ city }}, {{ state }}{% endblocktrans %} | {{ biz.business_name|cut:" Appliance Repair"|default:"LOWL" }}{% endblock %}
+{% block title %}{% if page.seo_title %}{{ page.seo_title }}{% else %}{% blocktrans with city=page.title state=page.state %}Appliance Repair in {{ city }}, {{ state }}{% endblocktrans %}{% endif %}{% endblock %}
 {% block title_suffix %}{% endblock %}
 
 {% block meta_description %}
 {% if page.search_description %}
 <meta name="description" content="{{ page.search_description }}" />
 {% elif page.intro %}
-<meta name="description" content="{{ page.intro }}{% if biz %} {% blocktrans with rating=biz.google_rating fee=biz.service_call_fee phone=biz.phone_display %}{{ rating }}★ rated. Same-day service, ${{ fee }} diagnostic. Call {{ phone }}.{% endblocktrans %}{% endif %}{% if page.zip_codes %} {% trans 'Serving ZIP codes:' %} {{ page.zip_codes|truncatewords:10 }}.{% endif %}" />
+<meta name="description" content="{{ page.intro }}{% if page.zip_codes %} {% trans 'Serving ZIP codes:' %} {{ page.zip_codes|truncatewords:10 }}.{% endif %}" />
 {% endif %}
 {% endblock %}
 
@@ -45,40 +52,40 @@
 
 {% block content %}
 {# ── Hero ── #}
-<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden">
+<header class="bg-surface text-white py-16 md:py-20 relative overflow-hidden" data-secondary-hero="city-detail">
     <div class="stripe-bg" aria-hidden="true"></div>
     <div class="absolute -bottom-36 -right-12 w-96 h-96 rounded-full border-[40px] border-primary/10 pointer-events-none" aria-hidden="true"></div>
     <div class="container-site relative z-10">
-        {% site_breadcrumbs %}
-        <h1 class="text-3xl md:text-4xl font-display uppercase font-extrabold mt-4 text-white">{% blocktrans with city=page.title state=page.state %}Appliance Repair in {{ city }}, {{ state }}{% endblocktrans %}</h1>
-        <p class="text-text-muted mt-4 max-w-xl text-lg font-sans">{{ page.intro }}</p>
-        {% if page.hero_usp %}
-        <p class="text-text-muted/60 mt-2 font-sans">{{ page.hero_usp }}</p>
-        {% endif %}
-        {# Trust Chips #}
-        <div class="flex flex-wrap gap-3 mt-6" role="list" aria-label="{% trans 'Trust indicators' %}">
-            {% if biz and biz.google_rating %}
-            <div class="trust-chip" role="listitem">
-                <span class="w-5 h-5 bg-primary rounded-full grid place-items-center text-background text-xs font-bold" aria-hidden="true">&#9733;</span>
-                {{ biz.google_rating }} {% trans "Rating" %}
+        <div class="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,0.95fr)]">
+            <div class="min-w-0">
+                {% site_breadcrumbs %}
+                <p class="mt-8 font-display text-xs font-bold uppercase tracking-[0.24em] text-primary">{% trans "Service radius" %}</p>
+                <h1 class="mt-3 max-w-3xl break-words font-display text-4xl font-black uppercase leading-[0.95] text-white sm:text-5xl">{% if page.public_h1 %}{{ page.public_h1 }}{% else %}{% blocktrans with city=page.title state=page.state %}Appliance Repair in {{ city }}, {{ state }}{% endblocktrans %}{% endif %}</h1>
+                <p class="text-text-muted mt-5 max-w-xl text-lg font-sans">{{ page.intro }}</p>
+                {% if page.hero_usp %}<p class="text-text-muted mt-2 font-sans">{{ page.hero_usp }}</p>{% endif %}
+                <div class="mt-6 flex flex-wrap gap-3" role="list" aria-label="{% trans 'Service facts' %}">
+                    {% if biz and biz.google_review_count %}<div class="trust-chip" role="listitem"><span class="w-5 h-5 bg-primary rounded-full grid place-items-center text-background text-xs font-bold" aria-hidden="true">&#9733;</span>{{ biz.google_rating }} {% trans "Rating" %}</div>{% endif %}
+                    {% if page.zip_codes %}<div class="trust-chip" role="listitem">{{ page.zip_codes|split_comma|length }} {% trans "covered ZIP codes" %}</div>{% endif %}
+                </div>
+                <div class="mt-6 flex flex-wrap gap-4">
+                    <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary">{% blocktrans with city=page.title %}Book Now in {{ city }}{% endblocktrans %}</a>
+                    {% if biz and biz.phone %}<a href="tel:{{ biz.phone }}" class="btn btn-outline">{% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}</a>{% endif %}
+                </div>
             </div>
-            {% endif %}
-            <div class="trust-chip" role="listitem">
-                <span class="w-5 h-5 bg-primary rounded-full grid place-items-center text-background text-xs font-bold" aria-hidden="true">&#10003;</span>
-                {% trans "Warranty Included" %}
+            {% if page.featured_image or static_city_hero_images %}
+            <div class="relative min-w-0 overflow-hidden rounded-card border border-white/10 bg-background shadow-card" data-city-hero-image>
+                <span class="absolute left-0 top-0 z-10 h-full w-1 bg-primary" aria-hidden="true"></span>
+                {% if page.featured_image %}
+                    {% image page.featured_image fill-960x700 class="aspect-[4/3] h-full w-full object-cover" loading="eager" fetchpriority="high" alt=page.title %}
+                {% else %}
+                <picture>
+                    <source type="image/webp" media="(max-width: 520px)" srcset="{% static static_city_hero_images.webp_480 %}">
+                    <source type="image/webp" media="(max-width: 900px)" srcset="{% static static_city_hero_images.webp_768 %}">
+                    <source type="image/webp" srcset="{% static static_city_hero_images.webp_1200 %}">
+                    <img src="{% static static_city_hero_images.fallback %}" alt="{% blocktrans with city=page.title state=page.state %}Appliance Repair in {{ city }}, {{ state }}{% endblocktrans %}" width="1200" height="800" class="aspect-[4/3] h-full w-full object-cover" loading="eager" fetchpriority="high" decoding="async">
+                </picture>
+                {% endif %}
             </div>
-            <div class="trust-chip" role="listitem">
-                <span class="w-5 h-5 bg-primary rounded-full grid place-items-center text-background text-xs font-bold" aria-hidden="true">&#9889;</span>
-                {% trans "Same-Day Service" %}
-            </div>
-        </div>
-
-        <div class="mt-6 flex flex-wrap gap-4">
-            <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking class="btn btn-primary">{% blocktrans with city=page.title %}Book Now in {{ city }}{% endblocktrans %}</a>
-            {% if biz and biz.phone %}
-            <a href="tel:{{ biz.phone }}" class="btn btn-outline">
-                {% blocktrans with phone=biz.phone_display %}Call {{ phone }}{% endblocktrans %}
-            </a>
             {% endif %}
         </div>
     </div>
@@ -86,12 +93,12 @@
 
 <div class="bg-background">
     <div class="container-site py-16 md:py-24">
-        <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+        <div class="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)] lg:gap-12" data-layout-safe-sidebar>
             {# ── Main Content ── #}
-            <div class="lg:col-span-2 space-y-16">
+            <div class="min-w-0 space-y-16">
                 {# Body #}
                 {% if page.body %}
-                <div class="prose prose-lg max-w-none text-text-muted">
+                <div class="service-body" data-city-service-body>
                     {{ page.body|richtext }}
                 </div>
                 {% endif %}
@@ -189,10 +196,27 @@
                     </div>
                 </section>
                 {% endif %}
+
+                {% if latest_blog_posts %}
+                <section data-city-blog-slider>
+                    <div class="section-header">
+                        <h2 class="font-display text-2xl font-extrabold uppercase text-primary">{% blocktrans with city=page.title %}Repair notes for {{ city }}{% endblocktrans %}</h2>
+                    </div>
+                    <div class="mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3" role="list">
+                        {% for post in latest_blog_posts %}
+                        <a href="{% pageurl post %}" class="w-[82%] shrink-0 snap-start rounded-card border border-white/10 bg-surface p-6 transition hover:border-primary sm:w-[46%]" role="listitem" data-related-blog-card>
+                            <time datetime="{{ post.date|date:'Y-m-d' }}" class="text-xs font-semibold uppercase tracking-wider text-primary">{{ post.date|date:"M j, Y" }}</time>
+                            <h3 class="mt-3 font-display text-lg font-bold uppercase text-white">{{ post.title }}</h3>
+                            <p class="mt-3 text-sm text-text-muted">{{ post.intro|truncatewords:20 }}</p>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </section>
+                {% endif %}
             </div>
 
             {# ── Sidebar ── #}
-            <aside class="space-y-8">
+            <aside class="min-w-0 w-full space-y-8">
                 {# Booking Card #}
                 <div class="bg-surface p-6 rounded-card border border-primary/20 lg:sticky lg:top-24">
                     <h3 class="font-display uppercase font-extrabold text-primary text-lg mb-4">{% blocktrans with city=page.title %}Book in {{ city }}{% endblocktrans %}</h3>

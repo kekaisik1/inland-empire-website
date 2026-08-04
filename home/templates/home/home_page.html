@@ -3,11 +3,11 @@
 
 {% block body_class %}page-home{% endblock %}
 
-{% block title %}{% trans "Same-Day Appliance Repair" %}{% if biz and biz.city %} {% trans "in" %} {{ biz.city }}, {{ biz.state }}{% endif %} | {{ biz.business_name|cut:" Appliance Repair"|default:"LOWL" }}{% endblock %}
+{% block title %}{% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.hero_title }} | {{ biz.business_name|default:"Inland Empire Appliance Repair" }}{% endif %}{% endblock %}
 {% block title_suffix %}{% endblock %}
 
 {% block meta_description %}
-<meta name="description" content="{% if biz %}{% blocktrans with name=biz.business_name city=biz.city|default:'Southern California' state=biz.state|default:'CA' rating=biz.google_rating count=biz.google_review_count fee=biz.service_call_fee phone=biz.phone_display %}{{ name }} offers same-day appliance repair in {{ city }}, {{ state }}. {{ rating }}★ rated ({{ count }}+ reviews). Refrigerator, washer, dryer, dishwasher & oven repair. ${{ fee }} diagnostic — waived with repair. Call {{ phone }}.{% endblocktrans %}{% else %}{% trans 'LOWL Appliance Repair — Same-day service for refrigerators, washers, dryers, dishwashers & ovens. Warranty included.' %}{% endif %}" />
+<meta name="description" content="{{ page.search_description|default:page.hero_subtitle }}" />
 {% endblock %}
 
 {% block extra_head %}
@@ -30,24 +30,11 @@
         <div class="grid lg:grid-cols-2 gap-12 items-start">
             {# Left column — content #}
             <div>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-display font-extrabold uppercase leading-tight mb-6">
-                    {% get_current_language as LANG %}
-                    {% if LANG != 'en' %}
-                    {% trans "Same-Day Appliance Repair" %}{% if biz and biz.city %} {% trans "in" %} <span class="text-primary">{{ biz.city }}</span>{% endif %}
-                    {% elif biz and biz.tagline %}
-                    {{ biz.tagline }}{% if biz.city %} {% trans "in" %} <span class="text-primary">{{ biz.city }}</span>{% endif %}
-                    {% else %}
-                    {% trans "Same-Day Appliance Repair" %}
-                    {% endif %}
-                </h1>
+                <p class="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-primary"
+                    data-home-locality="inland-empire">{% trans "Inland Empire" %}</p>
+                <h1 class="home-hero-title text-4xl md:text-5xl lg:text-6xl font-display font-extrabold uppercase leading-tight mb-6">{{ page.hero_title }}</h1>
 
-                <p class="text-text-muted text-lg mt-4 max-w-xl">
-                    {% if biz and biz.city %}
-                    {% blocktrans with name=biz.business_name city=biz.city state=biz.state fee=biz.service_call_fee %}{{ name }} provides fast, certified appliance repair in {{ city }}, {{ state }}. From refrigerators and washers to commercial equipment — our technicians arrive same-day with OEM parts and fix it on the spot. ${{ fee }} diagnostic, waived with repair.{% endblocktrans %}
-                    {% else %}
-                    {% trans "Professional appliance repair for refrigerators, washers, dryers, dishwashers, and ovens. Same-day service with certified technicians and warranty on all repairs." %}
-                    {% endif %}
-                </p>
+                <p class="text-text-muted text-lg mt-4 max-w-xl">{{ page.hero_subtitle }}</p>
 
                 {# Trust Chips #}
                 <div class="flex flex-wrap gap-3 mt-8" role="list" aria-label="{% trans 'Trust indicators' %}">
@@ -115,15 +102,9 @@
             </div>
             <div>
                 <div class="section-header">
-                    <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{% trans "Commercial & Residential Appliance Repair" %}</h2>
+                    <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{{ page.commercial_title }}</h2>
                 </div>
-                <p class="text-text-muted mb-4">
-                    {% if biz and biz.city %}
-                    {% blocktrans with city=biz.city state=biz.state %}Whether you manage a restaurant kitchen in {{ city }} or need your home dishwasher running again, our EPA-certified technicians in {{ city }}, {{ state }} handle repairs of every scale — from walk-in coolers and commercial ice machines to standard residential refrigerators, washers, and dryers.{% endblocktrans %}
-                    {% else %}
-                    {% trans "Whether you manage a restaurant kitchen or need your home dishwasher running again, our EPA-certified technicians handle repairs of every scale — from walk-in coolers and commercial ice machines to standard residential refrigerators, washers, and dryers." %}
-                    {% endif %}
-                </p>
+                <div class="text-text-muted mb-4 richtext">{{ page.commercial_body|richtext }}</div>
                 <p class="text-text-muted mb-6">
                     {% trans "Every truck is stocked with manufacturer-approved parts so most repairs finish in a single visit — no waiting days for back-ordered components. We work on all major brands and never charge overtime, even on weekends." %}
                 </p>
@@ -158,7 +139,7 @@
 <section class="bg-background py-16 md:py-24" id="services">
     <div class="container-site">
         <div class="section-header">
-            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{% trans "What Appliances Do We Repair?" %}</h2>
+            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{{ page.services_heading }}</h2>
         </div>
         <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {% for service in services %}
@@ -183,8 +164,8 @@
 <section class="bg-background py-16 md:py-24">
     <div class="container-site">
         <div class="section-header text-center flex flex-col items-center">
-            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{% trans "How to Book Appliance Repair" %}</h2>
-            <p class="text-text-muted mt-4 max-w-2xl mx-auto">{% trans "From booking to a finished repair, the entire process takes as little as a few hours. No runarounds, no wasted afternoons." %}</p>
+            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{{ page.process_heading }}</h2>
+            <p class="text-text-muted mt-4 max-w-2xl mx-auto">{{ page.process_subheading }}</p>
         </div>
 
         <div class="flex flex-col md:flex-row gap-8 mt-12 relative">
@@ -214,7 +195,7 @@
 <section class="bg-surface py-16 md:py-24">
     <div class="container-site">
         <div class="section-header">
-            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{% trans "How Much Does Appliance Repair Cost?" %}</h2>
+            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{{ page.pricing_heading }}</h2>
         </div>
         <div class="grid gap-6 sm:grid-cols-2 max-w-2xl mx-auto">
             <div class="price-box highlight">
@@ -233,7 +214,7 @@
             </div>
         </div>
         <p class="text-text-muted text-sm mt-8 max-w-3xl mx-auto text-center">
-            {% trans "Final cost depends on the appliance type, specific issue, and replacement parts required. We always provide an itemized, upfront quote — no hidden fees, no surprise charges. You only pay after the repair is complete." %}
+            {{ page.pricing_note }}
         </p>
     </div>
 </section>
@@ -242,27 +223,25 @@
 <section class="bg-background py-16 md:py-24">
     <div class="container-site">
         <div class="section-header text-center flex flex-col items-center">
-            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{% trans "What Appliance Brands Do We Repair?" %}</h2>
-            <p class="text-text-muted mt-4 max-w-2xl mx-auto">{% trans "Our technicians are factory-trained and carry brand-specific OEM parts on every truck. Whether you own a budget-friendly Kenmore or a premium Sub-Zero, we have the tools and training to get it running like new." %}</p>
+            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{{ page.brands_heading }}</h2>
+            <p class="text-text-muted mt-4 max-w-2xl mx-auto">{{ page.brands_subheading }}</p>
         </div>
-        <div class="flex flex-wrap justify-center gap-x-4 gap-y-3 sm:gap-x-6 md:gap-x-8 sm:gap-y-4 mt-10 text-white/50 text-sm font-semibold uppercase tracking-wider">
-            <span>Whirlpool</span>
-            <span>Samsung</span>
-            <span>LG</span>
-            <span>GE</span>
-            <span>Maytag</span>
-            <span>Kenmore</span>
-            <span>Frigidaire</span>
-            <span>Bosch</span>
-            <span>KitchenAid</span>
-            <span>Sub-Zero</span>
-            <span>Viking</span>
-            <span>Thermador</span>
-            <span>Amana</span>
-            <span>Electrolux</span>
-            <span>Speed Queen</span>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-10">
+            {% for brand in brand_cards %}
+                {% if brand.page %}
+                <a href="{% pageurl brand.page %}" class="brand-card group" data-brand-repair-link="{{ brand.slug }}" aria-label="{% blocktrans with brand_name=brand.name %}{{ brand_name }} appliance repair{% endblocktrans %}">
+                    <img src="{% static brand.logo_static %}" alt="{{ brand.name }}" width="160" height="64" loading="lazy" decoding="async" class="h-8 w-auto max-w-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
+                    <span>{{ brand.name }}</span>
+                </a>
+                {% else %}
+                <div class="brand-card" aria-disabled="true">
+                    <img src="{% static brand.logo_static %}" alt="{{ brand.name }}" width="160" height="64" loading="lazy" decoding="async" class="h-8 w-auto max-w-full object-contain opacity-60" />
+                    <span>{{ brand.name }}</span>
+                </div>
+                {% endif %}
+            {% endfor %}
         </div>
-        <p class="text-white/30 text-xs text-center mt-6">{% trans "Don't see your brand? We likely service it — call us to confirm." %}</p>
+        <p class="text-text-muted text-xs text-center mt-6">{% trans "Don't see your brand? We likely service it — call us to confirm." %}</p>
     </div>
 </section>
 
@@ -270,10 +249,8 @@
 <section class="bg-surface py-16 md:py-24">
     <div class="container-site">
         <div class="section-header text-center flex flex-col items-center">
-            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{% trans "Appliance Repair Across Riverside County" %}</h2>
-            <p class="text-text-muted mt-4 max-w-2xl mx-auto">
-                {% trans "Our technicians are based locally in the Inland Empire, which means faster response times and no travel fees. We cover over 140 ZIP codes across Riverside County and surrounding areas." %}
-            </p>
+            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{{ page.areas_heading }}</h2>
+            <p class="text-text-muted mt-4 max-w-2xl mx-auto">{{ page.areas_subheading }}</p>
         </div>
         {% if global_cities %}
         <div class="flex flex-wrap justify-center gap-3 mt-10">
@@ -291,50 +268,36 @@
     </div>
 </section>
 
-{# ── Testimonials (trust signals + review schema) ── #}
+{% if review_items %}
+{# ── Testimonials (target-owned, source-grounded reviews only) ── #}
 <section class="bg-background py-16 md:py-24">
     <div class="container-site">
         <div class="section-header text-center flex flex-col items-center">
-            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{% trans "What Our Customers Say" %}</h2>
-            <p class="text-text-muted mt-4 max-w-2xl mx-auto">
-                {% if biz %}
-                {% blocktrans with rating=biz.google_rating count=biz.google_review_count %}Rated {{ rating }} stars from {{ count }} reviews on Google{% endblocktrans %}
-                {% else %}
-                {% trans "Rated 4.9 stars from 150+ reviews on Google" %}
-                {% endif %}
-            </p>
+            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{{ page.testimonials_heading }}</h2>
         </div>
         <div class="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-10">
-            <div class="bg-surface p-6 rounded-card border border-white/5">
-                <div class="flex gap-1 text-primary mb-3" aria-label="{% trans '5 star rating' %}">
-                    <span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span>
+            {% for review in review_items %}
+            <article class="bg-surface p-6 rounded-card border border-white/5" data-review-card>
+                <div class="flex gap-1 text-primary mb-3" aria-label="{% blocktrans with rating=review.rating %}{{ rating }} star rating{% endblocktrans %}">
+                    {% for _star in "12345" %}<span aria-hidden="true">&#9733;</span>{% endfor %}
                 </div>
-                <p class="text-text-muted text-sm">{% trans "Called in the morning and they were here by noon. Fixed my refrigerator on the spot. Very professional and fair pricing." %}</p>
-                <p class="text-white font-semibold text-sm mt-4">— Maria G.</p>
-            </div>
-            <div class="bg-surface p-6 rounded-card border border-white/5">
-                <div class="flex gap-1 text-primary mb-3" aria-label="{% trans '5 star rating' %}">
-                    <span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span>
-                </div>
-                <p class="text-text-muted text-sm">{% trans "Great experience with washer repair. The technician explained everything clearly and the warranty gives peace of mind." %}</p>
-                <p class="text-white font-semibold text-sm mt-4">— James T.</p>
-            </div>
-            <div class="bg-surface p-6 rounded-card border border-white/5">
-                <div class="flex gap-1 text-primary mb-3" aria-label="{% trans '5 star rating' %}">
-                    <span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span><span aria-hidden="true">&#9733;</span>
-                </div>
-                <p class="text-text-muted text-sm">{% trans "They repaired our commercial dishwasher quickly. Reasonable rates and they waived the service call fee. Highly recommend!" %}</p>
-                <p class="text-white font-semibold text-sm mt-4">— David R.</p>
-            </div>
+                <p class="text-text-muted text-sm">{{ review.text }}</p>
+                <p class="text-white font-semibold text-sm mt-4">— {{ review.author }}</p>
+                <p class="text-text-muted text-xs mt-2">
+                    {% if review.source_url %}<a href="{{ review.source_url }}" class="underline underline-offset-2 hover:text-primary focus-visible:text-primary" rel="noopener noreferrer">{{ review.source }}</a>{% else %}{{ review.source }}{% endif %}
+                </p>
+            </article>
+            {% endfor %}
         </div>
     </div>
 </section>
+{% endif %}
 
 {# ── FAQ Accordion ── #}
 <section class="bg-background py-16 md:py-24">
     <div class="max-w-3xl mx-auto px-4 md:px-8">
         <div class="section-header">
-            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{% trans "Frequently Asked Questions" %}</h2>
+            <h2 class="text-2xl md:text-3xl font-display font-extrabold uppercase text-white">{{ page.faq_heading }}</h2>
         </div>
         <div>
             <div class="border-b border-white/10" x-data="faqItem" data-faq-section="home-faq" data-faq-index="0" @faq-close.window="onClose">

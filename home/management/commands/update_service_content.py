@@ -9,19 +9,22 @@ Run with: python manage.py update_service_content
 
 from __future__ import annotations
 
-import json
 from typing import Any
 
 from django.core.management.base import BaseCommand
 
-from services.models import ServicePage, ServiceRelatedService
+from services.models import ServicePage, ServiceRelatedService, ServicesIndexPage
 
 # Import the canonical content data from setup_pages
 from home.management.commands.setup_pages import SERVICE_CONTENT
+from home.service_seed_data import (
+    apply_service_page_seed_data,
+    repair_exact_verification_sentinels,
+)
 
 
 class Command(BaseCommand):
-    help = "Populate existing service pages with rich SEO content"
+    help = "Populate missing service page SEO content without overwriting editor-customized fields"
 
     def handle(self, *args: object, **options: object) -> None:
         self.stdout.write("Updating service page content...\n")
@@ -32,9 +35,10 @@ class Command(BaseCommand):
         }
 
         # Get all English service pages
-        pages = ServicePage.objects.filter(locale__language_code="en").select_related(
-            "locale"
-        )
+        pages = ServicePage.objects.filter(
+            locale__language_code="en",
+            is_regional_service_page=False,
+        ).select_related("locale")
 
         if not pages.exists():
             self.stdout.write(self.style.WARNING("No English service pages found."))
@@ -53,33 +57,46 @@ class Command(BaseCommand):
                 )
                 continue
 
-            page.seo_title = data["seo_title"]
-            page.search_description = data["search_description"]
-            page.intro = data["intro"]
-            page.short_description = data["short_description"]
-            page.hero_usp = data["hero_usp"]
-            page.body = data["body"]
-            page.problems_we_fix = json.dumps(
-                [{"type": "problem", "value": p} for p in data["problems"]]
-            )
-            page.why_choose_us = json.dumps(
-                [
-                    {"type": "benefit", "value": {"title": t, "description": d}}
-                    for t, d in data["benefits"]
-                ]
-            )
-            page.faq = json.dumps(
-                [
-                    {"type": "faq_item", "value": {"question": q, "answer": a}}
-                    for q, a in data["faq"]
-                ]
-            )
+            changed = apply_service_page_seed_data(page, data)
+            changed = repair_exact_verification_sentinels(page, data) or changed
 
-            page.save()
-            page.save_revision().publish()
+            if changed:
+                page.save()
+                page.save_revision().publish()
+                updated += 1
+                self.stdout.write(self.style.SUCCESS(f"  + {page.title}"))
+            else:
+                self.stdout.write(f"  OK {page.title} — no changes needed")
             page_by_slug[page.slug] = page
-            updated += 1
-            self.stdout.write(self.style.SUCCESS(f"  + {page.title}"))
+
+        services_index = (
+            ServicesIndexPage.objects.filter(locale__language_code="en")
+            .live()
+            .first()
+        )
+        created_pages = 0
+        if services_index is None:
+            self.stdout.write(
+                self.style.WARNING(
+                    "Live English ServicesIndexPage not found; cannot create missing "
+                    "ordinary service pages."
+                )
+            )
+        else:
+            for data in SERVICE_CONTENT:
+                if data["slug"] in page_by_slug:
+                    continue
+                page = ServicePage(
+                    title=data["title"],
+                    slug=data["slug"],
+                    intro=data["intro"],
+                )
+                apply_service_page_seed_data(page, data)
+                services_index.add_child(instance=page)
+                page.save_revision().publish()
+                page_by_slug[page.slug] = page
+                created_pages += 1
+                self.stdout.write(self.style.SUCCESS(f"  + created {page.title}"))
 
         # Set up related service links
         related_created = 0
@@ -88,20 +105,20 @@ class Command(BaseCommand):
             if not page:
                 continue
 
-            # Clear existing related services for this page
-            ServiceRelatedService.objects.filter(page=page).delete()
-
             for related_slug in data.get("related", []):
                 related_page = page_by_slug.get(related_slug)
                 if related_page:
-                    ServiceRelatedService.objects.create(
-                        page=page, related_service=related_page
+                    _, created = ServiceRelatedService.objects.get_or_create(
+                        page=page,
+                        related_service=related_page,
                     )
-                    related_created += 1
+                    if created:
+                        related_created += 1
 
         self.stdout.write(
             self.style.SUCCESS(
                 f"\nDone! Updated {updated} service pages, "
+                f"created {created_pages} missing service pages, "
                 f"created {related_created} related service links."
             )
         )

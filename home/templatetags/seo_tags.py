@@ -243,7 +243,7 @@ def jsonld_website(context: dict[str, Any]) -> str:
         "@type": "WebSite",
         "@id": f"{site_url}#website",
         "url": site_url,
-        "name": biz.business_name if biz else "LOWL Appliance Repair",
+        "name": biz.business_name if biz else "Inland Empire Appliance Repair",
         "inLanguage": ["en-US", "es-MX"],
         "publisher": {
             "@type": "Organization",
@@ -472,7 +472,7 @@ def jsonld_howto(context: dict[str, Any]) -> str:
     if not site_url:
         return ""
 
-    business_name = biz.business_name if biz else "LOWL Appliance Repair"
+    business_name = biz.business_name if biz else "Inland Empire Appliance Repair"
 
     data: dict[str, Any] = {
         "@context": "https://schema.org",
@@ -542,7 +542,8 @@ def jsonld_article(context: dict[str, Any]) -> str:
 
     # Language signal for i18n sites
     locale = getattr(page, "locale", None)
-    data["inLanguage"] = "es-MX" if locale and str(locale) != "en" else "en-US"
+    language_code = getattr(locale, "language_code", "en")
+    data["inLanguage"] = "es-MX" if language_code == "es" else "en-US"
 
     # Date
     date = getattr(page, "date", None)
@@ -755,7 +756,6 @@ def jsonld_webpage(context: dict[str, Any]) -> str:
     Provides Google with explicit page type signals, linking back to the
     parent WebSite and Organization entities for better entity resolution.
     """
-    biz = context.get("biz")
     page = context.get("page") or context.get("self")
     if not page:
         return ""
@@ -783,7 +783,7 @@ def jsonld_webpage(context: dict[str, Any]) -> str:
         "isPartOf": {"@type": "WebSite", "@id": f"{site_url}#website"},
         "about": {"@type": "Organization", "@id": f"{site_url}#organization"},
         "inLanguage": "es-MX"
-        if getattr(page, "locale", None) and str(page.locale) != "en"
+        if getattr(getattr(page, "locale", None), "language_code", "en") == "es"
         else "en-US",
     }
 

@@ -7,6 +7,10 @@
     @apply bg-background text-text font-sans antialiased;
   }
 
+  body.nav-open {
+    @apply overflow-hidden;
+  }
+
   h1,
   h2,
   h3,
@@ -69,6 +73,97 @@
   .section-header::after {
     content: "";
     @apply block w-10 h-1 bg-primary mt-4;
+  }
+
+  /* ── Global navigation ────────────────────────── */
+  .nav-link,
+  .nav-trigger {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center gap-1 whitespace-nowrap rounded px-1 text-xs font-semibold uppercase tracking-wide text-text-muted transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
+  }
+
+  .home-hero-title {
+    overflow-wrap: break-word;
+  }
+
+  html[lang^="es"] .home-hero-title {
+    font-size: clamp(1.625rem, 7vw, 3rem);
+    overflow-wrap: anywhere;
+  }
+
+  @media (min-width: 1024px) {
+    html[lang^="es"] .site-logo-subtitle {
+      font-size: 0.5rem;
+      letter-spacing: 0.12em;
+    }
+  }
+
+  .nav-dropdown-panel {
+    @apply overflow-hidden rounded-card border border-white/10 bg-surface p-2 shadow-card;
+  }
+
+  .language-option {
+    @apply inline-flex min-h-11 min-w-11 items-center justify-center px-3 transition-colors;
+  }
+
+  .nav-dropdown-link {
+    @apply flex min-h-11 items-center rounded-lg px-4 py-2 text-sm text-text-muted transition-colors hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
+  }
+
+  .nav-dropdown-all {
+    @apply mt-2 flex min-h-11 items-center justify-center border-t border-white/10 px-4 pt-2 text-center text-xs font-bold text-primary hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
+  }
+
+  .nav-dropdown-empty {
+    @apply flex min-h-11 items-center px-4 py-2 text-sm text-text-muted;
+  }
+
+  .mobile-nav-link,
+  .mobile-nav-summary {
+    @apply flex min-h-11 cursor-pointer items-center py-2 text-base font-medium text-text-muted transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
+  }
+
+  .mobile-nav-group {
+    @apply border-b border-white/5 pb-2;
+  }
+
+  .mobile-nav-summary {
+    @apply justify-between;
+    list-style: none;
+  }
+
+  .mobile-nav-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-nav-summary::after {
+    content: "+";
+    @apply text-xl text-primary;
+  }
+
+  .mobile-nav-group[open] > .mobile-nav-summary::after {
+    content: "−";
+  }
+
+  .mobile-nav-submenu {
+    @apply ml-3 border-l border-white/10 pl-3;
+  }
+
+  .mobile-nav-submenu a {
+    @apply flex min-h-11 items-center py-2 text-sm text-text-muted transition-colors hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50;
+  }
+
+  /* ── Brand capability cards ───────────────────── */
+  .brand-card {
+    @apply flex min-h-[108px] flex-col items-center justify-center gap-3 rounded-card border border-white/5 bg-surface px-4 py-5 text-center text-xs font-bold uppercase tracking-wider text-white/70 transition-all;
+  }
+
+  a.brand-card:hover,
+  a.brand-card:focus-visible {
+    @apply -translate-y-1 border-primary/40 bg-primary/5 text-primary shadow-card outline-none;
+  }
+
+  .review-source {
+    @apply text-xs text-text-muted;
   }
 
   /* ── Service Card (dark theme) ───────────────── */
@@ -192,6 +287,31 @@
   }
 
   .input-dark::placeholder {
+    @apply text-text-muted;
+  }
+
+  .input-dark[aria-invalid="true"] {
+    @apply border-red-400;
+  }
+
+  .secondary-carousel-control {
+    @apply grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-surface text-lg text-white transition;
+  }
+
+  .secondary-carousel-control:hover:not(:disabled),
+  .secondary-carousel-control:focus-visible {
+    @apply border-primary text-primary outline-none ring-2 ring-primary/40;
+  }
+
+  .secondary-carousel-control:disabled {
+    @apply cursor-not-allowed opacity-35;
+  }
+
+  .toc-link-active {
+    @apply font-semibold text-primary;
+  }
+
+  .toc-link-inactive {
     @apply text-text-muted;
   }
 

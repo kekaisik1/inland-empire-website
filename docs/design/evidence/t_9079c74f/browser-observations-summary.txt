@@ -1,0 +1,11 @@
+entries 65
+error_summary {'Log.entryAdded:warning': 65}
+overflow []
+lowl_routes ['areas-en', 'blog-en', 'blog-es', 'city-corona-en', 'city-corona-es', 'contact-en', 'home-en', 'home-es', 'search-en', 'service-refrigerator-en', 'service-refrigerator-es', 'services-en', 'services-es']
+missing_images_total 0
+mobile_menu [('home-en', 'tablet-768x1024', {'expanded': 'true', 'menuVisible': True}), ('home-es', 'tablet-768x1024', {'expanded': 'true', 'menuVisible': True}), ('home-en', 'mobile-390x844', {'expanded': 'true', 'menuVisible': True}), ('home-es', 'mobile-390x844', {'expanded': 'true', 'menuVisible': True}), ('home-en', 'small-mobile-360x740', {'expanded': 'true', 'menuVisible': True}), ('home-es', 'small-mobile-360x740', {'expanded': 'true', 'menuVisible': True})]
+small_target_entries 65
+unnamed_entries 20
+sample home-en desktop-1440x900 Same-Day Appliance Repair in Corona, CA | LOWL ['SAME-DAY APPLIANCE REPAIR IN CORONA'] small= [{'tag': 'A', 'text': 'Skip to main content', 'w': 1, 'h': 1}, {'tag': 'A', 'text': 'HOME', 'w': 41, 'h': 16}, {'tag': 'A', 'text': 'SERVICES', 'w': 86, 'h': 16}] unnamed= ['<input type="text" id="hero-zip" name="zip" placeholder="e.g. 92879" pattern="[0-9]{5}" maxlength="5" inputmode="numeric'] booking= ['https://lowl-booking-production.up.railway.app/?source=lowl', 'https://lowl-booking-production.up.railway.app/?source=lowl', None]
+sample services-en desktop-1440x900 Appliance Repair Services in Corona | LOWL ['APPLIANCE REPAIR SERVICES'] small= [{'tag': 'A', 'text': 'Skip to main content', 'w': 1, 'h': 1}, {'tag': 'A', 'text': 'HOME', 'w': 41, 'h': 16}, {'tag': 'A', 'text': 'SERVICES', 'w': 86, 'h': 16}] unnamed= [] booking= ['https://lowl-booking-production.up.railway.app/?source=lowl', 'https://lowl-booking-production.up.railway.app/?source=lowl', 'https://lowl-booking-production.up.railway.app/?source=lowl']
+sample service-refrigerator-en desktop-1440x900 Refrigerator Repair in Corona, CA | LOWL ['REFRIGERATOR REPAIR'] small= [{'tag': 'A', 'text': 'Skip to main content', 'w': 1, 'h': 1}, {'tag': 'A', 'text': 'HOME', 'w': 41, 'h': 16}, {'tag': 'A', 'text': 'SERVICES', 'w': 86, 'h': 16}] unnamed= [] booking= ['https://lowl-booking-production.up.railway.app/?source=lowl', 'https://lowl-booking-production.up.railway.app/?source=lowl', 'https://lowl-booking-production.up.railway.app/?source=lowl']

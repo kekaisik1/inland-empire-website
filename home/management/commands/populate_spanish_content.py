@@ -39,6 +39,87 @@ def _faqs(items: list[dict[str, str]]) -> str:
     return json.dumps([{"type": "faq_item", "value": v, "id": _uid()} for v in items])
 
 
+def _stream_data(value: Any) -> Any:
+    raw_data = getattr(value, "raw_data", None)
+    if raw_data is not None:
+        try:
+            return list(raw_data)
+        except TypeError:
+            return raw_data
+    raw_text = str(getattr(value, "raw_text", value) or "")
+    if raw_text == "":
+        return []
+    try:
+        return json.loads(raw_text)
+    except (TypeError, json.JSONDecodeError):
+        return raw_text
+
+
+def _strip_stream_ids(value: Any) -> Any:
+    if isinstance(value, list):
+        return [_strip_stream_ids(item) for item in value]
+    if isinstance(value, dict):
+        return {
+            key: _strip_stream_ids(item)
+            for key, item in value.items()
+            if key != "id"
+        }
+    return value
+
+
+def _stream_missing(value: Any) -> bool:
+    data = _stream_data(value)
+    return data == [] or data == ""
+
+
+def _stream_equivalent(left: Any, right_json: str) -> bool:
+    try:
+        right = json.loads(right_json)
+    except json.JSONDecodeError:
+        right = right_json
+    return _strip_stream_ids(_stream_data(left)) == _strip_stream_ids(right)
+
+
+def _copied_from_english(page: ServicePage, english_page: ServicePage | None, field: str) -> bool:
+    if english_page is None:
+        return False
+    current = getattr(page, field)
+    english = getattr(english_page, field)
+    if field in {"problems_we_fix", "why_choose_us", "faq"}:
+        english_json = json.dumps(_stream_data(english))
+        return _stream_equivalent(current, english_json)
+    return str(current or "") == str(english or "")
+
+
+def apply_spanish_service_content(
+    page: ServicePage,
+    content: dict[str, Any],
+    *,
+    english_page: ServicePage | None = None,
+) -> bool:
+    """Populate missing or copied-English Spanish fields, preserving editor Spanish."""
+    changed = False
+
+    if (not page.body) or _copied_from_english(page, english_page, "body"):
+        if str(page.body or "") != content["body"]:
+            page.body = content["body"]
+            changed = True
+
+    stream_targets = {
+        "problems_we_fix": _problems(content["problems"]),
+        "why_choose_us": _benefits(content["benefits"]),
+        "faq": _faqs(content["faqs"]),
+    }
+    for field, desired in stream_targets.items():
+        current = getattr(page, field)
+        if _stream_missing(current) or _copied_from_english(page, english_page, field):
+            if not _stream_equivalent(current, desired):
+                setattr(page, field, desired)
+                changed = True
+
+    return changed
+
+
 # ── Full Spanish content for each service ────────────────────────────
 
 SERVICE_CONTENT: dict[str, dict[str, Any]] = {
@@ -812,16 +893,18 @@ class Command(BaseCommand):
                 )
                 continue
 
-            # Skip if already populated
-            if page.body and len(page.body) > 50:
-                self.stdout.write(f"  SKIP  {page.title} (already has body content)")
+            english_page = ServicePage.objects.filter(
+                locale__language_code="en",
+                translation_key=page.translation_key,
+            ).first()
+            if not apply_spanish_service_content(
+                page,
+                content,
+                english_page=english_page,
+            ):
+                self.stdout.write(f"  SKIP  {page.title} (already localized)")
                 skipped += 1
                 continue
-
-            page.body = content["body"]
-            page.problems_we_fix = _problems(content["problems"])
-            page.why_choose_us = _benefits(content["benefits"])
-            page.faq = _faqs(content["faqs"])
 
             page.save()
             page.save_revision().publish()

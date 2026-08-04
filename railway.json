@@ -5,6 +5,9 @@
     "dockerfilePath": "Dockerfile"
   },
   "deploy": {
+    "preDeployCommand": [
+      "/app/predeploy.sh"
+    ],
     "startCommand": "/app/start.sh",
     "healthcheckPath": "/health/",
     "healthcheckTimeout": 300,

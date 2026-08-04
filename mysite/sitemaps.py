@@ -19,19 +19,20 @@ from django.contrib.sitemaps import Sitemap
 from django.http import HttpRequest, HttpResponse
 from wagtail.models import Page
 
-logger = logging.getLogger(__name__)
-
 from blog.models import BlogIndexPage, BlogPage
 from home.models import HomePage
 from locations.models import CityPage, LocationsIndexPage
 from pages.models import StaticPage
 from services.models import ServicePage, ServicesIndexPage
 
+logger = logging.getLogger(__name__)
+
 
 class _WagtailPageSitemap(Sitemap):
     """Base sitemap for Wagtail pages with lastmod and hreflang alternates."""
 
-    protocol = "https"
+    # Let Django's sitemap view derive the scheme from the current request.
+    protocol = None
 
     def items(self) -> list[Page]:
         return list(self.model.objects.live().public().order_by("-last_published_at"))

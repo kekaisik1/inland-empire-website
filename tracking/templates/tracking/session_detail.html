@@ -1,0 +1,26 @@
+{% extends "wagtailadmin/generic/base.html" %}
+{% load i18n %}
+
+{% block titletag %}{% trans "Tracking session" %} {{ session.session_id|stringformat:"s"|slice:":8" }}{% endblock %}
+
+{% block content %}
+<div class="nice-padding">
+    <p><a href="{% url 'tracking_dashboard' %}">&larr; {% trans "Back to tracking dashboard" %}</a></p>
+    <h2>{% trans "Session" %} {{ session.session_id|stringformat:"s"|slice:":8" }}</h2>
+    <dl>
+        <dt>{% trans "Started" %}</dt><dd>{{ session.created_at }}</dd>
+        <dt>{% trans "Device" %}</dt><dd>{{ session.device_type }} / {{ session.browser|default:"—" }} / {{ session.os|default:"—" }}</dd>
+        <dt>{% trans "Landing path" %}</dt><dd>{{ session.landing_url }}</dd>
+        <dt>{% trans "Source" %}</dt><dd>{{ session.utm_source|default:"Direct" }}</dd>
+        <dt>{% trans "Converted" %}</dt><dd>{{ session.is_converted|yesno:_('Yes,No') }}</dd>
+    </dl>
+    <h2>{% trans "Event timeline" %}</h2>
+    <ol>
+    {% for event in events %}
+        <li><strong>{{ event.event_name }}</strong> — {{ event.created_at }}{% if event.url %}<br>{{ event.url }}{% endif %}{% if event.properties %}<br>{{ event.properties }}{% endif %}</li>
+    {% empty %}
+        <li>{% trans "No events recorded." %}</li>
+    {% endfor %}
+    </ol>
+</div>
+{% endblock %}

@@ -3,13 +3,24 @@
 
 {% block body_class %}page-search{% endblock %}
 
+{% block title %}{% trans "Search" %}{% endblock %}
+{% block title_suffix %}{% endblock %}
+
+{% block canonical %}<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}" />{% endblock %}
+
+{% block hreflang %}
+{% language "en" %}<link rel="alternate" hreflang="en" href="{{ request.scheme }}://{{ request.get_host }}{% url 'search' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}" />{% endlanguage %}
+{% language "es" %}<link rel="alternate" hreflang="es" href="{{ request.scheme }}://{{ request.get_host }}{% url 'search' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}" />{% endlanguage %}
+{% language "en" %}<link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{% url 'search' %}{% if search_query %}?q={{ search_query|urlencode }}{% endif %}" />{% endlanguage %}
+{% endblock %}
+
 {% block meta_robots %}
 <meta name="robots" content="noindex, follow" />
 {% endblock %}
 
 {% block content %}
 {# ── Hero ── #}
-<header class="bg-surface text-white py-12 md:py-16 relative overflow-hidden">
+<header class="bg-surface text-white py-12 md:py-16 relative overflow-hidden" data-secondary-hero="search">
     <div class="stripe-bg" aria-hidden="true"></div>
     <div class="container-site relative z-10">
         <h1 class="text-3xl md:text-4xl font-display uppercase font-extrabold text-white">{% trans "Search" %}</h1>
@@ -19,10 +30,10 @@
 <section class="bg-background">
     <div class="container-site py-16 md:py-24">
         {# ── Search Form ── #}
-        <form action="{% url 'search' %}" method="get" class="max-w-2xl mb-12">
+        <form action="{% url 'search' %}" method="get" class="max-w-2xl mb-12" data-search-form role="search">
             <div class="flex gap-3">
                 <label for="search-input" class="sr-only">{% trans "Search" %}</label>
-                <input type="text" id="search-input" name="query" value="{{ search_query|default:'' }}"
+                <input type="search" id="search-input" name="q" value="{{ search_query|default:'' }}"
                     placeholder="{% trans 'Search for services, areas, articles...' %}"
                     class="input-dark flex-1"
                     autofocus />
@@ -35,9 +46,9 @@
         {% if search_results %}
         <p class="text-text-muted text-sm mb-8 font-sans">{% blocktrans with query=search_query %}Showing results for "<strong class="text-white">{{ query }}</strong>"{% endblocktrans %}</p>
 
-        <div class="space-y-6">
+        <div class="space-y-6" data-search-results>
             {% for result in search_results %}
-            <article class="bg-surface p-6 rounded-card border border-white/5 hover:border-white/10 transition-colors">
+            <article class="bg-surface p-6 rounded-card border border-white/5 hover:border-primary/50 transition-colors" data-search-result>
                 <a href="{% pageurl result %}" class="block group">
                     <h2 class="font-bold text-lg text-white group-hover:text-primary transition-colors">{{ result.title }}</h2>
                     {% if result.search_description %}
@@ -52,13 +63,13 @@
         {% if search_results.has_other_pages %}
         <nav class="flex justify-center items-center gap-2 mt-16" aria-label="{% trans 'Search pagination' %}">
             {% if search_results.has_previous %}
-            <a href="?query={{ search_query|urlencode }}&page={{ search_results.previous_page_number }}"
+            <a href="?q={{ search_query|urlencode }}&page={{ search_results.previous_page_number }}"
                 class="px-4 py-2 rounded-button border border-white/10 text-sm font-medium text-text-muted hover:border-primary hover:text-primary transition-colors min-h-[44px] flex items-center">
                 &larr; {% trans "Previous" %}
             </a>
             {% endif %}
             {% if search_results.has_next %}
-            <a href="?query={{ search_query|urlencode }}&page={{ search_results.next_page_number }}"
+            <a href="?q={{ search_query|urlencode }}&page={{ search_results.next_page_number }}"
                 class="px-4 py-2 rounded-button border border-white/10 text-sm font-medium text-text-muted hover:border-primary hover:text-primary transition-colors min-h-[44px] flex items-center">
                 {% trans "Next" %} &rarr;
             </a>
@@ -67,13 +78,13 @@
         {% endif %}
 
         {% else %}
-        <div class="text-center py-12">
+        <div class="text-center py-12" data-search-empty-state role="status">
             <p class="text-text-muted text-lg mb-2 font-sans">{% blocktrans with query=search_query %}No results found for "<strong class="text-white">{{ query }}</strong>"{% endblocktrans %}</p>
             <p class="text-text-muted text-sm font-sans">{% trans "Try different keywords or browse our services." %}</p>
         </div>
         {% endif %}
         {% else %}
-        <div class="text-center py-12">
+        <div class="text-center py-12" data-search-instructions role="status">
             <p class="text-text-muted text-lg font-sans">{% trans "Enter a search term above to find services, locations, and articles." %}</p>
         </div>
         {% endif %}

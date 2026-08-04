@@ -1,0 +1,25 @@
+{% load i18n %}
+<section>
+    <h2>{% trans "Sessions" %}</h2>
+    <table class="listing">
+        <thead><tr><th>{% trans "Date" %}</th><th>{% trans "Landing" %}</th><th>{% trans "Source" %}</th><th>{% trans "Events" %}</th><th></th></tr></thead>
+        <tbody>
+        {% for session_row in sessions %}
+            <tr>
+                <td>{{ session_row.created_at }}</td>
+                <td>{{ session_row.landing_url|truncatechars:60 }}</td>
+                <td>{{ session_row.utm_source|default:"Direct" }}</td>
+                <td>{{ session_row.event_count }}</td>
+                <td><a href="{% url 'tracking_session_detail' pk=session_row.pk %}">{% trans "View" %}</a></td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5">{% trans "No sessions recorded." %}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if total_pages > 1 %}
+    <nav aria-label="{% trans 'Pagination' %}">
+        {% for number in page_range %}<a href="?days={{ days }}&page={{ number }}">{{ number }}</a>{% if not forloop.last %} · {% endif %}{% endfor %}
+    </nav>
+    {% endif %}
+</section>

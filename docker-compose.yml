@@ -3,35 +3,31 @@ services:
     build: .
     ports:
       - "8000:8000"
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
     environment:
       - DJANGO_SETTINGS_MODULE=mysite.settings.production
-      - DATABASE_URL=postgres://${POSTGRES_USER:-lowl}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-lowl}
-      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-inland}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}@db:5432/${POSTGRES_DB:-inland}
+      - GUNICORN_WORKERS=${GUNICORN_WORKERS:-1}
     depends_on:
       db:
         condition: service_healthy
-      redis:
-        condition: service_started
     restart: unless-stopped
 
   db:
     image: postgres:16-alpine
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-lowl}
-      POSTGRES_USER: ${POSTGRES_USER:-lowl}
+      POSTGRES_DB: ${POSTGRES_DB:-inland}
+      POSTGRES_USER: ${POSTGRES_USER:-inland}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lowl}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-inland}"]
       interval: 5s
       timeout: 5s
       retries: 5
-    restart: unless-stopped
-
-  redis:
-    image: redis:7-alpine
     restart: unless-stopped
 
 volumes:

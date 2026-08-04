@@ -4,10 +4,43 @@ from __future__ import annotations
 
 
 from django.test import TestCase, override_settings
+from wagtail.admin.panels import MultiFieldPanel, ObjectList
 from wagtail.models import Page, Site
 from wagtail.test.utils import WagtailPageTestCase
 
 from home.models import HomePage, SiteSettings
+
+
+PHASE02_HOMEPAGE_FIELDS = [
+    "hero_title",
+    "hero_subtitle",
+    "commercial_title",
+    "commercial_body",
+    "services_heading",
+    "process_heading",
+    "process_subheading",
+    "pricing_heading",
+    "pricing_note",
+    "brands_heading",
+    "brands_subheading",
+    "areas_heading",
+    "areas_subheading",
+    "testimonials_heading",
+    "faq_heading",
+]
+
+
+def panel_field_names(panels: list[object]) -> set[str]:
+    """Return field names from a nested Wagtail panel definition."""
+    names: set[str] = set()
+    for panel in panels:
+        field_name = getattr(panel, "field_name", None)
+        if field_name:
+            names.add(field_name)
+        children = getattr(panel, "children", None)
+        if children:
+            names.update(panel_field_names(list(children)))
+    return names
 
 
 def create_test_home() -> tuple[HomePage, Site]:
@@ -53,10 +86,21 @@ class HomePageModelTest(WagtailPageTestCase):
         self.assertIn("faq_items", response.context)
         self.assertGreater(len(response.context["faq_items"]), 0)
 
-    def test_home_page_context_contains_review_items(self) -> None:
+    def test_home_page_context_withholds_unapproved_review_items(self) -> None:
         response = self.client.get(self.home.url)
         self.assertIn("review_items", response.context)
-        self.assertEqual(len(response.context["review_items"]), 3)
+        self.assertEqual(response.context["review_items"], [])
+
+    def test_phase02_homepage_editable_section_fields_exist(self) -> None:
+        for field_name in PHASE02_HOMEPAGE_FIELDS:
+            with self.subTest(field_name=field_name):
+                field = HomePage._meta.get_field(field_name)
+                self.assertTrue(field.blank)
+
+    def test_phase02_homepage_section_fields_are_grouped_in_admin_panels(self) -> None:
+        names = panel_field_names(HomePage.content_panels)
+        self.assertTrue(set(PHASE02_HOMEPAGE_FIELDS).issubset(names))
+        self.assertTrue(any(isinstance(panel, MultiFieldPanel) for panel in HomePage.content_panels))
 
 
 class SiteSettingsTest(TestCase):
@@ -92,6 +136,79 @@ class SiteSettingsTest(TestCase):
 
     def test_str_returns_business_name(self) -> None:
         self.assertEqual(str(self.settings), "Test Biz")
+
+    def test_phase02_sitesettings_phone_display_formats_e164_us_number(self) -> None:
+        self.settings.phone = "+12125551234"
+        self.settings.save()
+        self.assertEqual(self.settings.phone_display, "(212) 555-1234")
+
+    def test_phase02_sitesettings_phone_display_formats_ten_digit_us_number(self) -> None:
+        self.settings.phone = "9518085830"
+        self.settings.save()
+        self.assertEqual(self.settings.phone_display, "(951) 808-5830")
+
+    def test_phase02_sitesettings_phone_display_falls_back_for_non_us_number(self) -> None:
+        self.settings.phone = "+442071234567"
+        self.settings.save()
+        self.assertEqual(self.settings.phone_display, "442071234567")
+
+    def test_phase02_sitesettings_save_synchronizes_phone_display_from_phone(self) -> None:
+        self.settings.phone = "+19099752506"
+        self.settings.phone_display = "stale editor value"
+        self.settings.save()
+        self.settings.refresh_from_db()
+        self.assertEqual(self.settings.phone_display, "(909) 975-2506")
+
+    def test_phase02_sitesettings_target_owned_model_defaults(self) -> None:
+        defaults = SiteSettings()
+        self.assertEqual(defaults.business_name, "Inland Empire Appliance Repair")
+        self.assertTrue(defaults.phone.startswith("+190"))
+        self.assertTrue(defaults.phone.endswith("2506"))
+        self.assertEqual(defaults.phone_display, "(909) 975-2506")
+        self.assertEqual(defaults.email, "inlandrepair.ca@gmail.com")
+        self.assertEqual(defaults.address_line1, "632 Shadybrook Ln")
+        self.assertEqual(defaults.city, "Corona")
+        self.assertEqual(defaults.zip_code, "92879")
+        self.assertNotIn("lowl", defaults.booking_url.lower())
+        self.assertNotEqual(defaults.booking_source, "lowl")
+
+    def test_phase02_sitesettings_callrail_and_navigation_fields_exist(self) -> None:
+        expected = {
+            "callrail_swap_url": "",
+            "main_nav_order": "home,services,service_areas,brands,blog,about,contact",
+            "footer_company_order": "about,contact,blog,service_areas,privacy_policy,terms_of_service",
+        }
+        for field_name, default in expected.items():
+            with self.subTest(field_name=field_name):
+                field = SiteSettings._meta.get_field(field_name)
+                self.assertTrue(field.blank)
+                self.assertEqual(field.default, default)
+
+    def test_phase02_sitesettings_callrail_and_navigation_fields_are_editable(self) -> None:
+        names = set()
+        headings = []
+        for child in SiteSettings.edit_handler.children:
+            if isinstance(child, ObjectList):
+                headings.append(child.heading)
+                names.update(panel_field_names(list(child.children)))
+        self.assertIn("Navigation", headings)
+        self.assertIn("callrail_swap_url", names)
+        self.assertIn("main_nav_order", names)
+        self.assertIn("footer_company_order", names)
+
+    def test_phase02_sitesettings_contact_panel_guides_phone_display_sync(self) -> None:
+        contact_tab = next(
+            child
+            for child in SiteSettings.edit_handler.children
+            if isinstance(child, ObjectList) and child.heading == "Contact"
+        )
+        names = panel_field_names(list(contact_tab.children))
+        help_text = " ".join(
+            getattr(panel, "content", "") for panel in contact_tab.children
+        )
+        self.assertIn("phone", names)
+        self.assertNotIn("phone_display", names)
+        self.assertIn("automatically", help_text.lower())
 
 
 class SeoTagsTest(TestCase):
@@ -273,7 +390,7 @@ class ContextProcessorTest(TestCase):
         biz = response.context["biz"]
         self.assertIsNotNone(biz)
         # Auto-created instance has the model field default
-        self.assertEqual(biz.business_name, "LOWL Appliance Repair")
+        self.assertEqual(biz.business_name, "Inland Empire Appliance Repair")
 
     @override_settings(
         CACHES={"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
@@ -286,7 +403,7 @@ class ContextProcessorTest(TestCase):
         # First request populates cache
         self.client.get(self.home.url)
         # Cache keys should now exist
-        cached = cache.get("lowl:nav:services:en")
+        cached = cache.get("inland:nav:services:en")
         self.assertIsNotNone(cached)
 
 

@@ -1,7 +1,7 @@
 {
-  "name": "LOWL Appliance Repair",
-  "short_name": "LOWL",
-  "description": "Same-day appliance repair in Southern California. Refrigerator, washer, dryer, dishwasher & oven repair with warranty included.",
+  "name": "Inland Empire Appliance Repair",
+  "short_name": "Inland Empire",
+  "description": "Appliance repair across the Inland Empire for refrigerators, washers, dryers, dishwashers, ovens, and more.",
   "lang": "en-US",
   "start_url": "/",
   "display": "browser",

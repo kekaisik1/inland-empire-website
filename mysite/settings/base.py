@@ -1,5 +1,5 @@
 """
-Django settings for the LOWL website — shared base configuration.
+Django settings for the Inland Empire website — shared base configuration.
 
 All environment-specific settings live in dev.py and production.py.
 Business info is managed via Wagtail SiteSettings + env vars.
@@ -18,6 +18,14 @@ load_dotenv()
 PROJECT_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = PROJECT_DIR.parent
 
+
+def _env_bool(name: str, default: bool = False) -> bool:
+    return os.environ.get(name, str(default)).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_list(name: str) -> tuple[str, ...]:
+    return tuple(value.strip() for value in os.environ.get(name, "").split(",") if value.strip())
+
 # ── Named Constants (no magic numbers) ─────────────────────────
 NAV_CACHE_TIMEOUT: int = 300  # 5 minutes
 BLOG_POSTS_PER_PAGE: int = 9
@@ -31,6 +39,7 @@ INSTALLED_APPS: list[str] = [
     "pages",
     "blog",
     "search",
+    "tracking.apps.TrackingConfig",
     # Wagtail
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -63,9 +72,11 @@ INSTALLED_APPS: list[str] = [
 ]
 
 MIDDLEWARE: list[str] = [
+    "mysite.middleware.RealIPMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.middleware.gzip.GZipMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "mysite.middleware.SEOHeadersMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -92,6 +103,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "mysite.context_processors.navigation_data",
                 "mysite.context_processors.site_settings_context",
+                "mysite.context_processors.tracking_context",
             ],
         },
     },
@@ -150,7 +162,9 @@ STORAGES = {
 }
 
 # ── Wagtail ────────────────────────────────────────────────────
-WAGTAIL_SITE_NAME = os.environ.get("BUSINESS_NAME", "LOWL Appliance Repair")
+WAGTAIL_SITE_NAME = os.environ.get(
+    "BUSINESS_NAME", "Inland Empire Appliance Repair"
+)
 WAGTAILADMIN_BASE_URL = os.environ.get("WAGTAILADMIN_BASE_URL", "http://localhost:8000")
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
@@ -175,9 +189,35 @@ WAGTAILDOCS_EXTENSIONS = [
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "lowl-unique-snowflake",
+        "LOCATION": "inland-empire-cache",
     }
 }
+
+# Optional integrations are disabled by default and fail closed without secrets.
+TRACKING_ENABLED = _env_bool("TRACKING_ENABLED")
+TRACKING_WEBHOOK_ENABLED = _env_bool("TRACKING_WEBHOOK_ENABLED")
+TRACKING_REQUIRE_CONSENT = _env_bool("TRACKING_REQUIRE_CONSENT", True)
+TRACKING_REQUIRE_ORIGIN = _env_bool("TRACKING_REQUIRE_ORIGIN", True)
+TRACKING_ALLOWED_ORIGINS = _env_list("TRACKING_ALLOWED_ORIGINS")
+TRACKING_SECRET = os.environ.get("TRACKING_SECRET", "")
+TRACKING_IP_HASH_KEY = os.environ.get("TRACKING_IP_HASH_KEY", "")
+TRACKING_STORAGE_KEY = "inland_tracking_sid"
+TRACKING_COLLECTION_PATH = "/api/track/collect/"
+TRACKING_COLLECT_RATE = os.environ.get("TRACKING_COLLECT_RATE", "30/m")
+TRACKING_WEBHOOK_RATE = os.environ.get("TRACKING_WEBHOOK_RATE", "10/m")
+TRACKING_RETENTION_DAYS = int(os.environ.get("TRACKING_RETENTION_DAYS", "90"))
+TRACKING_CONVERTED_RETENTION_DAYS = int(
+    os.environ.get("TRACKING_CONVERTED_RETENTION_DAYS", "180")
+)
+TRACKING_ADMIN_ENABLED = _env_bool("TRACKING_ADMIN_ENABLED", True)
+VAPI_ENABLED = _env_bool("VAPI_ENABLED")
+VAPI_ALLOW_UNSIGNED = _env_bool("VAPI_ALLOW_UNSIGNED")
+VAPI_SERVER_SECRET = os.environ.get("VAPI_SERVER_SECRET", "")
+VAPI_RATE = os.environ.get("VAPI_RATE", "30/m")
+BING_SITE_AUTH_TOKEN = os.environ.get("BING_SITE_AUTH_TOKEN", "")
+BOOKING_DOMAIN = os.environ.get("BOOKING_DOMAIN", "")
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "")
+TRUSTED_PROXY_CIDRS = _env_list("TRUSTED_PROXY_CIDRS")
 
 # ── Default primary key ───────────────────────────────────────
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

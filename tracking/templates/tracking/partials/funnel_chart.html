@@ -1,0 +1,9 @@
+{% load i18n %}
+<section>
+    <h2>{% trans "Conversion funnel" %}</h2>
+    <ol>
+    {% for label, count, percentage in funnel %}
+        <li>{{ label }}: {{ count }} ({{ percentage }}%)</li>
+    {% endfor %}
+    </ol>
+</section>

@@ -9,6 +9,17 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import Orderable, Page
 
+from home import reviews as customer_reviews
+from home.brand_assets import BRAND_LOGOS, get_brand_cards
+from services.service_assets import get_static_service_hero_images
+
+
+FEATURED_SERVICE_HUB_SLUGS = (
+    "commercial-appliance-repair",
+    "high-end-appliance-repair",
+)
+BRAND_SERVICE_SLUGS = frozenset(str(brand["slug"]) for brand in BRAND_LOGOS)
+
 
 class ServicesIndexPage(Page):
     """Landing page listing all repair services."""
@@ -41,9 +52,10 @@ class ServicesIndexPage(Page):
         from django.utils.translation import gettext as _
 
         context = super().get_context(request)
-        context["services"] = (
+        services = list(
             ServicePage.objects.child_of(self)
             .live()
+            .filter(is_regional_service_page=False)
             .only(
                 "id",
                 "title",
@@ -54,6 +66,18 @@ class ServicesIndexPage(Page):
                 "featured_image",
             )
         )
+        context["services"] = services
+
+        by_slug = {page.slug: page for page in services}
+        context["featured_service_hubs"] = [
+            by_slug[slug] for slug in FEATURED_SERVICE_HUB_SLUGS if slug in by_slug
+        ]
+        context["standard_services"] = [
+            page
+            for page in services
+            if page.slug not in FEATURED_SERVICE_HUB_SLUGS
+            and page.slug not in BRAND_SERVICE_SLUGS
+        ]
 
         # Read live diagnostic fee from SiteSettings
         fee = "70"
@@ -149,6 +173,26 @@ class ServicePage(Page):
         blank=True,
         help_text="Short description for service cards (1-2 lines)",
     )
+    public_h1 = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=(
+            "Optional public H1/hero heading. Leave blank to use the Wagtail "
+            "page title so navigation and menus keep using the page title."
+        ),
+    )
+    photo_carousel_title = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Optional heading for the service photo carousel section.",
+    )
+    is_regional_service_page = models.BooleanField(
+        default=False,
+        help_text=(
+            "Marks SEO service pages created for a specific city. Regional pages "
+            "are published manually and intentionally excluded from service menus."
+        ),
+    )
     hero_usp = models.TextField(blank=True, verbose_name="Hero USP")
     body = RichTextField(blank=True, verbose_name="Main Content")
 
@@ -195,11 +239,18 @@ class ServicePage(Page):
         FieldPanel("intro"),
         FieldPanel("featured_image"),
         FieldPanel("short_description"),
+        FieldPanel("public_h1"),
+        FieldPanel("photo_carousel_title"),
+        FieldPanel("is_regional_service_page"),
         FieldPanel("hero_usp"),
         FieldPanel("body"),
         FieldPanel("problems_we_fix"),
         FieldPanel("why_choose_us"),
         FieldPanel("faq"),
+        MultiFieldPanel(
+            [InlinePanel("photo_carousel_images", label="Carousel image")],
+            heading="Service Photo Carousel",
+        ),
         MultiFieldPanel(
             [InlinePanel("related_services", label="Related Service")],
             heading="Related Services",
@@ -212,12 +263,67 @@ class ServicePage(Page):
         indexes = [models.Index(fields=["-date"])]
 
     def get_context(self, request: object) -> dict:
-        """Prefetch related services to avoid N+1 queries."""
+        """Add target-owned secondary-page relationships and sourced assets."""
         context = super().get_context(request)
         context["related_services_optimized"] = list(
             self.related_services.select_related("related_service")
         )
+        brand_pages = ServicePage.objects.live().filter(
+            locale=self.locale,
+            slug__in=BRAND_SERVICE_SLUGS,
+        )
+        context["brand_cards"] = get_brand_cards(
+            {page.slug: page for page in brand_pages}
+        )
+        service_hero_slug = str(self.slug)
+        if self.is_regional_service_page:
+            from home.regional_service_seed_data import get_regional_base_service_slug
+
+            service_hero_slug = (
+                get_regional_base_service_slug(service_hero_slug) or service_hero_slug
+            )
+        context["service_hero_slug"] = service_hero_slug
+        context["static_service_hero_images"] = get_static_service_hero_images(service_hero_slug)
+        context["review_items"] = customer_reviews.get_customer_review_items()
+
+        from blog.models import BlogPage
+        from locations.models import CityPage
+
+        context["service_area_switcher_cities"] = list(
+            CityPage.objects.live()
+            .filter(locale=self.locale)
+            .order_by("title")
+            .only("id", "title", "slug", "url_path", "state")[:12]
+        )
+        context["latest_blog_posts"] = list(
+            BlogPage.objects.live()
+            .filter(locale=self.locale)
+            .order_by("-date")
+            .only("id", "title", "slug", "url_path", "date", "intro")[:6]
+        )
+        context["appliance_service_pages"] = list(
+            ServicePage.objects.live()
+            .filter(locale=self.locale, is_regional_service_page=False)
+            .exclude(pk=self.pk)
+            .exclude(slug__in=FEATURED_SERVICE_HUB_SLUGS)
+            .exclude(slug__in=BRAND_SERVICE_SLUGS)
+            .order_by("title")
+            .only("id", "title", "slug", "url_path")[:12]
+        )
         return context
+
+
+class ServicePhotoCarouselImage(Orderable):
+    """Ordered image-only carousel item for one service page."""
+
+    page = ParentalKey(ServicePage, related_name="photo_carousel_images")
+    image = models.ForeignKey(
+        "wagtailimages.Image",
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+
+    panels = [FieldPanel("image")]
 
 
 class ServiceRelatedService(Orderable):

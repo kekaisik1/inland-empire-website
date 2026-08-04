@@ -1,4 +1,4 @@
-"""Populate city pages with unique SEO content, ZIP codes, and meta fields.
+"""Backfill missing city SEO content, ZIP codes, and meta fields.
 
 Usage:
     python manage.py populate_city_seo          # dry-run (shows changes)
@@ -29,7 +29,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Lake Elsinore, CA. Refrigerator, washer,"
             " dryer, dishwasher & oven repair. $70 diagnostic waived with repair."
-            " Call (951) 620-9609."
+            " Call (909) 975-2506."
         ),
         "intro": (
             "Certified same-day appliance repair for Lake Elsinore homes and"
@@ -41,15 +41,15 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         ),
         "body": (
             "<h2>Trusted Appliance Repair in Lake Elsinore, CA</h2>"
-            "<p>LOWL Appliance Repair is headquartered in Lake Elsinore, making"
+            "<p>Inland Empire Appliance Repair is based in Corona, making"
             " this city our home base. When your refrigerator stops cooling on a"
             " hot summer afternoon or your washer springs a leak, our"
             " EPA-certified technicians can be at your door within hours — not"
             " days. We serve neighborhoods from Tuscany Hills and Canyon Estates"
             " to the lakefront communities along Railroad Canyon and Diamond"
             " Drive.</p>"
-            "<h2>Why Lake Elsinore Residents Choose LOWL</h2>"
-            "<p>As a locally owned company based right here on Langstaff Street,"
+            "<h2>Why Lake Elsinore Residents Choose Inland Empire Appliance Repair</h2>"
+            "<p>As a locally owned company based right here on Shadybrook Lane,"
             " we understand the challenges Lake Elsinore homeowners face: hard"
             " water that wears out water heaters faster, summer heat that pushes"
             " refrigerators and AC units to their limits, and the daily demands"
@@ -88,7 +88,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Corona, CA. Refrigerator, washer,"
             " dryer & oven repair for all brands. $70 diagnostic waived with"
-            " repair. Call (951) 620-9609."
+            " repair. Call (909) 975-2506."
         ),
         "intro": (
             "Same-day appliance repair for Corona homes and businesses — all"
@@ -147,7 +147,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Riverside, CA. All major brands."
             " Refrigerator, washer, dryer, dishwasher & oven repair. $70"
-            " diagnostic waived with repair. Call (951) 620-9609."
+            " diagnostic waived with repair. Call (909) 975-2506."
         ),
         "intro": (
             "Same-day appliance repair across Riverside — from downtown to"
@@ -203,7 +203,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Murrieta, CA. All major brands,"
             " warranty included. $70 diagnostic waived with repair."
-            " Call (951) 620-9609."
+            " Call (909) 975-2506."
         ),
         "intro": (
             "Certified same-day appliance repair in Murrieta — all major brands,"
@@ -222,7 +222,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
             " of Bear Creek and Greer Ranch to the established neighborhoods"
             " near Murrieta Hot Springs Road, we provide same-day appliance"
             " repair with warranty on every job.</p>"
-            "<h2>Why Murrieta Homeowners Call LOWL</h2>"
+            "<h2>Why Murrieta Homeowners Call Inland Empire Appliance Repair</h2>"
             "<p>Murrieta's family-oriented neighborhoods depend on working"
             " appliances. A broken washer with a family of five or a"
             " refrigerator outage in summer heat — these are urgent situations."
@@ -261,7 +261,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Temecula, CA. Refrigerator, washer,"
             " dryer, oven & commercial repair. Warranty included. $70"
-            " diagnostic waived. Call (951) 620-9609."
+            " diagnostic waived. Call (909) 975-2506."
         ),
         "intro": (
             "Same-day appliance repair for Temecula homes and businesses — all"
@@ -317,7 +317,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Menifee, CA. All brands, warranty"
             " included. Refrigerator, washer, dryer & oven repair. $70"
-            " diagnostic waived. Call (951) 620-9609."
+            " diagnostic waived. Call (909) 975-2506."
         ),
         "intro": (
             "Same-day appliance repair for Menifee — certified technicians, all"
@@ -373,7 +373,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Beaumont, CA. All brands, warranty"
             " included. $70 diagnostic waived with repair."
-            " Call (951) 620-9609."
+            " Call (909) 975-2506."
         ),
         "intro": (
             "Same-day appliance repair for Beaumont homes — certified"
@@ -429,7 +429,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Perris, CA. Refrigerator, washer,"
             " dryer & oven repair for all brands. Warranty included. $70"
-            " diagnostic waived. Call (951) 620-9609."
+            " diagnostic waived. Call (909) 975-2506."
         ),
         "intro": (
             "Certified same-day appliance repair for Perris — all brands,"
@@ -484,7 +484,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Canyon Lake, CA. All brands, warranty"
             " included. $70 diagnostic waived with repair. Premium and"
-            " standard brands. Call (951) 620-9609."
+            " standard brands. Call (909) 975-2506."
         ),
         "intro": (
             "Same-day appliance repair for Canyon Lake residents — all brands,"
@@ -513,7 +513,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
             "<h2>Complete Appliance Service</h2>"
             "<p>We repair refrigerators, freezers, washers, dryers,"
             " dishwashers, ovens, stoves, microwaves, water heaters, and AC"
-            " units. Canyon Lake's proximity to our Lake Elsinore home base"
+            " units. Canyon Lake's proximity to our Corona service base"
             " means some of the fastest response times in our service area."
             " Morning bookings typically get an afternoon slot, and we"
             " operate 7 days a week.</p>"
@@ -539,7 +539,7 @@ CITY_DATA: dict[str, dict[str, Any]] = {
         "search_description": (
             "Same-day appliance repair in Norco, CA. Refrigerator, washer,"
             " dryer & oven repair. All brands, warranty included. $70"
-            " diagnostic waived. Call (951) 620-9609."
+            " diagnostic waived. Call (909) 975-2506."
         ),
         "intro": (
             "Same-day appliance repair for Norco homes — certified technicians,"
@@ -601,7 +601,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Lake Elsinore, CA."
             " Refrigeradores, lavadoras, secadoras y hornos. Diagnostico de"
-            " $70 — se descuenta con la reparacion. Llame (951) 620-9609."
+            " $70 — se descuenta con la reparacion. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos el mismo dia en Lake Elsinore —"
@@ -618,7 +618,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Corona, CA."
             " Todas las marcas, garantia incluida. $70 diagnostico se"
-            " descuenta con reparacion. Llame (951) 620-9609."
+            " descuenta con reparacion. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos el mismo dia en Corona — todas"
@@ -634,7 +634,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Riverside, CA."
             " Todas las marcas. Garantia incluida. Diagnostico de $70 se"
-            " descuenta. Llame (951) 620-9609."
+            " descuenta. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos el mismo dia en Riverside —"
@@ -650,7 +650,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Murrieta, CA."
             " Todas las marcas, garantia incluida. Diagnostico de $70 se"
-            " descuenta. Llame (951) 620-9609."
+            " descuenta. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos certificada el mismo dia en"
@@ -666,7 +666,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Temecula, CA."
             " Residencial y comercial. Garantia incluida. Diagnostico de"
-            " $70 se descuenta. Llame (951) 620-9609."
+            " $70 se descuenta. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos el mismo dia en Temecula —"
@@ -682,7 +682,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Menifee, CA."
             " Todas las marcas, garantia incluida. Diagnostico de $70 se"
-            " descuenta. Llame (951) 620-9609."
+            " descuenta. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos el mismo dia en Menifee —"
@@ -698,7 +698,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Beaumont, CA."
             " Todas las marcas, garantia incluida. $70 diagnostico se"
-            " descuenta. Llame (951) 620-9609."
+            " descuenta. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos el mismo dia en Beaumont —"
@@ -714,7 +714,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Perris, CA."
             " Todas las marcas, garantia incluida. $70 diagnostico se"
-            " descuenta. Llame (951) 620-9609."
+            " descuenta. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos certificada el mismo dia en"
@@ -730,7 +730,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Canyon Lake, CA."
             " Todas las marcas, garantia incluida. $70 diagnostico se"
-            " descuenta. Llame (951) 620-9609."
+            " descuenta. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos el mismo dia en Canyon Lake —"
@@ -746,7 +746,7 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
         "search_description": (
             "Reparacion de electrodomesticos el mismo dia en Norco, CA."
             " Todas las marcas, garantia incluida. $70 diagnostico se"
-            " descuenta. Llame (951) 620-9609."
+            " descuenta. Llame (909) 975-2506."
         ),
         "intro": (
             "Reparacion de electrodomesticos el mismo dia en Norco — tecnicos"
@@ -761,13 +761,19 @@ CITY_DATA_ES: dict[str, dict[str, Any]] = {
 
 
 class Command(BaseCommand):
-    help = "Populate city pages with unique SEO content, ZIP codes, and meta."
+    help = (
+        "Backfill missing city SEO content, ZIP codes, and meta fields without "
+        "overwriting non-empty editor content."
+    )
 
     def add_arguments(self, parser: CommandParser) -> None:
         parser.add_argument(
             "--apply",
             action="store_true",
-            help="Apply changes (default is dry-run).",
+            help=(
+                "Save and publish missing-field backfills (default is dry-run); "
+                "non-empty editor content is never overwritten."
+            ),
         )
         parser.add_argument(
             "--city",
@@ -871,7 +877,7 @@ class Command(BaseCommand):
         *,
         include_body: bool,
     ) -> dict[str, tuple[int, int]]:
-        """Return dict of field → (old_len, new_len) for fields that differ."""
+        """Return missing fields that can be backfilled without editor overwrite."""
         changes: dict[str, tuple[int, int]] = {}
 
         field_map = {
@@ -890,7 +896,7 @@ class Command(BaseCommand):
                 continue
             old_val = getattr(page, model_field, "") or ""
             new_val = data[data_key]
-            if old_val != new_val:
+            if str(old_val) == "" and str(new_val) != "":
                 changes[model_field] = (len(old_val), len(new_val))
 
         return changes
@@ -902,22 +908,22 @@ class Command(BaseCommand):
         *,
         include_body: bool,
     ) -> None:
-        """Apply data to a page and publish it."""
-        for key in (
+        """Backfill only missing values, then publish one deliberate revision."""
+        fields = [
             "zip_codes",
             "seo_title",
             "search_description",
             "intro",
             "hero_usp",
-        ):
-            if key in data:
-                setattr(page, key, data[key])
+        ]
 
         if include_body:
-            if "body" in data:
-                page.body = data["body"]
-            if "about_techs" in data:
-                page.about_techs = data["about_techs"]
+            fields.extend(("body", "about_techs"))
+
+        for key in fields:
+            current = getattr(page, key, "") or ""
+            if key in data and str(current) == "" and str(data[key]) != "":
+                setattr(page, key, data[key])
 
         revision = page.save_revision()
         revision.publish()

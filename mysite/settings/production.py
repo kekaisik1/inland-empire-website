@@ -13,7 +13,11 @@ from .base import *  # noqa: F401, F403
 
 # ── Core ───────────────────────────────────────────────────────
 DEBUG = False
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.environ.get("SECRET_KEY", "").strip()
+if len(SECRET_KEY) < 50:
+    raise ImproperlyConfigured(
+        "SECRET_KEY is required in production and must contain at least 50 characters."
+    )
 
 # Enforce required production infrastructure
 if not os.environ.get("DATABASE_URL"):
@@ -30,18 +34,33 @@ if not os.environ.get("REDIS_URL"):
         RuntimeWarning,
         stacklevel=1,
     )
-ALLOWED_HOSTS = [h for h in os.environ.get("ALLOWED_HOSTS", "").split(",") if h]
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get("ALLOWED_HOSTS", "").split(",")
+    if host.strip()
+]
 
 # Railway auto-detection: RAILWAY_PUBLIC_DOMAIN is set automatically
-railway_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "")
+railway_domain = os.environ.get("RAILWAY_PUBLIC_DOMAIN", "").strip()
+railway_environment = os.environ.get("RAILWAY_ENVIRONMENT", "").strip()
 if railway_domain:
     ALLOWED_HOSTS.append(railway_domain)
+if railway_domain or railway_environment:
+    ALLOWED_HOSTS.append("healthcheck.railway.app")
+ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
+if not ALLOWED_HOSTS:
+    raise ImproperlyConfigured(
+        "ALLOWED_HOSTS or RAILWAY_PUBLIC_DOMAIN is required in production."
+    )
 
 CSRF_TRUSTED_ORIGINS = [
-    o for o in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if o
+    origin.strip()
+    for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
 ]
 if railway_domain:
     CSRF_TRUSTED_ORIGINS.append(f"https://{railway_domain}")
+CSRF_TRUSTED_ORIGINS = list(dict.fromkeys(CSRF_TRUSTED_ORIGINS))
 
 # ── Database ───────────────────────────────────────────────────
 DATABASES["default"] = dj_database_url.config(  # type: ignore[name-defined]  # noqa: F405
@@ -50,7 +69,12 @@ DATABASES["default"] = dj_database_url.config(  # type: ignore[name-defined]  # 
 )
 
 # ── Security ───────────────────────────────────────────────────
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_PROXY_SSL_HEADER = (
+    ("HTTP_X_FORWARDED_PROTO", "https")
+    if os.environ.get("TRUST_PROXY_HEADERS", "false").strip().lower()
+    in {"1", "true", "yes", "on"}
+    else None
+)
 SECURE_SSL_REDIRECT = True
 SECURE_REDIRECT_EXEMPT = [r"^health/$"]  # Railway healthcheck uses HTTP internally
 SECURE_HSTS_SECONDS = 31_536_000
@@ -68,12 +92,6 @@ X_FRAME_OPTIONS = "DENY"
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-# SEO headers middleware (Permissions-Policy, Cache-Control)
-MIDDLEWARE.insert(  # type: ignore[attr-defined]  # noqa: F405
-    MIDDLEWARE.index("django.middleware.common.CommonMiddleware") + 1,  # type: ignore[attr-defined]  # noqa: F405
-    "mysite.middleware.SEOHeadersMiddleware",
-)
-
 # ── Static files ───────────────────────────────────────────────
 STORAGES["staticfiles"] = {  # type: ignore[name-defined]  # noqa: F405
     "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
@@ -86,7 +104,7 @@ if redis_url:
         "default": {
             "BACKEND": "django.core.cache.backends.redis.RedisCache",
             "LOCATION": redis_url,
-            "KEY_PREFIX": "lowl",
+            "KEY_PREFIX": "inland",
         }
     }
 
@@ -108,8 +126,8 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "noreply@example.com")
 
 # ── Wagtail ────────────────────────────────────────────────────
-# Auto-detect Railway domain for Wagtail admin base URL
-if railway_domain:
+# Auto-detect Railway domain unless an explicit custom/admin domain was supplied.
+if railway_domain and not os.environ.get("WAGTAILADMIN_BASE_URL"):
     WAGTAILADMIN_BASE_URL = f"https://{railway_domain}"  # noqa: F405
 
 # ── Sentry ─────────────────────────────────────────────────────

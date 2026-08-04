@@ -1,43 +1,35 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
 
-echo "=== Running migrations ==="
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
+
+export DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE:-mysite.settings.production}"
+
+echo "=== Applying final migration safety check ==="
 python manage.py migrate --noinput
 
-echo "=== Collecting static files ==="
-python manage.py collectstatic --noinput
+startup_seed_mode="${RUN_STARTUP_SEEDS:-false}"
+case "${startup_seed_mode,,}" in
+    1|true|yes|on)
+        echo "=== Running direct-container content bootstrap ==="
+        bash "$SCRIPT_DIR/predeploy.sh" --skip-migrate
+        ;;
+    0|false|no|off|"")
+        ;;
+    *)
+        echo "RUN_STARTUP_SEEDS must be true or false." >&2
+        exit 64
+        ;;
+esac
 
-echo "=== Compiling translation files ==="
-python -c "
-import polib, pathlib
-for po_path in pathlib.Path('locale').rglob('*.po'):
-    mo_path = po_path.with_suffix('.mo')
-    po = polib.pofile(str(po_path))
-    po.save_as_mofile(str(mo_path))
-    print(f'  Compiled {po_path} -> {mo_path}')
-" 2>/dev/null || echo "  (skipped — polib not available or no .po files)"
-
-echo "=== Setting up pages (if needed) ==="
-python manage.py setup_pages 2>&1 || echo "WARNING: setup_pages failed (non-blocking)"
-
-echo "=== Setting up Spanish pages (if needed) ==="
-python manage.py setup_spanish_pages 2>&1 || echo "WARNING: setup_spanish_pages failed (non-blocking)"
-
-echo "=== Updating service page content ==="
-python manage.py update_service_content 2>&1 || echo "WARNING: update_service_content failed (non-blocking)"
-
-echo "=== Populating Spanish service content ==="
-python manage.py populate_spanish_content 2>&1 || echo "WARNING: populate_spanish_content failed (non-blocking)"
-
-echo "=== Creating superuser (if env vars set) ==="
-if [ -n "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL:-}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ]; then
-    python manage.py createsuperuser --noinput 2>/dev/null || echo "Superuser already exists"
-fi
+workers="${WEB_CONCURRENCY:-${GUNICORN_WORKERS:-1}}"
 
 echo "=== Starting Gunicorn ==="
 exec gunicorn mysite.wsgi:application \
     --bind "0.0.0.0:${PORT:-8000}" \
-    --workers "${GUNICORN_WORKERS:-3}" \
+    --workers "${workers}" \
     --timeout "${GUNICORN_TIMEOUT:-60}" \
+    --no-control-socket \
     --access-logfile - \
     --error-logfile -

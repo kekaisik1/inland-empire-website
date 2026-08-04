@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" role="img" aria-labelledby="title desc">
+  <title id="title">Monogram generated wordmark</title>
+  <desc id="desc">Generated non-official text wordmark fallback for Monogram.</desc>
+  <rect width="240" height="64" rx="12" fill="#ffffff"/>
+  <text x="120" y="41" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="800" letter-spacing="2" fill="#111827">MONOGRAM</text>
+</svg>

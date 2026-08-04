@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import math
+import re
+
 from django.conf import settings
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
@@ -14,6 +17,9 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.models import Page
 from wagtail.search import index
+
+
+WORDS_PER_MINUTE = 200
 
 
 class BlogPageTag(TaggedItemBase):
@@ -79,6 +85,7 @@ class BlogIndexPage(Page):
             posts = paginator.page(paginator.num_pages)
 
         context["posts"] = posts
+        context["featured_post"] = all_posts.first()
         return context
 
 
@@ -144,18 +151,28 @@ class BlogPage(Page):
     class Meta:
         indexes = [models.Index(fields=["-date"])]
 
+    @property
+    def reading_time(self) -> int:
+        """Estimated reading time in minutes based on body word count."""
+        word_count = 0
+        for block in self.body:
+            if block.block_type in ("paragraph", "quote"):
+                text = re.sub(r"<[^>]+>", "", str(block.value))
+                word_count += len(text.split())
+            elif block.block_type == "heading":
+                word_count += len(str(block.value).split())
+        return max(1, math.ceil(word_count / WORDS_PER_MINUTE))
+
+    @property
+    def headings(self) -> list[str]:
+        """Extract heading texts from the body StreamField for later TOC UI."""
+        return [
+            str(block.value) for block in self.body if block.block_type == "heading"
+        ]
+
     def get_context(self, request: object) -> dict:
         """Add recent posts and tag-based related posts to the context."""
         context = super().get_context(request)
-
-        # Recent posts (sidebar)
-        context["recent_posts"] = (
-            BlogPage.objects.live()
-            .filter(locale=self.locale)
-            .exclude(pk=self.pk)
-            .order_by("-date")
-            .only("id", "title", "slug", "url_path", "date", "intro")[:5]
-        )
 
         # Related posts: find posts sharing the same tags for internal linking
         tag_ids = self.tags.values_list("id", flat=True)
@@ -169,7 +186,19 @@ class BlogPage(Page):
                 .only("id", "title", "slug", "url_path", "date", "intro")[:4]
             )
             context["related_posts"] = related
+            related_ids = list(related.values_list("pk", flat=True))
         else:
             context["related_posts"] = BlogPage.objects.none()
+            related_ids = []
+
+        # Keep the recent sidebar additive rather than repeating related cards.
+        context["recent_posts"] = (
+            BlogPage.objects.live()
+            .filter(locale=self.locale)
+            .exclude(pk=self.pk)
+            .exclude(pk__in=related_ids)
+            .order_by("-date")
+            .only("id", "title", "slug", "url_path", "date", "intro")[:5]
+        )
 
         return context

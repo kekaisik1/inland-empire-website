@@ -12,8 +12,9 @@
 (function () {
   "use strict";
 
-  // Same ZIP codes as booking_site/data.js
-  var ZIP_CODES = [
+  // Compatibility fallback for pages rendered without the target coverage payload.
+  // Normal operation reads target-owned ZIP codes from base.html.
+  var LEGACY_ZIP_CODES = [
     "91706",
     "92316",
     "92821",
@@ -148,8 +149,54 @@
     "92587",
   ];
 
-  function isValidZip(zip) {
-    return /^\d{5}$/.test(zip) && ZIP_CODES.indexOf(zip) !== -1;
+  function readServiceZipCodes(doc) {
+    var element = doc && doc.getElementById
+      ? doc.getElementById("service-zip-codes")
+      : null;
+    if (!element) return LEGACY_ZIP_CODES.slice();
+    try {
+      var parsed = JSON.parse(element.textContent || "[]");
+      if (!Array.isArray(parsed)) return LEGACY_ZIP_CODES.slice();
+      var seen = {};
+      return parsed
+        .map(function (value) {
+          return String(value || "").trim();
+        })
+        .filter(function (value) {
+          if (!/^\d{5}$/.test(value) || seen[value]) return false;
+          seen[value] = true;
+          return true;
+        });
+    } catch (error) {
+      return LEGACY_ZIP_CODES.slice();
+    }
+  }
+
+  function isValidZip(zip, zipCodes) {
+    var coverage = zipCodes || ZIP_CODES;
+    return /^\d{5}$/.test(zip) && coverage.indexOf(zip) !== -1;
+  }
+
+  function buildBookingUrl(bookingUrl, zip, fields) {
+    var url = new URL(bookingUrl, window.location.href);
+    url.searchParams.set("zip", zip);
+    var values = fields || {};
+    Object.keys(values).forEach(function (key) {
+      if (values[key] !== null && values[key] !== undefined && values[key] !== "") {
+        url.searchParams.set(key, String(values[key]));
+      }
+    });
+    return url.toString();
+  }
+
+  var ZIP_CODES = readServiceZipCodes(document);
+
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+      readServiceZipCodes: readServiceZipCodes,
+      isValidZip: isValidZip,
+      buildBookingUrl: buildBookingUrl,
+    };
   }
 
   // ─── Modal HTML (injected once) ──────────────────────────────────
@@ -183,7 +230,7 @@
       '<button type="button" id="zip-modal-close" aria-label="' +
       t("close", "Close") +
       '" ' +
-      'style="position:absolute;top:1rem;right:1rem;width:36px;height:36px;' +
+      'style="position:absolute;top:0.75rem;right:0.75rem;width:44px;height:44px;' +
       "border:none;background:transparent;cursor:pointer;font-size:1.25rem;" +
       'color:#A0A0A5;display:flex;align-items:center;justify-content:center;border-radius:8px"' +
       " onmouseover=\"this.style.background='rgba(255,255,255,0.05)'\" onmouseout=\"this.style.background='transparent'\">&times;</button>" +
@@ -202,13 +249,13 @@
       '<label for="zip-modal-input" class="sr-only">' +
       t("zipCode", "ZIP Code") +
       "</label>" +
-      '<input type="text" id="zip-modal-input" maxlength="5" inputmode="numeric" placeholder="' +
+      '<input type="text" id="zip-modal-input" maxlength="5" inputmode="numeric" aria-describedby="zip-modal-helper" aria-invalid="false" placeholder="' +
       t("enterZip", "Enter ZIP code") +
       '" ' +
       'style="width:100%;box-sizing:border-box;padding:0.875rem 1rem;border:1px solid rgba(255,255,255,0.1);border-radius:8px;' +
       "background:rgba(255,255,255,0.05);font-size:1.125rem;font-weight:600;text-align:center;letter-spacing:0.15em;" +
       'color:#fff;outline:none;transition:border-color 300ms,box-shadow 300ms" />' +
-      '<p id="zip-modal-helper" style="margin:0.5rem 0 0;font-size:0.8125rem;text-align:center;min-height:1.25rem;transition:color 150ms;color:#A0A0A5"></p>' +
+      '<p id="zip-modal-helper" role="status" aria-live="polite" aria-atomic="true" style="margin:0.5rem 0 0;font-size:0.8125rem;text-align:center;min-height:1.25rem;transition:color 150ms;color:#A0A0A5"></p>' +
       "</div>" +
       '<button type="button" id="zip-modal-submit" disabled ' +
       'style="width:100%;padding:0.875rem;border:none;border-radius:50px;' +
@@ -230,9 +277,11 @@
 
   // ─── Modal Logic ─────────────────────────────────────────────────
   var pendingBookingUrl = null;
+  var lastTrigger = null;
 
-  function openModal(bookingUrl) {
+  function openModal(bookingUrl, trigger) {
     pendingBookingUrl = bookingUrl;
+    lastTrigger = trigger || document.activeElement;
     var modal = getOrCreateModal();
     var input = document.getElementById("zip-modal-input");
     var helper = document.getElementById("zip-modal-helper");
@@ -242,6 +291,7 @@
     input.value = "";
     input.style.borderColor = "rgba(255,255,255,0.1)";
     input.style.boxShadow = "none";
+    input.setAttribute("aria-invalid", "false");
     helper.textContent = "";
     helper.style.color = "#A0A0A5";
     submitBtn.disabled = true;
@@ -250,6 +300,9 @@
 
     modal.style.display = "flex";
     document.body.style.overflow = "hidden";
+    if (typeof window.inlandTrack === "function") {
+      window.inlandTrack("zip_modal_open", { source: "booking_link" });
+    }
 
     // Focus the input after animation
     setTimeout(function () {
@@ -264,13 +317,18 @@
       document.body.style.overflow = "";
     }
     pendingBookingUrl = null;
+    if (lastTrigger && typeof lastTrigger.focus === "function") {
+      lastTrigger.focus();
+    }
+    lastTrigger = null;
   }
 
   function navigateToBooking(zip) {
     if (!pendingBookingUrl) return;
-    var url = pendingBookingUrl;
-    var sep = url.indexOf("?") !== -1 ? "&" : "?";
-    url += sep + "zip=" + encodeURIComponent(zip);
+    var url = buildBookingUrl(pendingBookingUrl, zip);
+    if (typeof window.inlandTrack === "function") {
+      window.inlandTrack("zip_check", { in_service_area: true });
+    }
     window.open(url, "_blank", "noopener,noreferrer");
     closeModal();
   }
@@ -293,7 +351,26 @@
 
     // Escape key
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && modal.style.display === "flex") closeModal();
+      if (modal.style.display !== "flex") return;
+      if (e.key === "Escape") {
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      var focusable = modal.querySelectorAll(
+        'button:not([disabled]), input:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     });
 
     // Input: strip non-digits, validate at 5 chars
@@ -317,6 +394,7 @@
         submitBtn.disabled = true;
         submitBtn.style.opacity = "0.5";
         submitBtn.style.background = "#fff";
+        input.setAttribute("aria-invalid", "false");
         return;
       }
 
@@ -328,17 +406,22 @@
         submitBtn.disabled = false;
         submitBtn.style.opacity = "1";
         submitBtn.style.background = "#FFD504";
+        input.setAttribute("aria-invalid", "false");
       } else {
-        input.style.borderColor = "#ef4444";
-        input.style.boxShadow = "0 0 0 1px #ef4444";
+        input.style.borderColor = "#f87171";
+        input.style.boxShadow = "0 0 0 1px #f87171";
         helper.textContent = t(
           "noServiceArea",
           "Sorry, we don't service this area yet",
         );
-        helper.style.color = "#ef4444";
+        helper.style.color = "#f87171";
         submitBtn.disabled = true;
         submitBtn.style.opacity = "0.5";
         submitBtn.style.background = "#fff";
+        input.setAttribute("aria-invalid", "true");
+        if (typeof window.inlandTrack === "function") {
+          window.inlandTrack("zip_check", { in_service_area: false });
+        }
       }
     });
 
@@ -380,6 +463,10 @@
     // Create helper text element
     var helperEl = document.createElement("p");
     helperEl.id = "hero-zip-helper";
+    helperEl.setAttribute("role", "status");
+    helperEl.setAttribute("aria-live", "polite");
+    helperEl.setAttribute("aria-atomic", "true");
+    zipInput.setAttribute("aria-describedby", "hero-zip-helper");
     helperEl.style.cssText =
       "position:absolute;left:0;top:100%;margin:0.25rem 0 0;font-size:0.75rem;" +
       "white-space:nowrap;transition:color 150ms";
@@ -403,14 +490,16 @@
         zipInput.style.boxShadow = "0 0 0 1px #22c55e";
         helperEl.textContent = t("weServiceArea", "We service your area!");
         helperEl.style.color = "#22c55e";
+        zipInput.setAttribute("aria-invalid", "false");
       } else {
-        zipInput.style.borderColor = "#ef4444";
-        zipInput.style.boxShadow = "0 0 0 1px #ef4444";
+        zipInput.style.borderColor = "#f87171";
+        zipInput.style.boxShadow = "0 0 0 1px #f87171";
         helperEl.textContent = t(
           "noServiceArea",
           "Sorry, we don't service this area yet",
         );
-        helperEl.style.color = "#ef4444";
+        helperEl.style.color = "#f87171";
+        zipInput.setAttribute("aria-invalid", "true");
       }
     });
 
@@ -424,11 +513,12 @@
             "enterZipCode",
             "Please enter your ZIP code",
           );
-          helperEl.style.color = "#ef4444";
+          helperEl.style.color = "#f87171";
         }
         zipInput.focus();
-        zipInput.style.borderColor = "#ef4444";
-        zipInput.style.boxShadow = "0 0 0 1px #ef4444";
+        zipInput.style.borderColor = "#f87171";
+        zipInput.style.boxShadow = "0 0 0 1px #f87171";
+        zipInput.setAttribute("aria-invalid", "true");
         return;
       }
       // Valid zip — let the form submit naturally
@@ -442,7 +532,7 @@
       if (!target) return;
 
       e.preventDefault();
-      openModal(target.href);
+      openModal(target.href, target);
     });
   }
 

@@ -25,20 +25,18 @@
     "gad_source",
     "gad_campaignid",
   ];
-  var STORAGE_KEY = "lowl_utm";
+  var STORAGE_KEY = "inland_utm";
 
   function getUtmFromUrl() {
     var params = {};
-    var search = window.location.search;
-    if (!search) return params;
-
-    var pairs = search.substring(1).split("&");
-    for (var i = 0; i < pairs.length; i++) {
-      var parts = pairs[i].split("=");
-      var key = decodeURIComponent(parts[0]);
-      if (UTM_KEYS.indexOf(key) !== -1 && parts[1]) {
-        params[key] = decodeURIComponent(parts[1]);
+    try {
+      var currentUrl = new URL(window.location.href);
+      for (var i = 0; i < UTM_KEYS.length; i++) {
+        var value = currentUrl.searchParams.get(UTM_KEYS[i]);
+        if (value) params[UTM_KEYS[i]] = value;
       }
+    } catch (e) {
+      return params;
     }
     return params;
   }
@@ -64,19 +62,19 @@
   function appendToUrl(href, utmParams) {
     var keys = Object.keys(utmParams);
     if (keys.length === 0) return href;
-
-    var sep = href.indexOf("?") !== -1 ? "&" : "?";
-    var qs = keys
-      .map(function (k) {
-        return encodeURIComponent(k) + "=" + encodeURIComponent(utmParams[k]);
-      })
-      .join("&");
-
-    return href + sep + qs;
+    try {
+      var url = new URL(href, window.location.href);
+      for (var i = 0; i < keys.length; i++) {
+        url.searchParams.set(keys[i], utmParams[keys[i]]);
+      }
+      return url.toString();
+    } catch (e) {
+      return href;
+    }
   }
 
   function getBookingSource() {
-    return window.__BOOKING_SOURCE || "lowl";
+    return window.__BOOKING_SOURCE || "inland";
   }
 
   function updateBookingLinks(utmParams) {

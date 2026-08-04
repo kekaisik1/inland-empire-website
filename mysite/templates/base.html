@@ -66,7 +66,7 @@
     <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-default.png' %}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="{% if biz %}{{ biz.business_name }} — {% trans 'Professional Appliance Repair' %}{% else %}{% trans 'LOWL Appliance Repair' %}{% endif %}" />
+    <meta property="og:image:alt" content="{% if biz %}{{ biz.business_name }} — {% trans 'Professional Appliance Repair' %}{% else %}{% trans 'Inland Empire Appliance Repair' %}{% endif %}" />
     {% endblock %}
     {# OG locale alternates for multilingual support #}
     {% if LANGUAGE_CODE == 'en' %}
@@ -90,7 +90,7 @@
     {# hreflang alternate links for translated pages #}
     {% block hreflang %}
     {% if page %}
-    {% for translation in page.get_translations.all %}
+    {% for translation in page.get_translations.live %}
     <link rel="alternate" hreflang="{{ translation.locale.language_code }}" href="{{ request.scheme }}://{{ request.get_host }}{{ translation.get_url }}" />
     {% endfor %}
     <link rel="alternate" hreflang="{{ page.locale.language_code }}" href="{{ request.scheme }}://{{ request.get_host }}{{ page.get_url }}" />
@@ -98,7 +98,7 @@
     {% if page.locale.language_code == 'en' %}
     <link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{{ page.get_url }}" />
     {% else %}
-    {% for translation in page.get_translations.all %}{% if translation.locale.language_code == 'en' %}
+    {% for translation in page.get_translations.live %}{% if translation.locale.language_code == 'en' %}
     <link rel="alternate" hreflang="x-default" href="{{ request.scheme }}://{{ request.get_host }}{{ translation.get_url }}" />
     {% endif %}{% endfor %}
     {% endif %}
@@ -112,15 +112,16 @@
     <link rel="manifest" href="{% static 'site.webmanifest' %}" />
 
     {# Preconnect for critical external services #}
+    {% if biz and biz.gtm_id or biz and biz.google_analytics_id %}
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+    {% endif %}
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="dns-prefetch" href="https://res.cloudinary.com" />
 
     {# Fonts: Montserrat (display) + Inter (body) + Sacramento (decorative) #}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Inter:wght@300;400;500;600&family=Sacramento&display=swap" as="style" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Inter:wght@300;400;500;600&family=Sacramento&display=swap" rel="stylesheet" />
 
     {# Built Tailwind CSS — preloaded for faster LCP #}
@@ -157,6 +158,11 @@
     </script>
     {% endif %}
 
+    {# Call tracking swap code is editor-controlled and absent by default. #}
+    {% if biz and biz.callrail_swap_url %}
+    <script src="{{ biz.callrail_swap_url }}" async></script>
+    {% endif %}
+
     {% if request.in_preview_panel %}
     <base target="_blank">
     {% endif %}
@@ -184,103 +190,117 @@
     {# ── Navbar (glassmorphism dark) ── #}
     <nav class="fixed top-0 z-50 w-full border-b border-white/5"
         style="background:rgba(26,27,32,0.85);backdrop-filter:blur(12px)"
-        x-data="mobileNav" aria-label="{% trans 'Main navigation' %}">
+        x-data="mobileNav" @keydown.escape.window="closeOnEscape" @click.outside="close"
+        aria-label="{% trans 'Main navigation' %}">
         <div class="container-site flex h-20 items-center justify-between">
             {# Logo #}
-            <a href="/" class="font-display text-2xl font-black tracking-tight" aria-label="{{ biz.business_name|default:'Home' }}">
-                <span class="text-primary">{% if biz %}{{ biz.business_name|cut:" Appliance Repair" }}{% else %}LOWL{% endif %}</span>
-                <span class="text-white"> INLAND REPAIR</span>
+            <a href="/" class="shrink-0 font-display font-black uppercase leading-none tracking-tight" aria-label="{{ biz.business_name|default:'Inland Empire Appliance Repair' }}">
+                <span class="block text-xl text-primary sm:text-2xl">{% if biz %}{{ biz.business_name|cut:" Appliance Repair" }}{% else %}Inland Empire{% endif %}</span>
+                <span class="site-logo-subtitle mt-1 block text-[0.625rem] tracking-[0.24em] text-white/80">{% trans "Appliance Repair" %}</span>
             </a>
 
+            {% get_current_language as current_lang %}
+
             {# Desktop Nav #}
-            <div class="hidden items-center gap-8 lg:flex">
-                <a href="/" class="text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Home" %}</a>
-
-                {# Services Dropdown #}
-                <div class="group relative h-20 flex items-center">
-                    <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/"
-                        class="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">
-                        {% trans "Services" %}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="h-3.5 w-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true">
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
-                    </a>
-                    <div class="absolute top-full left-0 w-64 max-w-[calc(100vw-2rem)] rounded-card border border-white/10 bg-surface p-2 shadow-card opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200"
-                        role="menu">
-                        <div class="max-h-[60vh] overflow-y-auto">
-                            {% for service in global_services %}
-                            <a href="{% pageurl service %}" role="menuitem"
-                                class="block rounded-lg px-4 py-2 text-sm text-text-muted hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary focus:outline-none transition-colors">
-                                {{ service.title }}
-                            </a>
-                            {% endfor %}
-                            <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/"
-                                class="block w-full border-t border-white/10 mt-2 pt-2 text-center text-xs font-bold text-primary hover:underline">
-                                {% trans "View All Services" %}
-                            </a>
+            <div class="hidden min-w-0 items-center gap-2{% if current_lang != 'es' %} lg:flex{% endif %}" data-desktop-nav>
+                {% for item in main_nav_items %}
+                    {% if item.kind == "services_dropdown" %}
+                    <div class="relative h-20 flex items-center" x-data="desktopDropdown"
+                        @mouseenter="openFromPointer" @mouseleave="closeFromPointer"
+                        @click.outside="close" @keydown.escape="closeOnEscape"
+                        data-nav-key="{{ item.key }}">
+                        <button type="button" x-ref="trigger" @click="toggle" @keydown.enter="openFromKeyboard" @keydown.space="openFromKeyboard"
+                            :aria-expanded="expandedStr" aria-haspopup="true" aria-controls="desktop-services-menu"
+                            class="nav-trigger">
+                            {{ item.label }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </button>
+                        <div id="desktop-services-menu" x-ref="menu" x-show="isOpen" x-cloak x-transition
+                            class="nav-dropdown-panel absolute top-full left-0 w-72 max-w-[calc(100vw-2rem)]" role="menu">
+                            <div class="max-h-[60vh] overflow-y-auto">
+                                {% for service in service_menu_items %}
+                                <a href="{% pageurl service %}" role="menuitem" @click="close" class="nav-dropdown-link">{{ service.title }}</a>
+                                {% empty %}
+                                <span class="nav-dropdown-empty">{% trans "Services coming soon." %}</span>
+                                {% endfor %}
+                                <a href="{{ item.url }}" role="menuitem" @click="close" class="nav-dropdown-all">{% trans "View All Services" %}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                {# Service Areas Dropdown #}
-                <div class="group relative h-20 flex items-center">
-                    <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/"
-                        class="flex items-center gap-1 text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">
-                        {% trans "Service Areas" %}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="h-3.5 w-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" aria-hidden="true">
-                            <path d="m6 9 6 6 6-6" />
-                        </svg>
-                    </a>
-                    <div class="absolute top-full left-0 w-64 max-w-[calc(100vw-2rem)] rounded-card border border-white/10 bg-surface p-2 shadow-card opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-200"
-                        role="menu">
-                        <div class="max-h-[60vh] overflow-y-auto">
-                            {% for city in global_cities %}
-                            <a href="{% pageurl city %}" role="menuitem"
-                                class="block rounded-lg px-4 py-2 text-sm text-text-muted hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary focus:outline-none transition-colors">
-                                {{ city.title }}
-                            </a>
-                            {% endfor %}
-                            <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/"
-                                class="block w-full border-t border-white/10 mt-2 pt-2 text-center text-xs font-bold text-primary hover:underline">
-                                {% trans "View All Areas" %}
-                            </a>
+                    {% elif item.kind == "areas_dropdown" %}
+                    <div class="relative h-20 flex items-center" x-data="desktopDropdown"
+                        @mouseenter="openFromPointer" @mouseleave="closeFromPointer"
+                        @click.outside="close" @keydown.escape="closeOnEscape"
+                        data-nav-key="{{ item.key }}">
+                        <button type="button" x-ref="trigger" @click="toggle" @keydown.enter="openFromKeyboard" @keydown.space="openFromKeyboard"
+                            :aria-expanded="expandedStr" aria-haspopup="true" aria-controls="desktop-areas-menu"
+                            class="nav-trigger">
+                            {{ item.label }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </button>
+                        <div id="desktop-areas-menu" x-ref="menu" x-show="isOpen" x-cloak x-transition
+                            class="nav-dropdown-panel absolute top-full left-0 w-72 max-w-[calc(100vw-2rem)]" role="menu">
+                            <div class="max-h-[60vh] overflow-y-auto">
+                                {% for city in global_cities %}
+                                <a href="{% pageurl city %}" role="menuitem" @click="close" class="nav-dropdown-link">{{ city.title }}</a>
+                                {% empty %}
+                                <span class="nav-dropdown-empty">{% trans "Service areas coming soon." %}</span>
+                                {% endfor %}
+                                <a href="{{ item.url }}" role="menuitem" @click="close" class="nav-dropdown-all">{% trans "View All Areas" %}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}blog/" class="text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Blog" %}</a>
-                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}about-us/" class="text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "About" %}</a>
-                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}contact/" class="text-xs font-semibold uppercase tracking-widest text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Contact" %}</a>
+                    {% elif item.kind == "brands_dropdown" %}
+                    <div class="relative h-20 flex items-center" x-data="desktopDropdown"
+                        @mouseenter="openFromPointer" @mouseleave="closeFromPointer"
+                        @click.outside="close" @keydown.escape="closeOnEscape"
+                        data-nav-key="{{ item.key }}">
+                        <button type="button" x-ref="trigger" @click="toggle" @keydown.enter="openFromKeyboard" @keydown.space="openFromKeyboard"
+                            :aria-expanded="expandedStr" aria-haspopup="true" aria-controls="desktop-brands-menu"
+                            class="nav-trigger">
+                            {{ item.label }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </button>
+                        <div id="desktop-brands-menu" x-ref="menu" x-show="isOpen" x-cloak x-transition
+                            class="nav-dropdown-panel absolute top-full right-0 w-80 max-w-[calc(100vw-2rem)]" role="menu">
+                            <div class="grid grid-cols-2 max-h-[60vh] overflow-y-auto">
+                                {% for brand in brand_menu_items %}
+                                <a href="{% pageurl brand.page %}" role="menuitem" @click="close" class="nav-dropdown-link" data-nav-brand-link="{{ brand.slug }}">{{ brand.name }}</a>
+                                {% empty %}
+                                <span class="nav-dropdown-empty col-span-2">{% trans "Brand pages coming soon." %}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <a href="{{ item.url }}" data-nav-key="{{ item.key }}" class="nav-link">{{ item.label }}</a>
+                    {% endif %}
+                {% endfor %}
             </div>
 
             {# Desktop CTA + Language Switcher #}
-            <div class="hidden items-center gap-4 lg:flex">
-                {% get_current_language as current_lang %}
-                <div class="flex items-center border border-white/10 rounded-button overflow-hidden text-xs font-semibold"
+            <div class="hidden shrink-0 items-center gap-2 xl:gap-3{% if current_lang != 'es' %} lg:flex{% endif %}" data-desktop-actions>
+                <div class="flex shrink-0 items-center border border-white/10 rounded-button overflow-hidden text-xs font-semibold"
                     role="group" aria-label="{% trans 'Language' %}">
                     {% if current_lang == 'en' %}
-                    <span class="px-3 py-1.5 bg-primary text-text-dark" aria-current="true">EN</span>
+                    <span class="language-option bg-primary text-text-dark" aria-current="true">EN</span>
                     {% else %}
                     <a href="{% translation_url page 'en' '/' %}"
-                        class="px-3 py-1.5 transition-colors text-text-muted hover:text-white"
+                        class="language-option text-text-muted hover:text-white"
                         hreflang="en">EN</a>
                     {% endif %}
                     {% if current_lang == 'es' %}
-                    <span class="px-3 py-1.5 bg-primary text-text-dark" aria-current="true">ES</span>
+                    <span class="language-option bg-primary text-text-dark" aria-current="true">ES</span>
                     {% else %}
                     <a href="{% translation_url page 'es' '/es/' %}"
-                        class="px-3 py-1.5 transition-colors text-text-muted hover:text-white"
+                        class="language-option text-text-muted hover:text-white"
                         hreflang="es">ES</a>
                     {% endif %}
                 </div>
 
                 {% if biz and biz.phone %}
                 <a href="tel:{{ biz.phone }}"
-                    class="flex items-center gap-2 text-sm font-semibold text-white hover:text-primary transition-colors">
+                    class="flex shrink-0 items-center gap-2 whitespace-nowrap text-xs font-semibold text-white hover:text-primary transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4" aria-hidden="true">
                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -289,14 +309,15 @@
                 </a>
                 {% endif %}
                 <a href="{{ booking_url }}" target="_blank" rel="noopener noreferrer" data-booking
-                    class="btn btn-primary text-xs">
+                    class="btn btn-primary shrink-0 px-5 text-xs xl:px-6">
                     {% trans "Book Now" %}
                 </a>
             </div>
 
             {# Mobile Toggle #}
-            <button class="lg:hidden p-2 text-white min-w-[44px] min-h-[44px] flex items-center justify-center"
-                @click="toggle"
+            <button class="p-2 text-white min-w-[44px] min-h-[44px] flex items-center justify-center{% if current_lang != 'es' %} lg:hidden{% endif %}"
+                data-mobile-toggle
+                x-ref="mobileToggle" @click="toggle"
                 :aria-expanded="expandedStr"
                 aria-controls="mobile-menu"
                 aria-label="{% trans 'Toggle navigation menu' %}">
@@ -321,29 +342,52 @@
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-2"
-            id="mobile-menu"
-            class="border-t border-white/5 bg-background px-4 py-4 lg:hidden h-[calc(100dvh-128px)] overflow-y-auto">
+            id="mobile-menu" x-ref="mobileMenu" @keydown.tab="trapFocus" tabindex="-1"
+            class="border-t border-white/5 bg-background px-4 py-4 h-[calc(100dvh-128px)] overflow-y-auto{% if current_lang != 'es' %} lg:hidden{% endif %}">
             <div class="flex flex-col gap-4">
-                <a href="/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Home" %}</a>
-                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}services/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Services" %}</a>
-                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Service Areas" %}</a>
-                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}blog/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Blog" %}</a>
-                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}about-us/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "About" %}</a>
-                <a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}contact/" class="text-base font-medium text-text-muted py-2 hover:text-white transition-colors" @click="close">{% trans "Contact" %}</a>
+                {% for item in main_nav_items %}
+                    {% if item.kind == "services_dropdown" %}
+                    <details class="mobile-nav-group" data-nav-key="{{ item.key }}">
+                        <summary class="mobile-nav-summary">{{ item.label }}</summary>
+                        <div class="mobile-nav-submenu">
+                            {% for service in service_menu_items %}<a href="{% pageurl service %}" @click="close">{{ service.title }}</a>{% endfor %}
+                            <a href="{{ item.url }}" @click="close" class="text-primary">{% trans "View All Services" %}</a>
+                        </div>
+                    </details>
+                    {% elif item.kind == "areas_dropdown" %}
+                    <details class="mobile-nav-group" data-nav-key="{{ item.key }}">
+                        <summary class="mobile-nav-summary">{{ item.label }}</summary>
+                        <div class="mobile-nav-submenu">
+                            {% for city in global_cities %}<a href="{% pageurl city %}" @click="close">{{ city.title }}</a>{% endfor %}
+                            <a href="{{ item.url }}" @click="close" class="text-primary">{% trans "View All Areas" %}</a>
+                        </div>
+                    </details>
+                    {% elif item.kind == "brands_dropdown" %}
+                    <details class="mobile-nav-group" data-nav-key="{{ item.key }}">
+                        <summary class="mobile-nav-summary">{{ item.label }}</summary>
+                        <div class="mobile-nav-submenu grid grid-cols-2">
+                            {% for brand in brand_menu_items %}<a href="{% pageurl brand.page %}" @click="close">{{ brand.name }}</a>{% endfor %}
+                        </div>
+                    </details>
+                    {% else %}
+                    <a href="{{ item.url }}" data-nav-key="{{ item.key }}" class="mobile-nav-link" @click="close">{{ item.label }}</a>
+                    {% endif %}
+                {% endfor %}
 
                 {# Mobile Language Switcher #}
                 <div class="flex items-center gap-2 py-2">
                     <span class="text-xs text-text-muted font-semibold uppercase">{% trans "Language" %}:</span>
-                    <div class="flex items-center border border-white/10 rounded-button overflow-hidden text-xs font-semibold">
+                    <div class="flex items-center border border-white/10 rounded-button overflow-hidden text-xs font-semibold"
+                        role="group" aria-label="{% trans 'Language' %}">
                         {% if current_lang == 'en' %}
-                        <span class="px-3 py-1.5 bg-primary text-text-dark">EN</span>
+                        <span class="language-option bg-primary text-text-dark">EN</span>
                         {% else %}
-                        <a href="{% translation_url page 'en' '/' %}" class="px-3 py-1.5 transition-colors text-text-muted" @click="close">EN</a>
+                        <a href="{% translation_url page 'en' '/' %}" class="language-option text-text-muted" @click="close">EN</a>
                         {% endif %}
                         {% if current_lang == 'es' %}
-                        <span class="px-3 py-1.5 bg-primary text-text-dark">ES</span>
+                        <span class="language-option bg-primary text-text-dark">ES</span>
                         {% else %}
-                        <a href="{% translation_url page 'es' '/es/' %}" class="px-3 py-1.5 transition-colors text-text-muted" @click="close">ES</a>
+                        <a href="{% translation_url page 'es' '/es/' %}" class="language-option text-text-muted" @click="close">ES</a>
                         {% endif %}
                     </div>
                 </div>
@@ -378,9 +422,9 @@
             <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 mb-12">
                 {# Brand Column #}
                 <div>
-                    <h3 class="font-display text-xl font-black text-white mb-4">
-                        <span class="text-primary">{% if biz %}{{ biz.business_name|cut:" Appliance Repair" }}{% else %}LOWL{% endif %}</span>
-                        <span class="text-white"> INLAND</span>
+                    <h3 class="font-display font-black uppercase leading-none text-white mb-4">
+                        <span class="block text-xl text-primary">{% if biz %}{{ biz.business_name|cut:" Appliance Repair" }}{% else %}Inland Empire{% endif %}</span>
+                        <span class="mt-1 block text-[0.625rem] tracking-[0.24em] text-white/70">{% trans "Appliance Repair" %}</span>
                     </h3>
                     <p class="text-text-muted leading-relaxed">
                         {% if biz and biz.city %}
@@ -395,7 +439,7 @@
                 <div>
                     <h4 class="font-display font-bold uppercase text-xs tracking-widest mb-4 text-white/80">{% trans "Services" %}</h4>
                     <ul class="space-y-3">
-                        {% for service in global_services|slice:":5" %}
+                        {% for service in service_menu_items|slice:":5" %}
                         <li>
                             <a href="{% pageurl service %}" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">
                                 {{ service.title }}
@@ -409,10 +453,9 @@
                 <div>
                     <h4 class="font-display font-bold uppercase text-xs tracking-widest mb-4 text-white/80">{% trans "Company" %}</h4>
                     <ul class="space-y-3">
-                        <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}about-us/" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "About Us" %}</a></li>
-                        <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}contact/" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Contact" %}</a></li>
-                        <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}blog/" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Blog" %}</a></li>
-                        <li><a href="/{% if LANGUAGE_CODE == 'es' %}es/{% endif %}service-areas/" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{% trans "Service Areas" %}</a></li>
+                        {% for item in footer_company_links %}
+                        <li><a href="{{ item.url }}" data-footer-link-key="{{ item.key }}" class="text-text-muted hover:text-white focus:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:rounded transition-colors">{{ item.label }}</a></li>
+                        {% endfor %}
                     </ul>
                 </div>
 
@@ -448,13 +491,14 @@
 
             {# Footer Bottom #}
             <div class="border-t border-white/5 pt-8 text-center text-text-muted text-xs">
-                <p>&copy; {% now "Y" %} {% if biz %}{{ biz.business_name }}{% else %}LOWL Appliance Repair{% endif %}. {% trans "All rights reserved." %}</p>
+                <p>&copy; {% now "Y" %} {% if biz %}{{ biz.business_name }}{% else %}Inland Empire Appliance Repair{% endif %}. {% trans "All rights reserved." %}</p>
             </div>
         </div>
     </footer>
 
     {# ── Mobile Bottom Bar ── #}
-    <div class="fixed bottom-0 left-0 right-0 z-50 flex h-16 border-t border-white/5 px-4 py-2 lg:hidden"
+    <div id="mobile-quick-actions" x-data="mobileQuickActions" x-show="isVisible" x-cloak x-transition.opacity
+        class="fixed bottom-0 left-0 right-0 z-50 flex h-16 border-t border-white/5 px-4 py-2 lg:hidden"
         style="background:rgba(26,27,32,0.95);backdrop-filter:blur(12px)"
         role="complementary" aria-label="{% trans 'Quick actions' %}">
         <div class="flex w-full gap-3">
@@ -479,9 +523,22 @@
     {% block alpine_plugins %}{% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/@alpinejs/csp@3.14.9/dist/cdn.min.js" defer></script>
     {# Booking source identifier for UTM forwarding #}
-    <script>window.__BOOKING_SOURCE = "{{ biz.booking_source|default:'lowl' }}";</script>
+    <script>window.__BOOKING_SOURCE = "{{ biz.booking_source|default:'inland'|escapejs }}";</script>
     <script src="{% static 'js/utm.js' %}"></script>
+    {% if tracking_enabled %}
+    <script>
+    window.__INLAND_TRACK = {
+        endpoint: "{{ tracking_endpoint|escapejs }}",
+        bookingDomain: "{{ booking_domain|escapejs }}",
+        storageKey: "{{ tracking_storage_key|escapejs }}",
+        utmStorageKey: "inland_utm",
+        consentRequired: {% if tracking_consent_required %}true{% else %}false{% endif %}
+    };
+    </script>
+    <script src="{% static 'js/tracker.js' %}"></script>
+    {% endif %}
     {# ZIP code service area check #}
+    {{ service_zip_codes|json_script:"service-zip-codes" }}
     <script>
     window.__ZIP_CHECK_I18N = {
         checkArea: "{% filter escapejs %}{% trans "Check Your Area" %}{% endfilter %}",

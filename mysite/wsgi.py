@@ -1,4 +1,4 @@
-"""WSGI config for the LOWL website."""
+"""WSGI config for the Inland Empire website."""
 
 from __future__ import annotations
 
