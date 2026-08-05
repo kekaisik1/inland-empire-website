@@ -1,4 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="6" fill="#2563eb"/>
-  <text x="16" y="22" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="900" font-size="14" fill="white">L</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title description">
+  <title id="title">Inland Empire Appliance Repair</title>
+  <desc id="description">A yellow and white IE monogram inside a charcoal appliance outline.</desc>
+  <rect width="180" height="180" fill="#1a1b20"/>
+  <rect x="13" y="13" width="154" height="154" rx="28" fill="none" stroke="#ffd504" stroke-width="6"/>
+  <path d="M36 40h108" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="6" opacity=".28"/>
+  <circle cx="141" cy="40" r="4" fill="#ffd504"/>
+  <path d="M45 57h22v69H45z" fill="#ffd504"/>
+  <path d="M82 57h55v20h-33v7h28v18h-28v7h33v20H82z" fill="#ffffff"/>
+  <path d="M40 143h100" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-width="5" opacity=".28"/>
 </svg>

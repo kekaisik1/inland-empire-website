@@ -6,9 +6,11 @@ import importlib
 import json
 import os
 import sys
+from pathlib import Path
 from xml.etree import ElementTree
 from unittest.mock import patch
 
+from PIL import Image
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
@@ -17,6 +19,35 @@ from django.test import RequestFactory, SimpleTestCase, TestCase, override_setti
 
 from home.models import SiteSettings
 from home.tests import create_test_home
+
+
+class StaticBrandAssetTests(SimpleTestCase):
+    static_dir = Path(settings.PROJECT_DIR) / "static"
+
+    def test_manifest_and_brand_sources_use_inland_identity(self) -> None:
+        manifest = json.loads((self.static_dir / "site.webmanifest").read_text())
+        icon_svg = (self.static_dir / "images/icon.svg").read_text()
+        social_svg = (self.static_dir / "images/og-default.svg").read_text()
+        combined = json.dumps(manifest) + icon_svg + social_svg
+
+        self.assertEqual(manifest["name"], "Inland Empire Appliance Repair")
+        self.assertEqual(manifest["short_name"], "Inland Empire")
+        self.assertIn("Inland Empire Appliance Repair", icon_svg)
+        self.assertIn("INLAND EMPIRE", social_svg)
+        self.assertIn("#ffd504", combined.lower())
+        self.assertNotIn("lowl", combined.lower())
+
+    def test_generated_brand_images_have_expected_dimensions(self) -> None:
+        expected_dimensions = {
+            "favicon.ico": (32, 32),
+            "images/apple-touch-icon.png": (180, 180),
+            "images/og-default.png": (1200, 630),
+        }
+
+        for relative_path, expected_size in expected_dimensions.items():
+            with self.subTest(relative_path=relative_path):
+                with Image.open(self.static_dir / relative_path) as image:
+                    self.assertEqual(image.size, expected_size)
 
 
 @override_settings(
